@@ -1,0 +1,17 @@
+export { default as IconSearch } from './IconSearch';
+export { default as IconSocial } from './IconSocial';
+export { default as IconModal } from './IconModal';
+export { default as IconLanguage } from './IconLanguage';
+export { default as IconLoading } from './IconLoading';
+export { default as IconAlert } from './IconAlert';
+export { default as IconNotification } from './IconNotification';
+export { default as IconRegister } from './IconRegister';
+export { default as IconClose } from './IconClose';
+export { default as IconHeart } from './IconHeart';
+export { default as IconShare } from './IconShare';
+export { default as IconBookmark } from './IconBookmark';
+export { default as IconArrowUp } from './IconArrowUp';
+export { default as IconComment } from './IconComment';
+export { default as IconVerified } from './IconVerified';
+export { default as IconMore } from './IconMore';
+export { default as IconPlus } from './IconPlus';

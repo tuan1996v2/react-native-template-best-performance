@@ -1,0 +1,77 @@
+{
+  "common": {
+    "confirm": "Xác nhận",
+    "cancel": "Hủy bỏ",
+    "confirm_title": "Bạn có chắc không?",
+    "confirm_message": "Hành động này không thể hoàn tác.",
+    "close": "Đóng",
+    "see_all": "Xem tất cả",
+    "success": "Thành công",
+    "version": "Phiên bản {{version}} • Phát triển bởi Tuấn Os",
+    "screen": "Màn hình",
+    "speed_switching": "Chuyển màn hình: {{time}} ms"
+  },
+  "home": {
+    "welcome": "Chào mừng, {{name}}!",
+    "greeting": "Xin chào, Tuan!",
+    "explore_today": "Khám phá hôm nay thôi nào",
+    "search_placeholder": "Bạn đang tìm gì...",
+    "featured_features": "Tính năng nổi bật",
+    "system_utilities": "Tiện ích hệ thống",
+    "banners": {
+      "explore_world": "Khám phá thế giới",
+      "explore_world_sub": "Những điểm đến tuyệt vời đang chờ bạn",
+      "hot_deal": "Ưu đãi hot nhất tuần",
+      "hot_deal_sub": "Giảm đến 50% cho thành viên mới",
+      "new_feature": "Tính năng mới",
+      "new_feature_sub": "Trải nghiệm Social Feed ngay hôm nay",
+      "nature_scenery": "Phong cảnh thiên nhiên",
+      "nature_scenery_sub": "Những góc ảnh đẹp nhất 2025"
+    },
+    "features": {
+      "social_media_feed": "Social Media Feed",
+      "experience_modern": "Trải nghiệm cuộn dọc hiện đại",
+      "performance_list": "Danh sách hiệu năng cao",
+      "using_flashlist": "Sử dụng FlashList cho hiệu quả cao nhất",
+      "try_now": "Thử ngay",
+      "discover": "Khám phá",
+      "social_feed": {
+        "title": "Social Feed",
+        "subtitle": "Demo mạng xã hội"
+      },
+      "modal": {
+        "title": "Modal",
+        "subtitle": "Màn hình nổi"
+      },
+      "language": {
+        "title": "Ngôn ngữ"
+      },
+      "loading": {
+        "title": "Loading",
+        "subtitle": "Kiểm tra loading store"
+      },
+      "alert": {
+        "title": "Alert",
+        "subtitle": "Hộp thoại xác nhận"
+      },
+      "notification": {
+        "title": "Thông báo",
+        "subtitle": "Kiểm tra toast/notif"
+      },
+      "register": {
+        "title": "Đăng ký",
+        "subtitle": "Màn hình đăng ký"
+      }
+    },
+    "actions": {
+      "saving_data": "Đang lưu dữ liệu...",
+      "delete_chat_title": "Xóa hội thoại",
+      "delete_chat_confirm": "Bạn có chắc chắn muốn xóa toàn bộ tin nhắn?",
+      "delete_now": "Xóa ngay",
+      "deleted_success": "Đã xóa!",
+      "switched_to_vi": "Đã đổi sang Tiếng Việt",
+      "switched_to_en": "Đã chuyển sang Tiếng Anh",
+      "welcome_back": "Chào mừng bạn quay lại!"
+    }
+  }
+}

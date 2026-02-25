@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4990778105",
+    "project_id": "mandala-operations",
+    "storage_bucket": "mandala-operations.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4990778105:android:a3ebb880482cd669610028",
+        "android_client_info": {
+          "package_name": "com.fourier.mandala.perations"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFaEWdhnLkAj_dD32Gs1YSiDT3ulpNn7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
