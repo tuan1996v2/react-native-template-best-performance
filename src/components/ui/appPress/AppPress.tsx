@@ -1,5 +1,4 @@
 import React, { ReactNode, useMemo, useRef, useCallback, useEffect } from 'react';
-import useRenderLog from '@/hooks/useRenderLog';
 import {
   StyleSheet,
   View,
@@ -47,21 +46,17 @@ const AppPress = ({
   const centerY = useSharedValue(0);
   const progress = useSharedValue(0);
 
-  const isDebouncing = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout>(); // Thêm Ref để quản lý Timeout
-
-  // TỐI ƯU 1: Dọn rác khi cuộn list nhanh làm item bị unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
+  // TỐI ƯU 1: Dọn rác
+  useEffect(() => () => {}, []);
 
   // TỐI ƯU 2: Bọc useCallback để tránh tạo mới function
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    width.value = event.nativeEvent.layout.width;
-    height.value = event.nativeEvent.layout.height;
-  }, [height, width]);
+  const onLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      width.value = event.nativeEvent.layout.width;
+      height.value = event.nativeEvent.layout.height;
+    },
+    [height, width],
+  );
 
   const rippleStyle = useAnimatedStyle(() => {
     const radius = Math.sqrt(width.value ** 2 + height.value ** 2);
@@ -75,46 +70,43 @@ const AppPress = ({
       position: 'absolute',
       top: centerY.value - radius,
       left: centerX.value - radius,
-      opacity: interpolate(
-        progress.value,
-        [0, 0.5, 1],
-        [0, rippleOpacity, 0],
-        Extrapolation.CLAMP
-      ),
+      opacity: interpolate(progress.value, [0, 0.5, 1], [0, rippleOpacity, 0], Extrapolation.CLAMP),
       transform: [{ scale: progress.value }],
     };
   });
 
+  const lastPressTime = useRef(0);
+
   // TỐI ƯU 3: Bọc useCallback cho sự kiện nhấn
-  const handlePress = useCallback((event: GestureResponderEvent) => {
-    if (disabled) return;
+  const handlePress = useCallback(
+    (event: GestureResponderEvent) => {
+      if (disabled) return;
 
-    if (isDebouncing.current) return;
-    isDebouncing.current = true;
-    timeoutRef.current = setTimeout(() => {
-      isDebouncing.current = false;
-    }, debounceTime);
+      // Hiển thị animation ngay lập tức để người dùng có phản hồi (feedback)
+      if (!disableAnimation) {
+        centerX.value = event.nativeEvent.locationX;
+        centerY.value = event.nativeEvent.locationY;
+        progress.value = 0;
+        progress.value = withTiming(1, { duration: rippleDuration });
+      }
 
-    if (!disableAnimation) {
-      centerX.value = event.nativeEvent.locationX;
-      centerY.value = event.nativeEvent.locationY;
-      progress.value = 0;
-      progress.value = withTiming(1, { duration: rippleDuration });
-    }
+      const now = Date.now();
+      if (now - lastPressTime.current < debounceTime) {
+        console.log('AppPress: Chặn do đang trong thời gian debounce');
+        return;
+      }
 
-    onPress?.();
-  }, [disabled, disableAnimation, debounceTime, rippleDuration, onPress, centerX, centerY, progress]);
+      lastPressTime.current = now;
+      onPress?.();
+    },
+    [disabled, disableAnimation, debounceTime, rippleDuration, onPress, centerX, centerY, progress],
+  );
 
   // Style array memoization
   const flattenedStyle = useMemo(() => [styles.container, style], [style]);
 
   return (
-    <Pressable
-      onPress={handlePress}
-      disabled={disabled}
-      onLayout={onLayout}
-      style={flattenedStyle}
-    >
+    <Pressable onPress={handlePress} disabled={disabled} onLayout={onLayout} style={flattenedStyle}>
       {children}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
         <Animated.View style={rippleStyle} />

@@ -1,10 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
-import {
-  LogBox,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import { LogBox, Platform, StatusBar } from 'react-native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../i18n/i18n';
@@ -35,7 +31,6 @@ export default function AppProvider(props: Props) {
   useEffect(() => {
     statusBarConfig();
     setupFCM();
-
   }, []);
 
   return (

@@ -61,6 +61,10 @@
       "register": {
         "title": "Đăng ký",
         "subtitle": "Màn hình đăng ký"
+      },
+      "swipe": {
+        "title": "Swipeable",
+        "subtitle": "Vuốt để xoá (Native)"
       }
     },
     "actions": {

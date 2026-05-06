@@ -7,10 +7,10 @@ interface LoadingStore {
   hideLoading: () => void;
 }
 
-export const useLoadingStore = create<LoadingStore>((set) => ({
+export const useLoadingStore = create<LoadingStore>(set => ({
   isLoading: false,
   message: undefined,
-  showLoading: (message) => set({ isLoading: true, message }),
+  showLoading: message => set({ isLoading: true, message }),
   hideLoading: () => set({ isLoading: false, message: undefined }),
 }));
 

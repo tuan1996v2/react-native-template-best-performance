@@ -15,7 +15,7 @@ export const ThemeTokens = {
     inputBg: '#1e1e1e',
     border: '#333333',
     // ... 100+ màu khác ở đây
-  }
+  },
 };
 
 export type AppTheme = typeof ThemeTokens.light;

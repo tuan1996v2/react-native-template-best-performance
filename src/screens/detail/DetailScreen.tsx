@@ -5,7 +5,6 @@ import AppImage from '@/components/ui/appImage/AppImage';
 import { FlashList } from '@shopify/flash-list';
 
 import AppScreen from '@/components/ui/appScreen/AppScreen';
-import type { StaticScreenProps } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   useSharedValue,
@@ -19,11 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppPress from '@/components/ui/appPress/AppPress';
 import SocialPostCard from './HeavyItem';
 import SuperGallery, { type SuperGalleryRef } from '@/components/ui/superGallery/SuperGallery';
-import {
-  IconAlert,
-  IconArrowUp,
-  IconPlus,
-} from '@/assets/icon';
+import { IconAlert, IconArrowUp, IconPlus } from '@/assets/icon';
 
 import styles, {
   COLORS,
@@ -40,12 +35,7 @@ import styles, {
 import NavigationService from '@/navigation/NavigationService';
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
-
 // ─── TYPES ────────────────────────────────────────────────────
-type Props = StaticScreenProps<{
-  productId: number;
-}>;
-
 export interface SocialPost {
   id: string;
   userName: string;
@@ -63,15 +53,39 @@ export interface SocialPost {
 
 // ─── MOCK DATA ────────────────────────────────────────────────
 const USER_NAMES = [
-  'Minh Tuấn', 'Ngọc Anh', 'Hoàng Long', 'Thu Hà', 'Đức Phúc',
-  'Lan Phương', 'Quang Huy', 'Mai Linh', 'Trung Kiên', 'Bảo Ngọc',
-  'Thanh Tùng', 'Hải Yến', 'Công Vinh', 'Thùy Linh', 'Văn Đức',
+  'Minh Tuấn',
+  'Ngọc Anh',
+  'Hoàng Long',
+  'Thu Hà',
+  'Đức Phúc',
+  'Lan Phương',
+  'Quang Huy',
+  'Mai Linh',
+  'Trung Kiên',
+  'Bảo Ngọc',
+  'Thanh Tùng',
+  'Hải Yến',
+  'Công Vinh',
+  'Thùy Linh',
+  'Văn Đức',
 ];
 
 const HANDLES = [
-  '@minhtuan', '@ngocanh', '@hoanglong', '@thuha', '@ducphuc',
-  '@lanphuong', '@quanghuy', '@mailinh', '@trungkien', '@baongoc',
-  '@thanhtung', '@haiyen', '@congvinh', '@thuylinh', '@vanduc',
+  '@minhtuan',
+  '@ngocanh',
+  '@hoanglong',
+  '@thuha',
+  '@ducphuc',
+  '@lanphuong',
+  '@quanghuy',
+  '@mailinh',
+  '@trungkien',
+  '@baongoc',
+  '@thanhtung',
+  '@haiyen',
+  '@congvinh',
+  '@thuylinh',
+  '@vanduc',
 ];
 
 const CONTENTS = [
@@ -82,7 +96,7 @@ const CONTENTS = [
   'Ai đã xem phim mới chưa? Hay lắm luôn á! Recommend mọi người nên đi xem.',
   'Cuối tuần nấu ăn cho gia đình Menu hôm nay: Phở bò, chả giò, và chè bưởi!',
   'Morning coffee  và code một chút trước khi đi làm. Productivity x100!',
-  'Tối nay team building! Mong là sẽ vui như lần trước. Let\'s gooo!',
+  "Tối nay team building! Mong là sẽ vui như lần trước. Let's gooo!",
   'Mới adopt một chú mèo con  Dễ thương quá trời luôn! Đặt tên là Mochi.',
   'Review sách "Atomic Habits"  Cuốn sách thay đổi góc nhìn của mình về thói quen hàng ngày.',
   'Sunset tại Vũng Tàu  Đẹp đến nao lòng!',
@@ -93,9 +107,18 @@ const CONTENTS = [
 ];
 
 const TIMES = [
-  '2 phút trước', '15 phút trước', '1 giờ trước', '2 giờ trước',
-  '3 giờ trước', '5 giờ trước', '8 giờ trước', '12 giờ trước',
-  'Hôm qua', '2 ngày trước', '3 ngày trước', '1 tuần trước',
+  '2 phút trước',
+  '15 phút trước',
+  '1 giờ trước',
+  '2 giờ trước',
+  '3 giờ trước',
+  '5 giờ trước',
+  '8 giờ trước',
+  '12 giờ trước',
+  'Hôm qua',
+  '2 ngày trước',
+  '3 ngày trước',
+  '1 tuần trước',
 ];
 
 // Hàm helper tạo mảng ảnh random (0-20 ảnh)
@@ -141,52 +164,52 @@ const STORIES = USER_NAMES.slice(0, 8).map((name, idx) => ({
   thumpImage: `https://picsum.photos/seed/story${idx}/300/600`, // High quality story image
 }));
 
-const StoriesBar = React.memo(({ stories, onStoryPress }: { stories: typeof STORIES, onStoryPress: (index: number) => void }) => (
-  <View style={styles.storiesBar}>
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.storiesContent}
-    >
-      <View style={styles.storyItem}>
-        <LinearGradient
-          colors={STORY_RING_COLORS_FULL as any}
-          style={styles.storyRing}
-          start={GRADIENT_START}
-          end={GRADIENT_END}
-        >
-          <View style={styles.storyAvatarInner}>
-            <IconPlus fill="#fff" width={20} height={20} />
-          </View>
-        </LinearGradient>
-        <Text style={styles.storyName}>Của bạn</Text>
-      </View>
-
-      {stories.map((item, idx) => (
-        <AppPress key={item.id} style={styles.storyItem} onPress={() => onStoryPress(idx)}>
+const StoriesBar = React.memo(
+  ({
+    stories,
+    onStoryPress,
+  }: {
+    stories: typeof STORIES;
+    onStoryPress: (index: number) => void;
+  }) => (
+    <View style={styles.storiesBar}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.storiesContent}>
+        <View style={styles.storyItem}>
           <LinearGradient
-            colors={STORY_RING_COLORS as any}
+            colors={STORY_RING_COLORS_FULL}
             style={styles.storyRing}
             start={GRADIENT_START}
-            end={GRADIENT_END}
-          >
+            end={GRADIENT_END}>
             <View style={styles.storyAvatarInner}>
-              <AppImage 
-                source={{ uri: item.avatar }} 
-                style={styles.storyAvatarImage} 
-              />
+              <IconPlus fill="#fff" width={20} height={20} />
             </View>
           </LinearGradient>
-          <Text style={styles.storyName} numberOfLines={1}>
-            {item.userName.split(' ').pop()}
-          </Text>
-        </AppPress>
-      ))}
-    </ScrollView>
-  </View>
-));
+          <Text style={styles.storyName}>Của bạn</Text>
+        </View>
 
-
+        {stories.map((item, idx) => (
+          <AppPress key={item.id} style={styles.storyItem} onPress={() => onStoryPress(idx)}>
+            <LinearGradient
+              colors={STORY_RING_COLORS}
+              style={styles.storyRing}
+              start={GRADIENT_START}
+              end={GRADIENT_END}>
+              <View style={styles.storyAvatarInner}>
+                <AppImage source={{ uri: item.avatar }} style={styles.storyAvatarImage} />
+              </View>
+            </LinearGradient>
+            <Text style={styles.storyName} numberOfLines={1}>
+              {item.userName.split(' ').pop()}
+            </Text>
+          </AppPress>
+        ))}
+      </ScrollView>
+    </View>
+  ),
+);
 
 // ─── HEADER BAR (extracted + memoized) ────────────────────────
 const HeaderBar = React.memo(({ scrollToTop }: { scrollToTop: () => void }) => (
@@ -209,9 +232,9 @@ const HeaderBar = React.memo(({ scrollToTop }: { scrollToTop: () => void }) => (
 const keyExtractor = (item: SocialPost) => item.id;
 
 // ─── MAIN SCREEN ──────────────────────────────────────────────
-const DetailScreen = ({ route }: Props) => {
+const DetailScreen = () => {
   useRenderLog('DetailScreen');
-  const listRef = useRef<any>(null);
+  const listRef = useRef<FlashList<SocialPost>>(null);
 
   const insets = useSafeAreaInsets();
 
@@ -228,9 +251,7 @@ const DetailScreen = ({ route }: Props) => {
 
   // renderItem với onImagePress (stable nhờ useCallback + openGallery không bao giờ đổi)
   const renderItem = useCallback(
-    ({ item }: { item: SocialPost }) => (
-      <SocialPostCard item={item} onImagePress={openGallery} />
-    ),
+    ({ item }: { item: SocialPost }) => <SocialPostCard item={item} onImagePress={openGallery} />,
     [openGallery],
   );
 
@@ -244,7 +265,7 @@ const DetailScreen = ({ route }: Props) => {
 
   // 🚀 useAnimatedScrollHandler — 100% UI thread, ZERO JS bridge
   const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
+    onScroll: event => {
       'worklet';
       const y = event.contentOffset.y;
       const dy = y - lastScrollY.value;
@@ -278,20 +299,10 @@ const DetailScreen = ({ route }: Props) => {
     opacity: showScrollBtn.value,
     transform: [
       {
-        scale: interpolate(
-          showScrollBtn.value,
-          [0, 1],
-          [0.5, 1],
-          Extrapolation.CLAMP,
-        ),
+        scale: interpolate(showScrollBtn.value, [0, 1], [0.5, 1], Extrapolation.CLAMP),
       },
       {
-        translateY: interpolate(
-          showScrollBtn.value,
-          [0, 1],
-          [30, 0],
-          Extrapolation.CLAMP,
-        ),
+        translateY: interpolate(showScrollBtn.value, [0, 1], [30, 0], Extrapolation.CLAMP),
       },
     ],
   }));
@@ -312,52 +323,38 @@ const DetailScreen = ({ route }: Props) => {
 
   return (
     <AppScreen edges={[]} style={styles.root}>
-      <LinearGradient
-        colors={BG_GRADIENT_COLORS}
-        style={styles.gradient}
-      >
+      <LinearGradient colors={BG_GRADIENT_COLORS} style={styles.gradient}>
         {/* ── FEED LIST ──────────────────── */}
         <AnimatedFlashList
           ref={listRef}
-          {...({
-            data: DATA as any,
-            renderItem: renderItem as any,
-            keyExtractor: keyExtractor as any,
-            estimatedItemSize: 500,
-            drawDistance: 250,
-            contentContainerStyle: listContentStyle,
-            showsVerticalScrollIndicator: false,
-            onScroll: scrollHandler,
-            scrollEventThrottle: 16,
-          } as any)}
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          estimatedItemSize={500}
+          drawDistance={250}
+          contentContainerStyle={listContentStyle}
+          showsVerticalScrollIndicator={false}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
         />
-
 
         {/* ── COLLAPSIBLE HEADER (absolute overlay) ─── */}
         <Animated.View style={[styles.collapsibleHeader, headerAnimatedStyle]}>
-          <LinearGradient
-            colors={HEADER_GRADIENT_COLORS}
-            style={styles.headerGradient}
-          >
+          <LinearGradient colors={HEADER_GRADIENT_COLORS} style={styles.headerGradient}>
             <View style={spacerStyle} />
             <HeaderBar scrollToTop={scrollToTop} />
             <StoriesBar stories={STORIES} onStoryPress={handleStoryPress} />
           </LinearGradient>
-
         </Animated.View>
 
         {/* ── FAB SCROLL TO TOP ───────────── */}
-        <Animated.View
-          style={[styles.fabContainer, fabAnimatedStyle]}
-          pointerEvents="box-none"
-        >
+        <Animated.View style={[styles.fabContainer, fabAnimatedStyle]} pointerEvents="box-none">
           <AppPress onPress={scrollToTop} style={styles.fabTouchable}>
             <LinearGradient
               colors={FAB_GRADIENT_COLORS}
               style={styles.fab}
               start={GRADIENT_START}
-              end={GRADIENT_END}
-            >
+              end={GRADIENT_END}>
               <IconArrowUp fill="#fff" width={24} height={24} />
             </LinearGradient>
           </AppPress>
@@ -369,7 +366,6 @@ const DetailScreen = ({ route }: Props) => {
     </AppScreen>
   );
 };
-
 
 export default DetailScreen;
 export { COLORS };

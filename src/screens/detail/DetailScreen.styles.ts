@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { s, vs, ms, fs } from '../../theme/Responsive';
+import { s, vs, fs } from '../../theme/Responsive';
 
 // ─── COLORS (export cho component dùng chung) ─────────────────
 export const COLORS = {
@@ -29,7 +29,11 @@ export const STORIES_HEIGHT = vs(98);
 // Pre-compute gradient props (tránh inline objects gây re-render)
 export const GRADIENT_START = { x: 0, y: 0 } as const;
 export const GRADIENT_END = { x: 1, y: 1 } as const;
-export const BG_GRADIENT_COLORS = [COLORS.bgGradientStart, COLORS.bgGradientMid, COLORS.bgGradientEnd];
+export const BG_GRADIENT_COLORS = [
+  COLORS.bgGradientStart,
+  COLORS.bgGradientMid,
+  COLORS.bgGradientEnd,
+];
 export const HEADER_GRADIENT_COLORS = [COLORS.headerBg, COLORS.headerBg];
 export const FAB_GRADIENT_COLORS = [COLORS.fabGradientStart, COLORS.fabGradientEnd];
 

@@ -7,7 +7,7 @@ import { vs } from '../../../theme/Responsive';
 
 const ToastContainer = memo(() => {
   const { top, bottom } = useSafeAreaInsets();
-  
+
   // Selector: Chỉ re-render khi visible, msg hoặc type thay đổi
   const { visible, message, type, positionDown } = useAlertStore(state => state.toast);
   const hideToast = useAlertStore(state => state.hideToast);
@@ -15,18 +15,14 @@ const ToastContainer = memo(() => {
   if (!visible) return null;
 
   return (
-    <View 
-      style={[
-        styles.container, 
-        positionDown ? { bottom: bottom + vs(20) } : { top: top + vs(10) }
-      ]}
-      pointerEvents="box-none"
-    >
+    <View
+      style={[styles.container, positionDown ? { bottom: bottom + vs(20) } : { top: top + vs(10) }]}
+      pointerEvents="box-none">
       <Message
         key={message} // Quan trọng: Reset animation khi spam message mới
-        message={message} 
-        type={type} 
-        onHide={hideToast} 
+        message={message}
+        type={type}
+        onHide={hideToast}
       />
     </View>
   );

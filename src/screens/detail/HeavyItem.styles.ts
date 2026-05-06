@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { s, vs, ms, fs } from '../../theme/Responsive';
+import { s, vs, fs } from '../../theme/Responsive';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const IMAGE_GAP = s(2);
@@ -292,6 +292,9 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: C.divider,
     marginTop: vs(12),
+  },
+  verifiedIcon: {
+    marginLeft: s(4),
   },
 });
 

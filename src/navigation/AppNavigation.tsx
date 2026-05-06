@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import React from 'react';
 import { useNavigationStore } from '../store/useNavigationStore';
 import { createStaticNavigation } from '@react-navigation/native';
@@ -10,6 +9,7 @@ import BootSplash from 'react-native-bootsplash';
 import MyModalScreen from '../screens/home/MyModalScreen';
 import RegisterScreen from '@/components/ui/appTextInput/TmpMultiInput';
 import StoryScreen from '../screens/detail/StoryScreen';
+import SwipeableScreen from '../screens/swipeable/SwipeableScreen';
 
 const MainStack = {
   HomeScreen: {
@@ -19,6 +19,10 @@ const MainStack = {
   DetailScreen: {
     screen: DetailScreen,
     options: { title: 'Màn Detail', headerShown: false },
+  },
+  SwipeableScreen: {
+    screen: SwipeableScreen,
+    options: { title: 'Swipeable List', headerShown: true },
   },
   RegisterScreen: {
     screen: RegisterScreen,
@@ -78,5 +82,3 @@ const AppNavigation = () => {
 };
 
 export default AppNavigation;
-
-const styles = StyleSheet.create({});

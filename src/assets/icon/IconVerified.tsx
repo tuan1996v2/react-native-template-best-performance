@@ -8,8 +8,7 @@ const IconVerified = (props: SvgProps) => (
     height={props.height || s(14)}
     viewBox="0 0 24 24"
     fill="none"
-    {...props}
-  >
+    {...props}>
     <Path
       d="M9 11L11 13L15 9"
       stroke={props.fill || '#fff'}

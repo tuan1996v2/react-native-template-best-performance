@@ -7,14 +7,13 @@ import {
   StyleSheet,
   ImageProps,
   ActivityIndicator,
+  NativeSyntheticEvent,
+  ImageLoadEventData,
+  ImageErrorEventData,
 } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import AppSkeleton from '../skeleton/AppSkeleton';
-import { s, vs, fs } from '../../../theme/Responsive';
+import { fs } from '../../../theme/Responsive';
 
 interface AppImageProps extends ImageProps {
   thumbnailSource?: ImageSourcePropType;
@@ -44,7 +43,7 @@ const AppImage: React.FC<AppImageProps> = ({
   const placeholderOpacity = useSharedValue(1);
 
   // 🚀 TỐI ƯU CỐT LÕI: RESET STATE TRONG RENDER (Recycling Fix)
-  // Khi FlashList tái sử dụng component (source đổi), ta reset animation ngay lập tức 
+  // Khi FlashList tái sử dụng component (source đổi), ta reset animation ngay lập tức
   // mà không cần đợi đến useEffect (giúp tránh render 2 lần).
   const prevSource = useRef(source);
   if (prevSource.current !== source) {
@@ -69,28 +68,35 @@ const AppImage: React.FC<AppImageProps> = ({
     zIndex: placeholderOpacity.value > 0.1 ? 1 : -1,
   }));
 
-  const handleMainLoad = useCallback((e: any) => {
-    mainOpacity.value = withTiming(1, { duration: animationDuration });
-    placeholderOpacity.value = withTiming(0, { duration: animationDuration });
-    onLoad?.(e);
-  }, [animationDuration, mainOpacity, placeholderOpacity, onLoad]);
+  const handleMainLoad = useCallback(
+    (e: NativeSyntheticEvent<ImageLoadEventData>) => {
+      mainOpacity.value = withTiming(1, { duration: animationDuration });
+      placeholderOpacity.value = withTiming(0, { duration: animationDuration });
+      onLoad?.(e);
+    },
+    [animationDuration, mainOpacity, placeholderOpacity, onLoad],
+  );
 
-  const handleError = useCallback((e: any) => {
-    setIsError(true);
-    placeholderOpacity.value = withTiming(0, { duration: 200 });
+  const handleError = useCallback(
+    (e: NativeSyntheticEvent<ImageErrorEventData>) => {
+      setIsError(true);
+      placeholderOpacity.value = withTiming(0, { duration: 200 });
 
-    if (errorSource) {
-      mainOpacity.value = withTiming(1, { duration: 200 });
-    }
+      if (errorSource) {
+        mainOpacity.value = withTiming(1, { duration: 200 });
+      }
 
-    onError?.(e);
-  }, [mainOpacity, placeholderOpacity, errorSource, onError]);
+      onError?.(e);
+    },
+    [mainOpacity, placeholderOpacity, errorSource, onError],
+  );
 
   return (
     <View style={[styles.container, style]}>
-
       <Animated.View style={[styles.absoluteFull, animatedPlaceholderStyle]} pointerEvents="none">
-        {showIconLoading ? (<ActivityIndicator color={'#fff'} style={styles.absoluteFull} />) : loadingSource ? (
+        {showIconLoading ? (
+          <ActivityIndicator color={'#fff'} style={styles.absoluteFull} />
+        ) : loadingSource ? (
           <Image source={loadingSource} style={styles.absoluteFull} resizeMode="center" />
         ) : (
           <AppSkeleton width="100%" height="100%" />
@@ -98,7 +104,7 @@ const AppImage: React.FC<AppImageProps> = ({
       </Animated.View>
 
       {thumbnailSource && (
-        <Animated.View style={[styles.absoluteFull, animatedPlaceholderStyle, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Animated.View style={[styles.absoluteFull, animatedPlaceholderStyle, styles.center]}>
           <Animated.Image
             source={thumbnailSource}
             style={styles.absoluteFull}
@@ -121,7 +127,6 @@ const AppImage: React.FC<AppImageProps> = ({
           <Text style={styles.errorText}>{errorText}</Text>
         </View>
       )}
-
     </View>
   );
 };
@@ -149,7 +154,11 @@ const styles = StyleSheet.create({
     color: '#9E9E9E',
     fontSize: fs(12),
     fontWeight: '500',
-  }
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default memo(AppImage);

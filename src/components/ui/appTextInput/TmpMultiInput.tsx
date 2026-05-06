@@ -1,7 +1,7 @@
 // RegisterScreen.tsx
 import React from 'react';
 import { ScrollView, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, ControllerRenderProps } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AppTextInput from './AppTextInput'; // File chúng ta đã tối ưu trước đó
 import { s, vs } from '@/theme/Responsive';
@@ -40,7 +40,11 @@ export default function RegisterScreen() {
       <Controller
         control={control}
         name="fullName"
-        render={({ field: { onChange, onBlur, value } }: { field: any }) => (
+        render={({
+          field: { onChange, onBlur, value },
+        }: {
+          field: ControllerRenderProps<RegisterFormValues, 'fullName'>;
+        }) => (
           <AppTextInput
             label="Họ và tên"
             required
@@ -56,7 +60,11 @@ export default function RegisterScreen() {
       <Controller
         control={control}
         name="email"
-        render={({ field: { onChange, onBlur, value } }: { field: any }) => (
+        render={({
+          field: { onChange, onBlur, value },
+        }: {
+          field: ControllerRenderProps<RegisterFormValues, 'email'>;
+        }) => (
           <AppTextInput
             label="Email"
             required
@@ -74,7 +82,11 @@ export default function RegisterScreen() {
       <Controller
         control={control}
         name="phone"
-        render={({ field: { onChange, onBlur, value } }: { field: any }) => (
+        render={({
+          field: { onChange, onBlur, value },
+        }: {
+          field: ControllerRenderProps<RegisterFormValues, 'phone'>;
+        }) => (
           <AppTextInput
             label="Số điện thoại"
             required
@@ -92,7 +104,11 @@ export default function RegisterScreen() {
       <Controller
         control={control}
         name="password"
-        render={({ field: { onChange, onBlur, value } }: { field: any }) => (
+        render={({
+          field: { onChange, onBlur, value },
+        }: {
+          field: ControllerRenderProps<RegisterFormValues, 'password'>;
+        }) => (
           <AppTextInput
             label="Mật khẩu"
             required
@@ -109,7 +125,11 @@ export default function RegisterScreen() {
       <Controller
         control={control}
         name="confirmPassword"
-        render={({ field: { onChange, onBlur, value } }: { field: any }) => (
+        render={({
+          field: { onChange, onBlur, value },
+        }: {
+          field: ControllerRenderProps<RegisterFormValues, 'confirmPassword'>;
+        }) => (
           <AppTextInput
             label="Xác nhận mật khẩu"
             required

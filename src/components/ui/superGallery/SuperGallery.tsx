@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-  useState,
-  forwardRef,
-} from 'react';
+import React, { memo, useCallback, useImperativeHandle, useRef, useState, forwardRef } from 'react';
 import useRenderLog from '@/hooks/useRenderLog';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { GestureViewer, useGestureViewerState } from 'react-native-gesture-image-viewer';
@@ -16,7 +9,6 @@ import Animated, {
   withTiming,
   runOnJS,
 } from 'react-native-reanimated';
-import AppImage from '@/components/ui/appImage/AppImage';
 
 // ─── IMPERATIVE HANDLE TYPE ───────────────────────────────────
 export interface SuperGalleryRef {
@@ -26,11 +18,7 @@ export interface SuperGalleryRef {
 
 // ─── SUB-COMPONENT (memo → không bao giờ re-render khi swipe) ─
 const GalleryImage = memo(({ uri }: { uri: string }) => (
-  <Image
-    source={{ uri }}
-    style={StyleSheet.absoluteFillObject}
-    resizeMode="contain"
-  />
+  <Image source={{ uri }} style={StyleSheet.absoluteFillObject} resizeMode="contain" />
 ));
 
 // ─── COUNTER (tách riêng — chỉ nó re-render khi swipe) ───────
@@ -67,33 +55,34 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
   }));
 
   // ── Imperative API: parent gọi ref.current.open() / close() ──
-  useImperativeHandle(ref, () => ({
-    open: (images: string[], initialIndex = 0) => {
-      dataRef.current = { images, initialIndex };
-      setVisible(true);
-      opacity.value = withTiming(1, { duration: 200 });
-    },
-    close: () => {
-      opacity.value = withTiming(0, { duration: 200 }, (finished) => {
-        if (finished) {
-          runOnJS(setVisible)(false);
-        }
-      });
-    },
-  }), [opacity]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      open: (images: string[], initialIndex = 0) => {
+        dataRef.current = { images, initialIndex };
+        setVisible(true);
+        opacity.value = withTiming(1, { duration: 200 });
+      },
+      close: () => {
+        opacity.value = withTiming(0, { duration: 200 }, finished => {
+          if (finished) {
+            runOnJS(setVisible)(false);
+          }
+        });
+      },
+    }),
+    [opacity],
+  );
 
   const handleDismiss = useCallback(() => {
-    opacity.value = withTiming(0, { duration: 200 }, (finished) => {
+    opacity.value = withTiming(0, { duration: 200 }, finished => {
       if (finished) {
         runOnJS(setVisible)(false);
       }
     });
   }, [opacity]);
 
-  const renderItem = useCallback(
-    (item: string, _index: number) => <GalleryImage uri={item} />,
-    [],
-  );
+  const renderItem = useCallback((item: string) => <GalleryImage uri={item} />, []);
 
   // ── Không mount GestureViewer khi đóng → giải phóng bộ nhớ ──
   if (!visible) return null;
@@ -101,7 +90,8 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
   const { images, initialIndex } = dataRef.current;
 
   return (
-    <Animated.View style={[StyleSheet.absoluteFillObject, styles.container, animatedContainerStyle]}>
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, styles.container, animatedContainerStyle]}>
       <GestureViewer
         data={images}
         initialIndex={initialIndex}
@@ -116,11 +106,7 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
       />
 
       {/* Nút đóng */}
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={handleDismiss}
-        activeOpacity={0.7}
-      >
+      <TouchableOpacity style={styles.closeButton} onPress={handleDismiss} activeOpacity={0.7}>
         <Text style={styles.closeText}>✕</Text>
       </TouchableOpacity>
 
@@ -180,6 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
 export default memo(SuperGallery);
-

@@ -8,8 +8,7 @@ const IconLoading = (props: SvgProps) => (
     height={props.height || s(24)}
     viewBox="0 0 24 24"
     fill="none"
-    {...props}
-  >
+    {...props}>
     <Path
       d="M12 2V6"
       stroke={props.fill || '#000'}

@@ -8,7 +8,7 @@ import * as RNLocalize from 'react-native-localize';
 export const getDeviceLanguage = () => {
   const locales = RNLocalize.getLocales();
   console.log('getDeviceLanguage', locales);
-  return locales[0]?.languageCode || 'vi'; 
+  return locales[0]?.languageCode || 'vi';
 };
 
 const resources = {

@@ -42,6 +42,8 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | ⌨️ **Keyboard Controller** | Xử lý keyboard trên cả Android + iOS một cách nhất quán | ✅ |
 | 🎬 **Boot Splash** | Splash screen native, ẩn khi navigation ready | ✅ |
 | 💾 **MMKV Storage** | Storage nhanh gấp 30x AsyncStorage | ✅ |
+| 🖐️ **Swipeable Items** | Hệ thống vuốt chạm mượt mà (Left/Right/Full Swipe) — xử lý 100% trên UI thread | ✅ |
+
 ---
 
 ## 📁 Cấu trúc Source Code
@@ -84,7 +86,8 @@ template/
 │   │       ├── appImage/      #     Image 3-layer (skeleton → thumbnail → full)
 │   │       ├── skeleton/      #     Skeleton loading placeholder
 │   │       ├── superGallery/  #     🖼️ Full-screen image viewer (zoom + swipe)
-│   │       └── superBanner/   #     🎠 Auto-play carousel với parallax
+│   │       ├── superBanner/   #     Carousel auto-play với parallax
+│   │       └── swipeItem/     #     🖐️ Swipeable Item (Gesture + Reanimated)
 │   │
 │   ├── env/                   # ⚙️ Cấu hình môi trường
 │   │   ├── index.tsx          #     Export ENV, BASE_URL, IS_DEV, ...
@@ -375,6 +378,25 @@ const MyComponent = () => {
 
 > ⚠️ **Chỉ dùng khi debug** — xóa trước khi release! Filter `[RENDER]` trong Logcat/Console để track.
 
+### 🖐️ SwipeableItemWrapper (Swipe-to-Action)
+
+```tsx
+import { SwipeableItemWrapper, ESwipeType } from '@/components/swipeItem';
+
+<SwipeableItemWrapper
+  id={item.id}
+  animationType={ESwipeType.LEFT_RIGHT}
+  leftSwipeView={<MyLeftAction />}
+  rightSwipeView={<MyRightAction />}
+  onLeftFullSwipe={(id) => handleDelete(id)}
+  leftSwipeViewContainerStyle={{ borderRadius: 12 }}
+>
+  <MyListItem item={item} />
+</SwipeableItemWrapper>
+```
+
+> 🎯 **Kiến trúc**: Sử dụng `react-native-gesture-handler` v2 + `Reanimated` v4. Mọi tính toán vị trí, vận tốc và animation đều chạy trên UI thread, đảm bảo list vuốt mượt mà 60fps kể cả trên thiết bị Android cũ.
+
 ---
 
 ## 🏗️ Multi-Environment Build
@@ -446,6 +468,8 @@ Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
 | i18next | 25.x | Internationalization |
 | Firebase | 23.x | Push notification (Modular API) |
 | Notifee | 9.x | Local notification |
+| Gesture Handler | 2.x | Gesture system |
+| Swipeable Item | 1.0 | 🖐️ Custom swipe-to-reveal |
 | MMKV | 4.x | High-speed storage |
 | Axios | 1.x | HTTP client |
 | Reactotron | 5.x | Debug tool |

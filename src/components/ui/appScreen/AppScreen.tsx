@@ -3,42 +3,40 @@ import { StyleSheet, StatusBar, StatusBarStyle, StyleProp, ViewStyle } from 'rea
 import { SafeAreaView, Edge } from 'react-native-safe-area-context';
 
 interface AppScreenProps {
-    children: React.ReactNode;
-    edges?: Edge[];
-    style?: StyleProp<ViewStyle>;
-    backgroundColor?: string;
-    statusBarStyle?: StatusBarStyle;
+  children: React.ReactNode;
+  edges?: Edge[];
+  style?: StyleProp<ViewStyle>;
+  backgroundColor?: string;
+  statusBarStyle?: StatusBarStyle;
 }
 
-const AppScreen = memo(({
+const AppScreen = memo(
+  ({
     children,
     edges = ['top', 'bottom'],
     style,
     backgroundColor = '#FFFFFF',
     statusBarStyle = 'dark-content',
-}: AppScreenProps) => {
+  }: AppScreenProps) => {
     // Memoize style array — tránh tạo mới mỗi render
     const containerStyle = useMemo(
-        () => [styles.container, { backgroundColor }, style],
-        [backgroundColor, style],
+      () => [styles.container, { backgroundColor }, style],
+      [backgroundColor, style],
     );
 
     return (
-        <SafeAreaView
-            edges={edges}
-            style={containerStyle}
-            mode="padding"
-        >
-            <StatusBar barStyle={statusBarStyle} backgroundColor={backgroundColor} />
-            {children}
-        </SafeAreaView>
+      <SafeAreaView edges={edges} style={containerStyle} mode="padding">
+        <StatusBar barStyle={statusBarStyle} backgroundColor={backgroundColor} />
+        {children}
+      </SafeAreaView>
     );
-});
+  },
+);
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+  container: {
+    flex: 1,
+  },
 });
 
 export default AppScreen;

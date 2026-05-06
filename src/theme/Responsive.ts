@@ -10,13 +10,15 @@ const DESIGN_HEIGHT = 844;
  * Scale theo chiều ngang (Width)
  * Dùng cho: width, paddingHorizontal, marginHorizontal, borderRadius...
  */
-export const s = (size: number) => PixelRatio.roundToNearestPixel((SCREEN_WIDTH / DESIGN_WIDTH) * size);
+export const s = (size: number) =>
+  PixelRatio.roundToNearestPixel((SCREEN_WIDTH / DESIGN_WIDTH) * size);
 
 /**
  * Scale theo chiều dọc (Height)
  * Dùng cho: height, paddingTop, marginBottom...
  */
-export const vs = (size: number) => PixelRatio.roundToNearestPixel((SCREEN_HEIGHT / DESIGN_HEIGHT) * size);
+export const vs = (size: number) =>
+  PixelRatio.roundToNearestPixel((SCREEN_HEIGHT / DESIGN_HEIGHT) * size);
 
 /**
  * Moderate Scale (Dùng cho Font Size)
@@ -29,5 +31,4 @@ export const ms = (size: number, factor = 0.5) => size + (s(size) - size) * fact
  */
 export const fs = (size: number) =>
   // PixelRatio.getFontScale() giúp tôn trọng cài đặt trợ năng của người dùng
-  ms(size) * PixelRatio.getFontScale()
-  ;
+  ms(size) * PixelRatio.getFontScale();

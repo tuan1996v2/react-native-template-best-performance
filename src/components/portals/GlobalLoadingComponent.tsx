@@ -10,13 +10,12 @@ const GlobalLoadingComponent = () => {
   if (!isLoading) return null;
 
   return (
-    <Animated.View 
-      entering={FadeIn.duration(200)} 
+    <Animated.View
+      entering={FadeIn.duration(200)}
       exiting={FadeOut.duration(200)}
       style={styles.container}
       // Chặn mọi thao tác chạm xuống các lớp dưới
-      pointerEvents="auto" 
-    >
+      pointerEvents="auto">
       <View style={styles.content}>
         <ActivityIndicator size="large" color="#FFFFFF" />
         {message && <Text style={styles.text}>{message}</Text>}

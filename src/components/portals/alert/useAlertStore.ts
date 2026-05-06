@@ -30,18 +30,17 @@ interface AlertState {
   hideToast: () => void;
 }
 
-export const useAlertStore = create<AlertState>((set) => ({
+export const useAlertStore = create<AlertState>(set => ({
   alert: { visible: false, title: '', content: '', buttons: [] },
   toast: { visible: false, message: '', type: 'success' },
 
-  showAlert: (config) => set({ alert: { ...config, visible: true } }),
-  hideAlert: () => set((state) => ({ alert: { ...state.alert, visible: false } })),
-  
-  showToast: (message, type, positionDown) => 
-    set({ toast: { message, type, visible: true, positionDown } }),
-  hideToast: () => set((state) => ({ toast: { ...state.toast, visible: false } })),
-}));
+  showAlert: config => set({ alert: { ...config, visible: true } }),
+  hideAlert: () => set(state => ({ alert: { ...state.alert, visible: false } })),
 
+  showToast: (message, type, positionDown) =>
+    set({ toast: { message, type, visible: true, positionDown } }),
+  hideToast: () => set(state => ({ toast: { ...state.toast, visible: false } })),
+}));
 
 export const toast = {
   success: (message: string, positionDown?: boolean) => {
@@ -56,5 +55,5 @@ export const toast = {
   // Hàm ẩn toast nếu cần
   hide: () => {
     useAlertStore.getState().hideToast();
-  }
+  },
 };

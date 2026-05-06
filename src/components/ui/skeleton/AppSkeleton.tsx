@@ -5,6 +5,7 @@ import {
   ViewStyle,
   StyleProp,
   LayoutChangeEvent,
+  DimensionValue,
 } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,8 +18,8 @@ import Animated, {
 import { s, vs } from '../../../theme/Responsive';
 
 interface Props {
-  width?: number | string;
-  height?: number | string;
+  width?: DimensionValue;
+  height?: DimensionValue;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -51,11 +52,7 @@ const AppSkeleton = ({ width = '100%', height = vs(20), style }: Props) => {
   }));
 
   return (
-    <View
-      style={[styles.container, { width, height } as any, style]}
-      onLayout={onLayout}
-    >
-
+    <View style={[styles.container, { width, height }, style]} onLayout={onLayout}>
       <View style={styles.background} />
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
@@ -80,6 +77,5 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
-
 
 export default memo(AppSkeleton);

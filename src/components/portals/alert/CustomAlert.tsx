@@ -17,11 +17,13 @@ const CustomAlert = memo(() => {
           <Text style={styles.content}>{content}</Text>
           <View style={styles.footer}>
             {buttons.map((btn, i) => (
-              <TouchableOpacity 
-                key={i} 
-                onPress={() => { btn.onPress(); hideAlert(); }} 
-                style={styles.button}
-              >
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  btn.onPress();
+                  hideAlert();
+                }}
+                style={styles.button}>
                 <Text style={styles.btnText}>{btn.text}</Text>
               </TouchableOpacity>
             ))}
@@ -33,13 +35,18 @@ const CustomAlert = memo(() => {
 });
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center' },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   alertBox: { width: '80%', backgroundColor: '#FFF', borderRadius: ms(16), padding: s(20) },
   title: { fontSize: ms(18), fontWeight: 'bold', textAlign: 'center' },
   content: { marginTop: vs(10), textAlign: 'center', color: '#666' },
   footer: { flexDirection: 'row', marginTop: vs(20), justifyContent: 'flex-end' },
   button: { marginLeft: s(15) },
-  btnText: { color: '#007AFF', fontWeight: '700' }
+  btnText: { color: '#007AFF', fontWeight: '700' },
 });
 
 export default CustomAlert;

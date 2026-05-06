@@ -15,10 +15,16 @@ import {
   Text,
 } from 'react-native';
 
-
 // 1. Tách Label ra thành Component độc lập và memoize để nó KHÔNG BAO GIỜ render lại
 // khi user gõ phím vào ô input bên dưới.
-const AppInputLabel = memo(({ label, required, labelStyle, inline }: any) => (
+interface AppInputLabelProps {
+  label: string;
+  required?: boolean;
+  labelStyle?: StyleProp<TextStyle>;
+  inline?: boolean;
+}
+
+const AppInputLabel = memo(({ label, required, labelStyle, inline }: AppInputLabelProps) => (
   <View style={[styles.labelContainer, inline && styles.inlineLabel]}>
     <Text style={[styles.labelText, labelStyle]}>{label}</Text>
     {required ? <Text style={styles.colorRed}> *</Text> : null}
@@ -71,7 +77,13 @@ const AppTextInput = forwardRef<TextInput, AppInputProps>((props, ref) => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <AppInputLabel label={label} required={required} labelStyle={[styles.labelText, labelStyle]} />}
+      {label && (
+        <AppInputLabel
+          label={label}
+          required={required}
+          labelStyle={[styles.labelText, labelStyle]}
+        />
+      )}
 
       <View
         style={[
@@ -101,7 +113,7 @@ const AppTextInput = forwardRef<TextInput, AppInputProps>((props, ref) => {
           </TouchableOpacity>
         ) : isShowClearButton ? (
           <TouchableOpacity onPress={onClear} style={styles.iconContainer}>
-            <IconClose  width={16} />
+            <IconClose width={16} />
           </TouchableOpacity>
         ) : null}
 

@@ -83,8 +83,7 @@ const AppInputSearch = forwardRef<TextInput, AppInputSearchProps>((props, ref) =
           onPress={handleClearText}
           activeOpacity={0.7}
           // Tăng vùng bấm (hitSlop) để user dễ chạm vào dấu X nhỏ
-          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }} 
-        >
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
           <IconClose width={16} height={16} fill="#949494" />
         </TouchableOpacity>
       ) : null}
@@ -100,7 +99,8 @@ const AppInputSearch = forwardRef<TextInput, AppInputSearchProps>((props, ref) =
 });
 
 // 5. Ngăn chặn Render thừa mứa khi cuộn danh sách
-const arePropsEqual = (prev: AppInputSearchProps, next: AppInputSearchProps) => prev.value === next.value && prev.editable === next.editable;
+const arePropsEqual = (prev: AppInputSearchProps, next: AppInputSearchProps) =>
+  prev.value === next.value && prev.editable === next.editable;
 
 export default memo(AppInputSearch, arePropsEqual);
 

@@ -10,6 +10,7 @@ import {
   onNotificationOpenedApp,
   getInitialNotification,
   AuthorizationStatus,
+  FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import NavigationService from '@/navigation/NavigationService';
 import { toast } from '@/components/portals/alert/useAlertStore';
@@ -37,7 +38,9 @@ export const createDefaultNotificationChannel = async () => {
 // 2. Xin quyền Android 13+
 const requestAndroidPermission = async () => {
   if (Platform.OS === 'android' && Platform.Version >= 33) {
-    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
     return granted === PermissionsAndroid.RESULTS.GRANTED;
   }
   return true;
@@ -47,7 +50,7 @@ const requestAndroidPermission = async () => {
 export const getFCMTokenAndSendToServer = async (setDeviceToken?: (token: string) => void) => {
   try {
     const permissionGranted = await requestAndroidPermission();
-    
+
     if (!permissionGranted) {
       console.log('[FCM] ❌ Không có quyền POST_NOTIFICATIONS');
       return;
@@ -65,7 +68,7 @@ export const getFCMTokenAndSendToServer = async (setDeviceToken?: (token: string
 };
 
 // 4. Hiển thị thông báo khi đang mở App (Foreground)
-const showLocalNotification = async (remoteMessage: any) => {
+const showLocalNotification = async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
   if (!remoteMessage?.notification) return;
 
   try {
@@ -85,12 +88,12 @@ const showLocalNotification = async (remoteMessage: any) => {
 };
 
 // 5. Xử lý điều hướng khi bấm vào thông báo
-const handleNotificationAction = (remoteMessage: any) => {
+const handleNotificationAction = (remoteMessage: FirebaseMessagingTypes.RemoteMessage | null) => {
   if (!remoteMessage) return;
-  
+
   const data = remoteMessage.data || remoteMessage;
   const screen = data?.screen;
-  
+
   console.log('[FCM] 👆 Action:', screen || 'Default');
 
   if (screen) {
@@ -105,24 +108,25 @@ export const setupFCM = async () => {
   await createDefaultNotificationChannel();
 
   const authStatus = await requestPermission(messaging);
-  const enabled = authStatus === AuthorizationStatus.AUTHORIZED || authStatus === AuthorizationStatus.PROVISIONAL;
+  const enabled =
+    authStatus === AuthorizationStatus.AUTHORIZED || authStatus === AuthorizationStatus.PROVISIONAL;
 
   if (!enabled) return;
 
   // 🔄 Token refresh — gửi token mới lên server khi Firebase rotate
-  onTokenRefresh(messaging, (newToken) => {
+  onTokenRefresh(messaging, newToken => {
     console.log('[FCM] 🔄 Token refreshed:', newToken);
     // TODO: Gửi newToken lên server API của bạn
   });
 
   // Lắng nghe Foreground
-  onMessage(messaging, async (remoteMessage) => {
+  onMessage(messaging, async remoteMessage => {
     console.log('[FCM] 🔔 Foreground message');
     await showLocalNotification(remoteMessage);
   });
 
   // Lắng nghe Background (Firebase)
-  setBackgroundMessageHandler(messaging, async (remoteMessage) => {
+  setBackgroundMessageHandler(messaging, async () => {
     console.log('[FCM] 💤 Background message');
   });
 

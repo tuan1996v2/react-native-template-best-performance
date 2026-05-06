@@ -61,6 +61,10 @@
       "register": {
         "title": "Register",
         "subtitle": "Registration screen"
+      },
+      "swipe": {
+        "title": "Swipeable",
+        "subtitle": "Swipe to delete (Native)"
       }
     },
     "actions": {

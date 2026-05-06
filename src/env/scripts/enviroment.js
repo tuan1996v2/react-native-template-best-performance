@@ -1,5 +1,6 @@
 #!/bin/node
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
 
 const environment = process.argv[2];

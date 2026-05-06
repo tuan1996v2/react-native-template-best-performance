@@ -8,8 +8,7 @@ const IconPlus = (props: SvgProps) => (
     height={props.height || s(24)}
     viewBox="0 0 24 24"
     fill="none"
-    {...props}
-  >
+    {...props}>
     <Path
       d="M12 5V19"
       stroke={props.fill || '#000'}

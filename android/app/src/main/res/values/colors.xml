@@ -1,3 +1,4 @@
 <resources>
     <color name="bootsplash_background">#1e6f2f</color>
+    <color name="notification_color">#1e6f2f</color>
 </resources>

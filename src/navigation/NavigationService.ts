@@ -1,9 +1,9 @@
 // src/navigation/NavigationService.ts
-import { 
-  CommonActions, 
-  StackActions, 
+import {
+  CommonActions,
+  StackActions,
   createNavigationContainerRef,
-  type StaticParamList
+  type StaticParamList,
 } from '@react-navigation/native';
 import { useNavigationStore } from '../store/useNavigationStore';
 import { RootStack } from './AppNavigation';
@@ -18,17 +18,20 @@ const startTimer = () => useNavigationStore.getState().setStartTransition();
 
 const navigate = <RouteName extends keyof RootStackParamList>(
   name: RouteName,
-  params?: RootStackParamList[RouteName]
+  params?: RootStackParamList[RouteName],
 ): void => {
+  console.log('NavigationService.navigate called for:', name);
   if (navigationRef.isReady()) {
     startTimer();
-    navigationRef.navigate(name as any, params as any);
+    navigationRef.navigate(name, params);
+  } else {
+    console.warn('NavigationService.navigate failed: navigationRef is NOT ready');
   }
 };
 
 const push = <RouteName extends keyof RootStackParamList>(
   name: RouteName,
-  params?: RootStackParamList[RouteName]
+  params?: RootStackParamList[RouteName],
 ): void => {
   if (navigationRef.isReady()) {
     startTimer();
@@ -38,7 +41,7 @@ const push = <RouteName extends keyof RootStackParamList>(
 
 const replace = <RouteName extends keyof RootStackParamList>(
   name: RouteName,
-  params?: RootStackParamList[RouteName]
+  params?: RootStackParamList[RouteName],
 ): void => {
   if (navigationRef.isReady()) {
     startTimer();

@@ -16,7 +16,7 @@ import { s, vs, fs } from '../../../theme/Responsive';
 import AppPress from '../appPress/AppPress';
 
 const { width: PAGE_WIDTH } = Dimensions.get('window');
-const widthArray = [s(8), s(24), s(8)]
+const widthArray = [s(8), s(24), s(8)];
 // ─── TYPES ────────────────────────────────────────────────────
 export interface BannerItem {
   id: string;
@@ -55,7 +55,7 @@ const PaginationDot = memo(
 );
 
 // ─── BANNER SLIDE (memo → chỉ render 1 lần cho mỗi item) ─────
-const BannerSlide = memo(({ item, height }: { item: BannerItem; height: number }) => (
+const BannerSlide = memo(({ item }: { item: BannerItem; _height: number }) => (
   <AppPress style={styles.slideContainer}>
     <Image
       source={{ uri: item.imageUrl }}
@@ -65,9 +65,13 @@ const BannerSlide = memo(({ item, height }: { item: BannerItem; height: number }
     {/* Overlay gradient tối ở đáy nếu có title */}
     {item.title && (
       <View style={styles.overlayGradient}>
-        <Text style={styles.slideTitle} numberOfLines={1}>{item.title}</Text>
+        <Text style={styles.slideTitle} numberOfLines={1}>
+          {item.title}
+        </Text>
         {item.subtitle && (
-          <Text style={styles.slideSubtitle} numberOfLines={1}>{item.subtitle}</Text>
+          <Text style={styles.slideSubtitle} numberOfLines={1}>
+            {item.subtitle}
+          </Text>
         )}
       </View>
     )}
@@ -106,9 +110,12 @@ const SuperBanner = ({ data, height = PAGE_WIDTH / 2.2 }: SuperBannerProps) => {
   const containerStyle = useMemo(() => ({ height: height + vs(24) }), [height]);
 
   // onProgressChange stable ref
-  const onProgressChange = useCallback((_: number, absoluteProgress: number) => {
-    progressValue.value = absoluteProgress;
-  }, [progressValue]);
+  const onProgressChange = useCallback(
+    (_: number, absoluteProgress: number) => {
+      progressValue.value = absoluteProgress;
+    },
+    [progressValue],
+  );
 
   return (
     <View style={containerStyle}>
@@ -203,6 +210,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
 });
-
 
 export default memo(SuperBanner);

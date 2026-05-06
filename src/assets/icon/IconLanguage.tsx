@@ -8,8 +8,7 @@ const IconLanguage = (props: SvgProps) => (
     height={props.height || s(24)}
     viewBox="0 0 24 24"
     fill="none"
-    {...props}
-  >
+    {...props}>
     <Circle
       cx="12"
       cy="12"

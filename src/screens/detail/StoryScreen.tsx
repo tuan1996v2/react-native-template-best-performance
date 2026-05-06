@@ -1,17 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  Platform,
-} from 'react-native';
-import AppScreen from '@/components/ui/appScreen/AppScreen';
+import { View, Text, StyleSheet, Dimensions, StatusBar, Platform } from 'react-native';
 import AppImage from '@/components/ui/appImage/AppImage';
 import AppPress from '@/components/ui/appPress/AppPress';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -21,9 +13,6 @@ import Animated, {
 import { IconClose } from '@/assets/icon';
 import NavigationService from '@/navigation/NavigationService';
 import { runOnJS } from 'react-native-worklets';
-import { getThumbnail } from './HeavyItem';
-
-
 
 const { width, height } = Dimensions.get('window');
 
@@ -44,29 +33,28 @@ interface StoryItemProps {
   onPrev: () => void;
 }
 
-const StoryItem = ({ 
-  story, 
-  isActive, 
-  onNext, 
-  onPrev 
-}: StoryItemProps) => {
+const StoryItem = ({ story, isActive, onNext, onPrev }: StoryItemProps) => {
   const progress = useSharedValue(0);
 
   useEffect(() => {
     if (isActive) {
       progress.value = 0;
-      progress.value = withTiming(1, {
-        duration: STORY_DURATION,
-        easing: Easing.linear,
-      }, (finished) => {
-        if (finished) {
-          runOnJS(onNext)();
-        }
-      });
+      progress.value = withTiming(
+        1,
+        {
+          duration: STORY_DURATION,
+          easing: Easing.linear,
+        },
+        finished => {
+          if (finished) {
+            runOnJS(onNext)();
+          }
+        },
+      );
     } else {
       progress.value = 0;
     }
-  }, [isActive]);
+  }, [isActive, onNext, progress]);
 
   const progressStyle = useAnimatedStyle(() => ({
     width: `${progress.value * 100}%`,
@@ -75,11 +63,11 @@ const StoryItem = ({
   return (
     <View style={styles.storyContainer}>
       <AppImage
-      thumbnailSource={{uri:story.thumpImage}}
+        thumbnailSource={{ uri: story.thumpImage }}
         source={{ uri: story.storyImage }}
         style={styles.storyImage}
       />
-      
+
       {/* Progress Bars Overlay */}
       <View style={styles.progressContainer}>
         <View style={styles.progressBarBg}>
@@ -113,7 +101,7 @@ const StoryScreen = ({ route }: { route: StoryScreenRouteProps }) => {
   const { stories, initialIndex } = route.params;
   const [index, setIndex] = useState(initialIndex || 0);
   const insets = useSafeAreaInsets();
-  const carouselRef = useRef<any>(null);
+  const carouselRef = useRef<ICarouselInstance>(null);
 
   const handleNext = useCallback(() => {
     if (index < stories.length - 1) {
@@ -141,20 +129,13 @@ const StoryScreen = ({ route }: { route: StoryScreenRouteProps }) => {
         defaultIndex={initialIndex}
         onSnapToItem={setIndex}
         renderItem={({ item, index: i }: { item: Story; index: number }) => (
-          <StoryItem
-            story={item}
-            isActive={index === i}
-            onNext={handleNext}
-            onPrev={handlePrev}
-          />
+          <StoryItem story={item} isActive={index === i} onNext={handleNext} onPrev={handlePrev} />
         )}
       />
 
-      
-      <AppPress 
-        onPress={() => NavigationService.back()} 
-        style={[styles.closeBtn, { top: insets.top + 10 }]}
-      >
+      <AppPress
+        onPress={() => NavigationService.back()}
+        style={[styles.closeBtn, { top: insets.top + 10 }]}>
         <IconClose fill="#fff" width={24} height={24} />
       </AppPress>
     </View>
@@ -172,7 +153,7 @@ const styles = StyleSheet.create({
   storyImage: {
     width: width,
     height: height,
-    backgroundColor:'black'
+    backgroundColor: 'black',
   },
   progressContainer: {
     position: 'absolute',
