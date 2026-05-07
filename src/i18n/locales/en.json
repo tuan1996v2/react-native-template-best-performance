@@ -50,6 +50,18 @@
         "title": "Loading",
         "subtitle": "Test loading store"
       },
+      "camera": {
+        "title": "Camera",
+        "subtitle": "Test camera"
+      },
+      "photo": {
+        "title": "Photo",
+        "subtitle": "Test photo"
+      },
+      "video": {
+        "title": "Video",
+        "subtitle": "Test video"
+      },
       "alert": {
         "title": "Alert",
         "subtitle": "Confirmation dialog"

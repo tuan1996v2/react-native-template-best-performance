@@ -1,20 +1,19 @@
 import React, { memo, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
-import { useNavigation } from '@react-navigation/native';
 import AppButton from '../../components/ui/appButton/AppButton';
 import { useTranslation } from 'react-i18next';
 import { useStyles } from '../../theme/useStyles';
 import createStyles from './MyModalScreen.styles';
+import NavigationService from '@/navigation/NavigationService';
 
 const MyModalScreen = () => {
-  const navigation = useNavigation();
   const styles = useStyles(createStyles);
   const { t } = useTranslation();
 
   const handleClose = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    NavigationService.back();
+  }, []);
 
   return (
     <AppScreen edges={['bottom']} backgroundColor="transparent">

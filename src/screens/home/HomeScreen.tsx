@@ -27,6 +27,7 @@ import {
 } from '@/assets/icon';
 
 import createStyles, { COLORS, GRADIENT_START, GRADIENT_END } from './HomeScreen.styles';
+import { CameraIcon } from '../camera/icons/CameraIcon';
 
 const { width } = Dimensions.get('window');
 
@@ -130,6 +131,10 @@ const HomeScreen = () => {
 
   const goToRegister = useCallback(() => {
     NavigationService.navigate('RegisterScreen');
+  }, []);
+
+  const handleNavigateToCamera = useCallback(() => {
+    NavigationService.navigate('CameraScreen');
   }, []);
 
   const handleShowLoading = useCallback(() => {
@@ -276,6 +281,13 @@ const HomeScreen = () => {
               icon={IconLoading}
               color="#10B981"
               onPress={handleShowLoading}
+            />
+            <FeatureCard
+              title={t('home.features.camera.title')}
+              subtitle={t('home.features.camera.subtitle')}
+              icon={CameraIcon}
+              color="#10B981"
+              onPress={handleNavigateToCamera}
             />
             <FeatureCard
               title={t('home.features.alert.title')}

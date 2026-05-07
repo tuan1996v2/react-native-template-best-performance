@@ -10,6 +10,9 @@ import MyModalScreen from '../screens/home/MyModalScreen';
 import RegisterScreen from '@/components/ui/appTextInput/TmpMultiInput';
 import StoryScreen from '../screens/detail/StoryScreen';
 import SwipeableScreen from '../screens/swipeable/SwipeableScreen';
+import { PhotoScreen } from '@/screens/camera/screens/PhotoScreen';
+import { VideoScreen } from '@/screens/camera/screens/VideoScreen';
+import { CameraScreen } from '@/screens/camera/screens/CameraScreen';
 
 const MainStack = {
   HomeScreen: {
@@ -23,6 +26,18 @@ const MainStack = {
   SwipeableScreen: {
     screen: SwipeableScreen,
     options: { title: 'Swipeable List', headerShown: true },
+  },
+  CameraScreen: {
+    screen: CameraScreen,
+    options: { title: 'Camera', headerShown: false },
+  },
+  PhotoScreen: {
+    screen: PhotoScreen,
+    options: { title: 'Photo', headerShown: false },
+  },
+  VideoScreen: {
+    screen: VideoScreen,
+    options: { title: 'Video', headerShown: false },
   },
   RegisterScreen: {
     screen: RegisterScreen,
