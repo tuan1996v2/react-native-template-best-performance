@@ -87,6 +87,30 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - NitroImage (0.14.0):
+    - hermes-engine
+    - NitroModules
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - NitroMmkv (4.3.1):
     - hermes-engine
     - MMKVCore (= 2.4.0)
@@ -112,7 +136,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - NitroModules (0.33.9):
+  - NitroModules (0.35.6):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2032,6 +2056,29 @@ PODS:
     - React-utils (= 0.84.0)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.84.0)
+  - ReactNativeVideo (7.0.0-beta.9):
+    - hermes-engine
+    - NitroModules
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - ReactNavigation (8.0.0-alpha.21):
     - hermes-engine
     - RCTRequired
@@ -2413,6 +2460,31 @@ PODS:
   - SDWebImage (5.21.7):
     - SDWebImage/Core (= 5.21.7)
   - SDWebImage/Core (5.21.7)
+  - VisionCamera (5.0.9):
+    - hermes-engine
+    - NitroImage
+    - NitroModules
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2420,6 +2492,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - "LiquidGlass (from `../node_modules/@callstack/liquid-glass`)"
+  - NitroImage (from `../node_modules/react-native-nitro-image`)
   - NitroMmkv (from `../node_modules/react-native-mmkv`)
   - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -2495,6 +2568,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
+  - ReactNativeVideo (from `../node_modules/react-native-video`)
   - "ReactNavigation (from `../node_modules/@react-navigation/native`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -2507,6 +2581,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNWorklets (from `../node_modules/react-native-worklets`)
   - SDWebImage
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2534,6 +2609,8 @@ EXTERNAL SOURCES:
     :tag: hermes-v250829098.0.8
   LiquidGlass:
     :path: "../node_modules/@callstack/liquid-glass"
+  NitroImage:
+    :path: "../node_modules/react-native-nitro-image"
   NitroMmkv:
     :path: "../node_modules/react-native-mmkv"
   NitroModules:
@@ -2682,6 +2759,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
+  ReactNativeVideo:
+    :path: "../node_modules/react-native-video"
   ReactNavigation:
     :path: "../node_modules/@react-navigation/native"
   RNBootSplash:
@@ -2704,6 +2783,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNWorklets:
     :path: "../node_modules/react-native-worklets"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2722,8 +2803,9 @@ SPEC CHECKSUMS:
   LiquidGlass: 26f06c00ff9bdbcdddeed07a556560f2cd6dfbe7
   MMKVCore: 3d16ce9f7d411e135020915fde98a056859a1efa
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  NitroImage: ab426b8e953c0a4464ccc7f34612f659d0064329
   NitroMmkv: 7a7572934538ba6748e05dffc6ee8b06caad91cc
-  NitroModules: 97978583f36f88f7a348d5bf986d94bc4b340d0a
+  NitroModules: 5a0f735f3f834ac1d998c28fc65be992849c30f3
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCTDeprecation: 3280799c14232a56e5a44f92981a8ee33bc69fd9
   RCTRequired: 9854a51b0f65ccf43ea0b744df4d70fce339db32
@@ -2797,6 +2879,7 @@ SPEC CHECKSUMS:
   ReactCodegen: c5e5343f6691b0cd76913b9be5e89e5a83ff3315
   ReactCommon: 92b53b0bd7f7d86154dc9f512c1ea5dee717cc72
   ReactNativeDependencies: 08b8c3667e76a5de6310cd47013938ff885ba9e8
+  ReactNativeVideo: 158d802d525331641ee9e581ba9b4d7aaa966d98
   ReactNavigation: be9951a67fae145a41cfff92b0f2b09fff6604c8
   RNBootSplash: c0d86dded541a26441dd35d927fae3f0855af499
   RNFBApp: b6cb762e60be69458fd934b2e8af5d950bf5a3b7
@@ -2809,6 +2892,7 @@ SPEC CHECKSUMS:
   RNSVG: c69f7709226108f5eb89b5aa8833c17a36345468
   RNWorklets: 30f9a363d681c776a5f9d74f6d21a6d1bb7bfe80
   SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
+  VisionCamera: e21ba9bddb8d1ebc551b2184353f629ff0feaff3
   Yoga: 772166513f9cd2d61a6251d0dacbbfaa5b537479
 
 PODFILE CHECKSUM: 0f07eff4ab754afeaa7acbfca2025fc024ed88a0

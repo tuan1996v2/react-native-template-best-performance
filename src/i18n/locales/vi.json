@@ -50,6 +50,18 @@
         "title": "Loading",
         "subtitle": "Kiểm tra loading store"
       },
+      "camera": {
+        "title": "Camera",
+        "subtitle": "Kiểm tra camera"
+      },
+      "photo": {
+        "title": "Photo",
+        "subtitle": "Kiểm tra photo"
+      },
+      "video": {
+        "title": "Video",
+        "subtitle": "Kiểm tra video"
+      },
       "alert": {
         "title": "Alert",
         "subtitle": "Hộp thoại xác nhận"

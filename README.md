@@ -43,6 +43,7 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | 🎬 **Boot Splash** | Splash screen native, ẩn khi navigation ready | ✅ |
 | 💾 **MMKV Storage** | Storage nhanh gấp 30x AsyncStorage | ✅ |
 | 🖐️ **Swipeable Items** | Hệ thống vuốt chạm mượt mà (Left/Right/Full Swipe) — xử lý 100% trên UI thread | ✅ |
+| 📸 **Pro Camera System** | Camera module zero-re-render, focus on tap, background gallery save | ✅ |
 
 ---
 
@@ -397,6 +398,23 @@ import { SwipeableItemWrapper, ESwipeType } from '@/components/swipeItem';
 
 > 🎯 **Kiến trúc**: Sử dụng `react-native-gesture-handler` v2 + `Reanimated` v4. Mọi tính toán vị trí, vận tốc và animation đều chạy trên UI thread, đảm bảo list vuốt mượt mà 60fps kể cả trên thiết bị Android cũ.
 
+### 📸 Pro Camera System (Tối ưu tuyệt đối với Zero Re-render)
+
+Hệ thống Camera được đập đi xây lại với triết lý **hiệu năng là số 1**, mang đến trải nghiệm quay chụp mượt mà ngang ngửa ứng dụng gốc (Native App).
+
+```tsx
+// Các tính năng "sát thủ" của Camera Module:
+// 1. Zero-re-render: Đồng hồ bấm giờ (Timer), Nút chụp (Capture Button) đều được điều khiển bởi Reanimated SharedValues. JS Thread rảnh rỗi 100% trong lúc quay phim!
+// 2. Pro Tap-to-focus: Chạm vào màn hình để lấy nét, kèm hiệu ứng SVG animated cực ngầu (scale-in & fade-out).
+// 3. Background Media Processing: Lưu file ảnh/video nặng vào Gallery trong nền mà không làm khựng UI.
+// 4. Bulletproof Stability: Bọc try-catch tinh tế ở native layer, fix sạch sẽ các lỗi chí mạng.
+```
+
+> 🎯 **Giải phẫu kiến trúc & Bug fixes**:
+> - **Vision Camera v5 (Nitro Modules)**: Thay vì dùng state của React để track xem đang quay hay không (gây re-render toàn màn hình), template sử dụng `isRecordingRef` kết hợp với `isRecordingSV` (SharedValue).
+> - **Khắc phục lỗi `NativeState` null**: Vision Camera v5 sử dụng Nitro Modules, rất dễ bị crash `HybridCameraSessionSpec` nếu truy cập khi unmount. Hệ thống quản lý lifecycle an toàn bằng cách tự động dọn dẹp (dispose) và ngắt kết nối CameraView khi component mất focus.
+> - **Fix lỗi MIME type kinh điển trên Android**: Tự động phát hiện và sửa chữa các file video bị thiếu đuôi mở rộng (`.mp4`) do Vision Camera sinh ra, tránh được màn hình đỏ khi lưu qua `CameraRoll` vào MediaStore của Android.
+
 ---
 
 ## 🏗️ Multi-Environment Build
@@ -459,24 +477,33 @@ Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
 
 | Công nghệ | Version | Vai trò |
 |-----------|---------|---------|
-| React Native | 0.84.0 | Framework chính |
-| React | 19.2.3 | UI Library |
-| TypeScript | 5.8+ | Type safety |
-| Zustand | 5.x | State management |
-| React Navigation | 8.x (alpha) | Navigation |
-| Reanimated | 4.2.2 | Animations (UI thread) |
-| i18next | 25.x | Internationalization |
-| Firebase | 23.x | Push notification (Modular API) |
-| Notifee | 9.x | Local notification |
-| Gesture Handler | 2.x | Gesture system |
-| Swipeable Item | 1.0 | 🖐️ Custom swipe-to-reveal |
-| MMKV | 4.x | High-speed storage |
-| Axios | 1.x | HTTP client |
-| Reactotron | 5.x | Debug tool |
-| BootSplash | 7.x | Splash screen |
-| Liquid Glass | 0.7 | UI effects |
-| Gesture Handler | 2.x | Gesture system |
-| Reanimated Carousel | 4.x | Banner carousel |
+| **React Native** | 0.84.0 | Framework cốt lõi |
+| **React** | 19.2.3 | UI Library |
+| **TypeScript** | 5.8+ | Type safety & DX |
+| **Zustand** | 5.x | State management (nhẹ, nhanh, gọi ngoài component) |
+| **React Navigation** | 8.x (alpha) | Điều hướng ứng dụng (Static API mới nhất) |
+| **FlashList (@shopify)** | 2.2.x | Render list dữ liệu khổng lồ với hiệu năng 60fps |
+| **Reanimated** | 4.2.2 | Animations mượt mà chạy trên UI thread |
+| **Gesture Handler** | 2.30.x | Xử lý các thao tác vuốt chạm phức tạp |
+| **Vision Camera** | 5.0.x | Pro Camera Module (Nitro Modules, Frame Processors) |
+| **React Native Video** | 7.0.x (beta) | Trình phát video chuyên nghiệp |
+| **Camera Roll** | 7.10.x | Truy xuất và lưu trữ Media (Native Gallery) |
+| **MMKV** | 4.1.x | Storage siêu tốc (nhanh gấp 30x AsyncStorage) |
+| **Axios** | 1.13.x | HTTP client chuẩn mực |
+| **React Hook Form** | 7.71.x | Quản lý form tối ưu, chống re-render thừa |
+| **Firebase Messaging** | 23.8.x | Push notifications (Modular API mới nhất) |
+| **Notifee** | 9.1.x | Quản lý Local Notifications |
+| **Keyboard Controller** | 1.20.x | Trải nghiệm bàn phím mượt mà, đồng nhất iOS/Android |
+| **Reactotron** | 5.1.x | Debugger chuyên dụng cho React Native |
+| **i18next & Localize** | 25.8.x | Quản lý đa ngôn ngữ thông minh |
+| **BootSplash** | 7.1.x | Màn hình khởi động Native (chống chớp trắng) |
+| **React Native SVG** | 15.15.x | Hiển thị vector icons sắc nét mọi độ phân giải |
+| **Liquid Glass** | 0.7.x | Hiệu ứng Glassmorphism (Kính mờ) tuyệt đẹp |
+| **Reanimated Carousel** | 4.0.x | Slider/Banner auto-play mượt mà 60fps |
+| **Gesture Image Viewer** | 2.1.x | Zoom và pan hình ảnh chuẩn Instagram |
+| **Nitro Modules** | 0.35.x | Nền tảng JSI Modules siêu tốc thế hệ mới |
+| **Blur & Linear Gradient** | - | UI effects: Làm mờ nền và đổ màu gradient |
+| **Native Menu** | 2.0.x | Context Menu chuẩn Native UI iOS/Android |
 
 ---
 
