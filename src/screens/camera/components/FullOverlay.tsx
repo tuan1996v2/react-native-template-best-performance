@@ -5,10 +5,12 @@ export function FullOverlay({ style, ...props }: ViewProps): React.ReactElement 
   return <View style={[styles.overlay, style]} {...props} />;
 }
 
+import { vs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   overlay: {
-    ...StyleSheet.absoluteFill,
-    marginTop: 15,
-    marginBottom: 25,
+    ...StyleSheet.absoluteFillObject,
+    marginTop: vs(15),
+    marginBottom: vs(25),
   },
 });

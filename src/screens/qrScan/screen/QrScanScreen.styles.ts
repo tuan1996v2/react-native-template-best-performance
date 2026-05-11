@@ -1,5 +1,5 @@
+import { fs, s, vs } from '@/theme/Responsive';
 import { StyleSheet, Platform } from 'react-native';
-import { s, vs, fs } from '../../../theme/Responsive';
 
 export const styles = StyleSheet.create({
   container: {
@@ -142,9 +142,9 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: s(12),
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: vs(2) },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: s(4),
     elevation: 3,
   },
   resultHeader: {
@@ -192,9 +192,9 @@ export const styles = StyleSheet.create({
     borderRadius: s(12),
     padding: s(16),
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: vs(2) },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: s(4),
     elevation: 3,
     maxHeight: vs(200),
   },

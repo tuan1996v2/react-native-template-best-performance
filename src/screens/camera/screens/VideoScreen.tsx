@@ -35,6 +35,8 @@ export function VideoScreen({
   );
 }
 
+import { s, vs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -48,17 +50,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingHorizontal: s(20),
+    paddingTop: vs(16),
     bottom: undefined,
   },
   flex: {
     flex: 1,
   },
   closeButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: s(40),
+    height: s(40),
+    borderRadius: s(20),
     backgroundColor: 'rgba(0,0,0,0.5)',
     alignItems: 'center',
     justifyContent: 'center',

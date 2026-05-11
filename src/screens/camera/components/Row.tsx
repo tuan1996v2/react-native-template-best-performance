@@ -5,10 +5,12 @@ export function Row({ style, ...props }: ViewProps): React.ReactElement {
   return <View style={[styles.row, style]} {...props} />;
 }
 
+import { s } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    paddingHorizontal: 15,
-    gap: 15,
+    paddingHorizontal: s(15),
+    gap: s(15),
   },
 });

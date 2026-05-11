@@ -272,6 +272,8 @@ export function CameraScreen() {
   );
 }
 
+import { s, vs, fs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -285,7 +287,7 @@ const styles = StyleSheet.create({
   },
   noDeviceText: {
     color: 'rgba(255,255,255,0.7)',
-    fontSize: 16,
+    fontSize: fs(16),
     fontWeight: '500',
   },
   flex: {
@@ -299,17 +301,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingHorizontal: s(20),
+    paddingTop: vs(12),
   },
   bottomControls: {
-    paddingBottom: 24,
+    paddingBottom: vs(24),
   },
   captureRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: s(20),
   },
   sideSlot: {
     flex: 1,

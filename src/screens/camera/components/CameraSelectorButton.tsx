@@ -46,14 +46,16 @@ export function CameraSelectorButton({ devices, setDevice }: Props): React.React
   );
 }
 
+import { s } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   button: {
-    padding: 4,
+    padding: s(4),
   },
   iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: s(44),
+    height: s(44),
+    borderRadius: s(22),
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
     justifyContent: 'center',

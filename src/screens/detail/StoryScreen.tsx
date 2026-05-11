@@ -142,6 +142,8 @@ const StoryScreen = ({ route }: { route: StoryScreenRouteProps }) => {
   );
 };
 
+import { s, vs, fs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -157,17 +159,17 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 50 : 20,
-    left: 10,
-    right: 10,
+    top: Platform.OS === 'ios' ? vs(50) : vs(20),
+    left: s(10),
+    right: s(10),
     flexDirection: 'row',
-    gap: 5,
+    gap: s(5),
   },
   progressBarBg: {
     flex: 1,
-    height: 2,
+    height: vs(2),
     backgroundColor: 'rgba(255,255,255,0.3)',
-    borderRadius: 1,
+    borderRadius: s(1),
     overflow: 'hidden',
   },
   progressBarFill: {
@@ -176,23 +178,23 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 70 : 40,
-    left: 15,
+    top: Platform.OS === 'ios' ? vs(70) : vs(40),
+    left: s(15),
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: s(10),
   },
   userAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: s(36),
+    height: s(36),
+    borderRadius: s(18),
     borderWidth: 1,
     borderColor: '#fff',
   },
   userName: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: fs(16),
     textShadowColor: 'rgba(0,0,0,0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
@@ -203,13 +205,11 @@ const styles = StyleSheet.create({
   },
   tapArea: {
     flex: 1,
-    // backgroundColor: 'red',
-    // marginRight:1
   },
   closeBtn: {
     position: 'absolute',
-    right: 15,
-    padding: 10,
+    right: s(15),
+    padding: s(10),
     zIndex: 100,
   },
 });

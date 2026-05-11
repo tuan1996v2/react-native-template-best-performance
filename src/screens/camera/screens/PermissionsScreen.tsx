@@ -28,13 +28,19 @@ export function PermissionsScreen(): React.ReactElement {
   );
 }
 
+import { s, vs, fs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: s(20),
   },
   text: {
     color: 'white',
+    fontSize: fs(18),
+    marginBottom: vs(20),
+    textAlign: 'center',
   },
 });

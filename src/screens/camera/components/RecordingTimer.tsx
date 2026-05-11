@@ -51,28 +51,30 @@ export const RecordingTimer = React.memo(function RecordingTimer({ elapsedTime }
   );
 });
 
+import { s, vs, fs } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    gap: 6,
+    paddingHorizontal: s(12),
+    paddingVertical: vs(6),
+    borderRadius: s(16),
+    gap: s(6),
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: s(8),
+    height: s(8),
+    borderRadius: s(4),
     backgroundColor: '#FF3B30',
   },
   timer: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: fs(15),
     fontWeight: '600',
     fontVariant: ['tabular-nums'],
     padding: 0,
-    minWidth: 45,
+    minWidth: s(45),
   },
 });

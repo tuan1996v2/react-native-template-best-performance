@@ -15,10 +15,12 @@ export function IconButton({ children, onPress, ...props }: Props): React.ReactE
   );
 }
 
+import { s } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 9999,
+    borderRadius: s(9999),
     overflow: 'hidden',
-    padding: 10,
+    padding: s(10),
   },
 });

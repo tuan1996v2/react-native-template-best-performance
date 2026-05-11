@@ -7,10 +7,12 @@ interface SongItemProps {
   item: Song;
 }
 
+import { s, vs, fs } from '@/theme/Responsive';
+
 const SongItem = ({ item }: SongItemProps) => (
   <View style={styles.container}>
     <View style={styles.imageContainer}>
-      <Image source={{ uri: item.imageSrc }} style={styles.image} borderRadius={8} />
+      <Image source={{ uri: item.imageSrc }} style={styles.image} borderRadius={s(8)} />
     </View>
     <View style={styles.descriptionContainer}>
       <Text style={styles.title} numberOfLines={1}>
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     paddingVertical: '3%',
   },
   image: {
-    height: SONG_HEIGHT - 20,
+    height: vs(SONG_HEIGHT - 20),
     width: '97%',
   },
   descriptionContainer: {
@@ -44,12 +46,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   title: {
-    fontSize: 18,
+    fontSize: fs(18),
     fontWeight: 'bold',
     color: Color_Pallete.crystal_white,
   },
   singer: {
     color: Color_Pallete.silver_storm,
+    fontSize: fs(14),
   },
 });
 

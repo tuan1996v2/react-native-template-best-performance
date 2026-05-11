@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Line, Rect, Svg } from 'react-native-svg';
 import { Camera, type CameraRef, type CameraViewProps } from 'react-native-vision-camera';
+import { s } from '@/theme/Responsive';
 
 type Props = Omit<
   CameraViewProps,
@@ -72,8 +73,8 @@ export function CameraView({ device, constraints, ...props }: Props) {
 
   const focusIndicatorStyle = useAnimatedStyle(() => ({
     position: 'absolute',
-    left: focusX.value - 30, // center the 60x60 square
-    top: focusY.value - 30,
+    left: focusX.value - width, // center the 60x60 square
+    top: focusY.value - width,
     opacity: focusOpacity.value,
     transform: [{ scale: focusScale.value }],
   }));
@@ -99,7 +100,7 @@ export function CameraView({ device, constraints, ...props }: Props) {
 
       {/* Focus Indicator */}
       <Animated.View style={focusIndicatorStyle} pointerEvents="none">
-        <Svg width="60" height="60" viewBox="0 0 60 60">
+        <Svg width={s(60)} height={s(60)} viewBox="0 0 60 60">
           <Rect
             x="2"
             y="2"
@@ -119,13 +120,15 @@ export function CameraView({ device, constraints, ...props }: Props) {
   );
 }
 
+const width = s(30);
+
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
   camera: {
     flex: 1,
-    borderRadius: 25,
+    borderRadius: s(25),
     overflow: 'hidden',
   },
 });

@@ -48,15 +48,17 @@ export const LastMediaThumbnail = React.memo(
   }),
 );
 
+import { s } from '@/theme/Responsive';
+
 const styles = StyleSheet.create({
   placeholder: {
-    width: 48,
-    height: 48,
+    width: s(48),
+    height: s(48),
   },
   button: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+    width: s(48),
+    height: s(48),
+    borderRadius: s(12),
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'rgba(255,255,255,0.35)',

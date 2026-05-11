@@ -16,7 +16,9 @@ const MODE_LABELS: Record<CameraMode, string> = {
   video: 'Video',
 };
 
-const INDICATOR_WIDTH = 70;
+import { s, vs, fs } from '@/theme/Responsive';
+
+const INDICATOR_WIDTH = s(70);
 
 export function CameraModeSelector({ mode, setMode, disabled }: Props) {
   const indicatorX = useSharedValue(mode === 'photo' ? 0 : 1);
@@ -61,34 +63,34 @@ export function CameraModeSelector({ mode, setMode, disabled }: Props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingBottom: 16,
+    paddingBottom: vs(16),
   },
   track: {
     flexDirection: 'row',
     backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 25,
-    padding: 3,
+    borderRadius: s(25),
+    padding: s(3),
     position: 'relative',
   },
   indicator: {
     position: 'absolute',
-    top: 3,
-    left: 3,
+    top: s(3),
+    left: s(3),
     width: INDICATOR_WIDTH,
     height: '100%',
     backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 22,
+    borderRadius: s(22),
   },
   tab: {
     width: INDICATOR_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: vs(8),
     zIndex: 1,
   },
   label: {
     color: 'rgba(255,255,255,0.5)',
-    fontSize: 13,
+    fontSize: fs(13),
     fontWeight: '600',
     letterSpacing: 0.5,
   },
