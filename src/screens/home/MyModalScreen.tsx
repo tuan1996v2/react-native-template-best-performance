@@ -2,14 +2,14 @@ import React, { memo, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
 import AppButton from '../../components/ui/appButton/AppButton';
-import { useTranslation } from 'react-i18next';
+import { useIntlayer } from 'react-intlayer';
 import { useStyles } from '../../theme/useStyles';
 import createStyles from './MyModalScreen.styles';
 import NavigationService from '@/navigation/NavigationService';
 
 const MyModalScreen = () => {
   const styles = useStyles(createStyles);
-  const { t } = useTranslation();
+  const { content } = useIntlayer('main');
 
   const handleClose = useCallback(() => {
     NavigationService.back();
@@ -21,7 +21,7 @@ const MyModalScreen = () => {
       <View style={styles.grabber} />
 
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>{t('common.confirm_title') || 'Thông báo hệ thống'}</Text>
+        <Text style={styles.title}>{content.common.confirm_title}</Text>
 
         <View style={styles.card}>
           <Text style={styles.description}>
@@ -37,7 +37,7 @@ const MyModalScreen = () => {
             bottomColor="#c0392b"
             depth={6}
             style={styles.button}>
-            {t('common.close') || 'Đóng lại'}
+            {content.common.close}
           </AppButton>
         </View>
       </ScrollView>

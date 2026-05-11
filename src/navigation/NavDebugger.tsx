@@ -1,20 +1,19 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useIntlayer } from 'react-intlayer';
 import { useNavigationStore } from '../store/useNavigationStore';
 import { s, vs, fs } from '../theme/Responsive';
-import { useTranslation } from 'react-i18next';
 
 export const NavDebugger = () => {
   const { currentScreen, transitionTime } = useNavigationStore();
-  const { t } = useTranslation();
+  const { content } = useIntlayer('main');
   if (!__DEV__) return null;
   return (
     <View style={styles.debugPanel}>
       <Text style={styles.text}>
-        {t('common.screen')}: {String(currentScreen)}
+        {content.common.screen}: {String(currentScreen)}
       </Text>
       <Text style={[styles.text, transitionTime > 500 ? styles.colorSlow : styles.colorFast]}>
-        {t('common.speed_switching', { time: transitionTime })}
+        {content.common.speed_switching(String(transitionTime))}
       </Text>
     </View>
   );

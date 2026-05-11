@@ -5,9 +5,8 @@ import AppScreen from '@/components/ui/appScreen/AppScreen';
 import NavigationService from '../../navigation/NavigationService';
 import AppPress from '../../components/ui/appPress/AppPress';
 import { GlobalLoading } from '../../store/useLoadingStore';
-import { useTranslation } from 'react-i18next';
+import { useIntlayer, useLocale } from 'react-intlayer';
 import { useAlertStore } from '../../components/portals/alert/useAlertStore';
-import i18n from '../../i18n/i18n';
 import { useStyles } from '../../theme/useStyles';
 import { getFCMTokenAndSendToServer } from '@/firebase/fcmService';
 import LinearGradient from 'react-native-linear-gradient';
@@ -75,7 +74,8 @@ const FeatureCard = React.memo(
 // ─── MAIN SCREEN ──────────────────────────────────────────────
 const HomeScreen = () => {
   useRenderLog('HomeScreen');
-  const { t } = useTranslation();
+  const { content } = useIntlayer('main');
+  const { setLocale, locale } = useLocale();
   const insets = useSafeAreaInsets();
   const styles = useStyles(createStyles);
   const showToast = useAlertStore(state => state.showToast);
@@ -87,29 +87,29 @@ const HomeScreen = () => {
       {
         id: '1',
         imageUrl: 'https://picsum.photos/seed/banner1/800/400',
-        title: t('home.banners.explore_world'),
-        subtitle: t('home.banners.explore_world_sub'),
+        title: content.home.banners.explore_world,
+        subtitle: content.home.banners.explore_world_sub,
       },
       {
         id: '2',
         imageUrl: 'https://picsum.photos/seed/banner2/800/400',
-        title: t('home.banners.hot_deal'),
-        subtitle: t('home.banners.hot_deal_sub'),
+        title: content.home.banners.hot_deal,
+        subtitle: content.home.banners.hot_deal_sub,
       },
       {
         id: '3',
         imageUrl: 'https://picsum.photos/seed/banner3/800/400',
-        title: t('home.banners.new_feature'),
-        subtitle: t('home.banners.new_feature_sub'),
+        title: content.home.banners.new_feature,
+        subtitle: content.home.banners.new_feature_sub,
       },
       {
         id: '4',
         imageUrl: 'https://picsum.photos/seed/banner4/800/400',
-        title: t('home.banners.nature_scenery'),
-        subtitle: t('home.banners.nature_scenery_sub'),
+        title: content.home.banners.nature_scenery,
+        subtitle: content.home.banners.nature_scenery_sub,
       },
     ],
-    [t],
+    [content],
   );
 
   useEffect(() => {
@@ -138,38 +138,38 @@ const HomeScreen = () => {
   }, []);
 
   const handleShowLoading = useCallback(() => {
-    GlobalLoading.show(t('home.actions.saving_data'));
+    GlobalLoading.show(content.home.actions.saving_data);
     setTimeout(() => {
       GlobalLoading.hide();
     }, 2000);
-  }, [t]);
+  }, [content]);
 
   const handleShowAlert = useCallback(() => {
     showAlert({
-      title: t('home.actions.delete_chat_title'),
-      content: t('home.actions.delete_chat_confirm'),
+      title: content.home.actions.delete_chat_title,
+      content: content.home.actions.delete_chat_confirm,
       buttons: [
-        { text: t('common.cancel'), style: 'cancel', onPress: () => {} },
+        { text: content.common.cancel, style: 'cancel', onPress: () => {} },
         {
-          text: t('home.actions.delete_now'),
-          onPress: () => showToast(t('home.actions.deleted_success'), 'success'),
+          text: content.home.actions.delete_now,
+          onPress: () => showToast(content.home.actions.deleted_success, 'success'),
         },
       ],
     });
-  }, [showAlert, showToast, t]);
+  }, [showAlert, showToast, content]);
 
   const handleChangeLanguage = useCallback(() => {
-    const newLang = i18n.language === 'en' ? 'vi' : 'en';
-    i18n.changeLanguage(newLang);
+    const newLang = locale === 'en' ? 'vi' : 'en';
+    setLocale(newLang);
     showToast(
-      newLang === 'en' ? t('home.actions.switched_to_en') : t('home.actions.switched_to_vi'),
+      newLang === 'en' ? content.home.actions.switched_to_en : content.home.actions.switched_to_vi,
       'success',
     );
-  }, [showToast, t]);
+  }, [showToast, content, locale, setLocale]);
 
   const handleShowToast = useCallback(() => {
-    showToast(t('home.actions.welcome_back'), 'success');
-  }, [showToast, t]);
+    showToast(content.home.actions.welcome_back, 'success');
+  }, [showToast, content]);
 
   const headerPaddingStyle = useMemo(() => ({ paddingTop: insets.top + 20 }), [insets.top]);
 
@@ -185,14 +185,14 @@ const HomeScreen = () => {
           />
           <View style={styles.headerContent}>
             <View>
-              <Text style={styles.greetingText}>{t('home.greeting')}</Text>
-              <Text style={styles.headerTitleText}>{t('home.explore_today')}</Text>
+              <Text style={styles.greetingText}>{content.home.greeting}</Text>
+              <Text style={styles.headerTitleText}>{content.home.explore_today}</Text>
             </View>
 
             <View style={styles.searchContainer}>
               <IconSearch fill="#fff" width={20} height={20} />
               <TextInput
-                placeholder={t('home.search_placeholder')}
+                placeholder={content.home.search_placeholder}
                 placeholderTextColor="rgba(255,255,255,0.6)"
                 style={styles.searchInput}
               />
@@ -209,8 +209,8 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('home.featured_features')}</Text>
-            <Text style={styles.seeAllText}>{t('common.see_all')}</Text>
+            <Text style={styles.sectionTitle}>{content.home.featured_features}</Text>
+            <Text style={styles.seeAllText}>{content.common.see_all}</Text>
           </View>
 
           <ScrollView
@@ -222,10 +222,12 @@ const HomeScreen = () => {
             <View style={styles.featuredCard}>
               <LinearGradient colors={['#FF6B6B', '#FF8E53']} style={styles.featuredCardGradient}>
                 <Text style={styles.featuredTag}>NEW CHOICE</Text>
-                <Text style={styles.featuredTitle}>{t('home.features.social_media_feed')}</Text>
-                <Text style={styles.featuredSubtitle}>{t('home.features.experience_modern')}</Text>
+                <Text style={styles.featuredTitle}>{content.home.features.social_media_feed}</Text>
+                <Text style={styles.featuredSubtitle}>
+                  {content.home.features.experience_modern}
+                </Text>
                 <AppPress onPress={handleNavigateToDetail} style={styles.featuredBtn}>
-                  <Text style={styles.featuredBtnText}>{t('home.features.try_now')}</Text>
+                  <Text style={styles.featuredBtnText}>{content.home.features.try_now}</Text>
                 </AppPress>
               </LinearGradient>
             </View>
@@ -233,80 +235,80 @@ const HomeScreen = () => {
             <View style={[styles.featuredCard, styles.featuredCardSecond]}>
               <LinearGradient colors={['#4facfe', '#00f2fe']} style={styles.featuredCardGradient}>
                 <Text style={styles.featuredTag}>OPTIMIZED</Text>
-                <Text style={styles.featuredTitle}>{t('home.features.performance_list')}</Text>
-                <Text style={styles.featuredSubtitle}>{t('home.features.using_flashlist')}</Text>
+                <Text style={styles.featuredTitle}>{content.home.features.performance_list}</Text>
+                <Text style={styles.featuredSubtitle}>{content.home.features.using_flashlist}</Text>
                 <AppPress onPress={handleNavigateToDetail} style={styles.featuredBtn}>
-                  <Text style={styles.featuredBtnText}>{t('home.features.discover')}</Text>
+                  <Text style={styles.featuredBtnText}>{content.home.features.discover}</Text>
                 </AppPress>
               </LinearGradient>
             </View>
           </ScrollView>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('home.system_utilities')}</Text>
+            <Text style={styles.sectionTitle}>{content.home.system_utilities}</Text>
           </View>
 
           <View style={styles.grid}>
             <FeatureCard
-              title={t('home.features.social_feed.title')}
-              subtitle={t('home.features.social_feed.subtitle')}
+              title={content.home.features.social_feed.title}
+              subtitle={content.home.features.social_feed.subtitle}
               icon={IconSocial}
               color="#8B5CF6"
               onPress={handleNavigateToDetail}
             />
             <FeatureCard
-              title={t('home.features.modal.title')}
-              subtitle={t('home.features.modal.subtitle')}
+              title={content.home.features.modal.title}
+              subtitle={content.home.features.modal.subtitle}
               icon={IconModal}
               color="#EC4899"
               onPress={showModal}
             />
             <FeatureCard
-              title={t('home.features.language.title')}
-              subtitle={i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
+              title={content.home.features.language.title}
+              subtitle={locale === 'en' ? 'English' : 'Tiếng Việt'}
               icon={IconLanguage}
               color="#F59E0B"
               onPress={handleChangeLanguage}
             />
             <FeatureCard
-              title={t('home.features.swipe.title')}
-              subtitle={t('home.features.swipe.subtitle')}
+              title={content.home.features.swipe.title}
+              subtitle={content.home.features.swipe.subtitle}
               icon={IconNotification}
               color="#10B981"
               onPress={handleNavigateToSwipeable}
             />
             <FeatureCard
-              title={t('home.features.loading.title')}
-              subtitle={t('home.features.loading.subtitle')}
+              title={content.home.features.loading.title}
+              subtitle={content.home.features.loading.subtitle}
               icon={IconLoading}
               color="#10B981"
               onPress={handleShowLoading}
             />
             <FeatureCard
-              title={t('home.features.camera.title')}
-              subtitle={t('home.features.camera.subtitle')}
+              title={content.home.features.camera.title}
+              subtitle={content.home.features.camera.subtitle}
               icon={CameraIcon}
               color="#10B981"
               onPress={handleNavigateToCamera}
             />
             <FeatureCard
-              title={t('home.features.alert.title')}
-              subtitle={t('home.features.alert.subtitle')}
+              title={content.home.features.alert.title}
+              subtitle={content.home.features.alert.subtitle}
               icon={IconAlert}
               color="#EF4444"
               onPress={handleShowAlert}
             />
             <FeatureCard
-              title={t('home.features.notification.title')}
-              subtitle={t('home.features.notification.subtitle')}
+              title={content.home.features.notification.title}
+              subtitle={content.home.features.notification.subtitle}
               icon={IconNotification}
               color="#3B82F6"
               onPress={handleShowToast}
             />
 
             <FeatureCard
-              title={t('home.features.register.title')}
-              subtitle={t('home.features.register.subtitle')}
+              title={content.home.features.register.title}
+              subtitle={content.home.features.register.subtitle}
               icon={IconRegister}
               color="#3B82F6"
               onPress={goToRegister}
@@ -314,7 +316,7 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.footerInfo}>
-            <Text style={styles.footerText}>{t('common.version', { version: '1.0.0' })}</Text>
+            <Text style={styles.footerText}>{content.common.version('1.0.0')}</Text>
           </View>
         </ScrollView>
       </View>
