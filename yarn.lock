@@ -2133,6 +2133,11 @@
   resolved "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.1.tgz"
   integrity sha512-oOAWABowe8EAbMyWKM0tYDKi8Yaox52D+HWZhAIJqQXbqe0xI/GV7FhLWqlEKreMkfDjshR5FKgi3mnle0h6Eg==
 
+"@pushpendersingh/react-native-scanner@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@pushpendersingh/react-native-scanner/-/react-native-scanner-3.1.0.tgz#0a3e2c4fc9ad79917d8dffa70f387ac8fa870630"
+  integrity sha512-5lAX7t45NggGNoF0FUuIENti9Pwc2LBwK8Pyq5QbMYFrQ73Ai4o2x2AgFv2nbjmi9dAUXj635m+q1aTBoyxa1g==
+
 "@react-native-camera-roll/camera-roll@^7.10.2":
   version "7.10.2"
   resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.10.2.tgz#af2234f60f0b55aff9afb60888ce7f0669d52593"
@@ -7000,6 +7005,11 @@ react-native-gesture-image-viewer@^2.1.2:
   resolved "https://registry.npmjs.org/react-native-gesture-image-viewer/-/react-native-gesture-image-viewer-2.3.1.tgz"
   integrity sha512-96nHH7CvbPScM3eVyN/w+HWcGdtmoPXo1cb7e+gnZjdUeH5UNKDhrlGzxhK74iFnU3S4R1y2LmIafIjOUWmPYg==
 
+react-native-image-picker@^8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-8.2.1.tgz#1ac7826563cbaa5d5298d9f2acc53c69805e5393"
+  integrity sha512-FBeGYJGFDjMdGCcyubDJgBAPCQ4L1D3hwLXyUU91jY9ahOZMTbluceVvRmrEKqnDPFJ0gF1NVhJ0nr1nROFLdg==
+
 react-native-is-edge-to-edge@1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz"
@@ -7093,11 +7103,6 @@ react-native-vision-camera-resizer@^5.0.9:
   version "5.0.9"
   resolved "https://registry.yarnpkg.com/react-native-vision-camera-resizer/-/react-native-vision-camera-resizer-5.0.9.tgz#8a63bd322728248da377e1e74e290d2c0c571226"
   integrity sha512-FkMEGltecwZGQkSYZblYZHV7DJpabTlZJfp6dUtnYieGIcChqKsfD2D2wPEx2glNSxCzmXf2kmKav3/pPVWi1A==
-
-react-native-vision-camera-worklets@^5.0.9:
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera-worklets/-/react-native-vision-camera-worklets-5.0.9.tgz#32993fe6b47ddb982116db378003c0b01e23025c"
-  integrity sha512-Z08UmMqhUKeK0URU9HD0qcBYtTZbr7ofFHHqXG939IEvUzOykL73Etj4l/KR/MdJIigra2PI3W3ZXAt6aVdrAQ==
 
 react-native-vision-camera@^5.0.9:
   version "5.0.9"

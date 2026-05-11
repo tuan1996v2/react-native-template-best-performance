@@ -33,6 +33,7 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | 🖼️ **SVG Icon System** | Tích hợp bộ icon SVG tự quản lý (`react-native-svg`), giải quyết triệt để lỗi font iOS | ✅ |
 | 🎬 **Professional Stories** | Hệ thống Story giống Instagram: progress bar Reanimated, carousel mượt mà, tap-to-next | ✅ |
 | 🖼️ **SuperGallery** | Xem ảnh full-screen zoom+swipe, zero re-render với `useImperativeHandle` | ✅ |
+| 🔍 **Pro QR Scanner** | Quét QR/Barcode siêu tốc, hỗ trợ Flashlight, Gallery Scan, lịch sử quét 20 items | ✅ |
 | 🎠 **SuperBanner** | Auto-play carousel với parallax + scale animation, pagination dots | ✅ |
 | 🚀 **Performance Optimized** | `useAnimatedScrollHandler`, `memo` comparators, pre-computed styles, Reanimated 4 | ✅ |
 | 🔍 **Render Tracking** | `useRenderLog` hook — phát hiện re-render thừa trong dev mode | ✅ |
@@ -415,6 +416,23 @@ Hệ thống Camera được đập đi xây lại với triết lý **hiệu n�
 > - **Khắc phục lỗi `NativeState` null**: Vision Camera v5 sử dụng Nitro Modules, rất dễ bị crash `HybridCameraSessionSpec` nếu truy cập khi unmount. Hệ thống quản lý lifecycle an toàn bằng cách tự động dọn dẹp (dispose) và ngắt kết nối CameraView khi component mất focus.
 > - **Fix lỗi MIME type kinh điển trên Android**: Tự động phát hiện và sửa chữa các file video bị thiếu đuôi mở rộng (`.mp4`) do Vision Camera sinh ra, tránh được màn hình đỏ khi lưu qua `CameraRoll` vào MediaStore của Android.
 
+### 🔍 Pro QR & Barcode Scanner (Hiệu năng cao & Đa năng)
+
+Hệ thống quét mã được thiết kế theo mô hình **Hook-based Architecture**, tách biệt hoàn toàn logic xử lý native và UI layer, giúp code sạch và cực kỳ dễ bảo trì.
+
+```tsx
+// Các điểm nổi bật của Scanner Module:
+// 1. Hook-based Logic (useQrScanner): Đóng gói toàn bộ logic quyền camera, trạng thái quét, bật/tắt flash và quét từ thư viện ảnh vào một hook duy nhất.
+// 2. Real-time Feedback: Tự động dừng quét ngay khi nhận diện được mã (Auto-stop) để tránh quét lặp, kèm theo âm thanh/rung (nếu cấu hình thêm).
+// 3. Gallery Scanning: Hỗ trợ chọn ảnh từ thư viện để giải mã QR/Barcode — tính năng cực kỳ hữu ích khi người dùng nhận được ảnh mã qua tin nhắn.
+// 4. Scan History (Zustand-like persistence): Lưu trữ lịch sử 20 lần quét gần nhất, cho phép xem lại và xóa lịch sử dễ dàng.
+```
+
+> 🎯 **Kiến trúc & Tối ưu**:
+> - **Responsive Viewfinder**: Khung quét (Overlay) được tính toán tỉ lệ vàng bằng `Responsive.ts`, tự động căn giữa và co giãn theo mọi kích thước màn hình mà không bị méo.
+> - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
+> - **Flashlight Control**: Điều khiển đèn flash native mượt mà, tự động dọn dẹp trạng thái khi thoát màn hình để tiết kiệm pin.
+
 ---
 
 ## 🏗️ Multi-Environment Build
@@ -502,6 +520,7 @@ Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
 | **Reanimated Carousel** | 4.0.x | Slider/Banner auto-play mượt mà 60fps |
 | **Gesture Image Viewer** | 2.1.x | Zoom và pan hình ảnh chuẩn Instagram |
 | **Nitro Modules** | 0.35.x | Nền tảng JSI Modules siêu tốc thế hệ mới |
+| **QR Scanner** | 3.1.x | Quét mã vạch & QR siêu tốc (@pushpendersingh) |
 | **Blur & Linear Gradient** | - | UI effects: Làm mờ nền và đổ màu gradient |
 | **Native Menu** | 2.0.x | Context Menu chuẩn Native UI iOS/Android |
 

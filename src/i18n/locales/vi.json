@@ -54,6 +54,10 @@
         "title": "Camera",
         "subtitle": "Kiểm tra camera"
       },
+      "qr": {
+        "title": "QR",
+        "subtitle": "Kiểm tra QR"
+      },
       "photo": {
         "title": "Photo",
         "subtitle": "Kiểm tra photo"
@@ -88,6 +92,36 @@
       "switched_to_vi": "Đã đổi sang Tiếng Việt",
       "switched_to_en": "Đã chuyển sang Tiếng Anh",
       "welcome_back": "Chào mừng bạn quay lại!"
+    }
+  },
+  "qr_scan": {
+    "permission_required": "📷 Yêu cầu quyền Camera",
+    "permission_subtext": "Ứng dụng cần quyền truy cập camera để quét mã vạch và mã QR.",
+    "grant_permission": "Cấp quyền",
+    "title": "Trình quét mã vạch",
+    "scanning": "📸 Đang quét...",
+    "ready": "⏸️ Sẵn sàng quét",
+    "start_scan": "▶️ Bắt đầu quét",
+    "stop_scan": "⏹ Dừng quét",
+    "flash_on": "🔦 Đèn Flash: BẬT",
+    "flash_off": "🔦 Đèn Flash: TẮT",
+    "release_camera": "🔓 Giải phóng Camera",
+    "scan_gallery": "🖼️ Quét từ thư viện",
+    "last_scanned": "✅ Lần quét cuối",
+    "clear": "Xóa",
+    "type": "Loại:",
+    "data": "Dữ liệu:",
+    "size": "Kích thước:",
+    "history": "📋 Lịch sử quét",
+    "footer_hint": "💡 Hướng camera về phía mã vạch hoặc mã QR",
+    "messages": {
+      "permission_granted": "Đã cấp quyền camera!",
+      "permission_denied_title": "Quyền bị từ chối",
+      "permission_denied_msg": "Cần quyền camera để quét mã vạch và mã QR.",
+      "try_again": "Thử lại",
+      "no_qr_found": "Không tìm thấy mã QR",
+      "no_qr_found_msg": "Không tìm thấy mã QR nào trong ảnh đã chọn.",
+      "scan_error": "Lỗi khi quét ảnh"
     }
   }
 }

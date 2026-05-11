@@ -13,6 +13,7 @@ import SwipeableScreen from '../screens/swipeable/SwipeableScreen';
 import { PhotoScreen } from '@/screens/camera/screens/PhotoScreen';
 import { VideoScreen } from '@/screens/camera/screens/VideoScreen';
 import { CameraScreen } from '@/screens/camera/screens/CameraScreen';
+import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
 
 const MainStack = {
   HomeScreen: {
@@ -30,6 +31,10 @@ const MainStack = {
   CameraScreen: {
     screen: CameraScreen,
     options: { title: 'Camera', headerShown: false },
+  },
+  QrScanScreen: {
+    screen: QrScanScreen,
+    options: { title: 'QrScanScreen', headerShown: false },
   },
   PhotoScreen: {
     screen: PhotoScreen,

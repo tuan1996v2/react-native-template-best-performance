@@ -137,6 +137,10 @@ const HomeScreen = () => {
     NavigationService.navigate('CameraScreen');
   }, []);
 
+  const handleNavigateToQrScanScreen = useCallback(() => {
+    NavigationService.navigate('QrScanScreen');
+  }, []);
+
   const handleShowLoading = useCallback(() => {
     GlobalLoading.show(t('home.actions.saving_data'));
     setTimeout(() => {
@@ -288,6 +292,13 @@ const HomeScreen = () => {
               icon={CameraIcon}
               color="#10B981"
               onPress={handleNavigateToCamera}
+            />
+            <FeatureCard
+              title={t('home.features.qr.title')}
+              subtitle={t('home.features.qr.subtitle')}
+              icon={CameraIcon}
+              color="#10B981"
+              onPress={handleNavigateToQrScanScreen}
             />
             <FeatureCard
               title={t('home.features.alert.title')}

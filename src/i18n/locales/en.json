@@ -54,6 +54,10 @@
         "title": "Camera",
         "subtitle": "Test camera"
       },
+      "qr": {
+        "title": "QR",
+        "subtitle": "Test QR"
+      },
       "photo": {
         "title": "Photo",
         "subtitle": "Test photo"
@@ -88,6 +92,36 @@
       "switched_to_vi": "Switched to Vietnamese",
       "switched_to_en": "Switched to English",
       "welcome_back": "Welcome back!"
+    }
+  },
+  "qr_scan": {
+    "permission_required": "📷 Camera Permission Required",
+    "permission_subtext": "This app needs camera access to scan barcodes and QR codes.",
+    "grant_permission": "Grant Permission",
+    "title": "Barcode Scanner",
+    "scanning": "📸 Scanning...",
+    "ready": "⏸️ Ready to scan",
+    "start_scan": "▶️ Start Scanning",
+    "stop_scan": "⏹ Stop Scanning",
+    "flash_on": "🔦 Flash: ON",
+    "flash_off": "🔦 Flash: OFF",
+    "release_camera": "🔓 Release Camera",
+    "scan_gallery": "🖼️ Scan from Gallery",
+    "last_scanned": "✅ Last Scanned",
+    "clear": "Clear",
+    "type": "Type:",
+    "data": "Data:",
+    "size": "Size:",
+    "history": "📋 Scan History",
+    "footer_hint": "💡 Point camera at barcode or QR code",
+    "messages": {
+      "permission_granted": "Camera permission granted!",
+      "permission_denied_title": "Permission Denied",
+      "permission_denied_msg": "Camera permission is required to scan barcodes and QR codes.",
+      "try_again": "Try Again",
+      "no_qr_found": "No QR Code Found",
+      "no_qr_found_msg": "Could not detect any QR code in the selected image.",
+      "scan_error": "Failed to scan image"
     }
   }
 }
