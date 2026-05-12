@@ -174,7 +174,6 @@ const styles = StyleSheet.create({
     paddingBottom: vs(14),
     paddingTop: vs(30),
     backgroundColor: 'transparent',
-    // Pseudo-gradient bằng shadow overlay
     shadowColor: '#000',
     shadowOffset: { width: 0, height: vs(-20) },
     shadowOpacity: 0.6,
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
   dot: {
     height: vs(6),
     borderRadius: s(3),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'blue',
   },
 });
 

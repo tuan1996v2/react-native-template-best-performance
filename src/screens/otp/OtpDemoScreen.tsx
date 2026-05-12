@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { OTPInput } from '@/components/ui/OTP/input';
 import type { SlotProps } from '@/components/ui/OTP/types';
 import Animated, {
@@ -8,6 +8,7 @@ import Animated, {
   withTiming,
   withSequence,
   useSharedValue,
+  useAnimatedProps,
 } from 'react-native-reanimated';
 import styles, { COLORS } from './OtpDemoScreen.styles';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
@@ -172,12 +173,14 @@ const RevoltOTP = () => {
 const OtpDemoScreen = () => {
   const { t } = useTranslation();
   const showAlert = useAlertStore(state => state.showAlert);
-  const [canResend, setCanResend] = React.useState(false);
   const [countdownKey, setCountdownKey] = React.useState(0);
 
+  // 🚀 Reanimated 4 Optimization (Zero Re-render on timer end)
+  const isResendVisible = useSharedValue(0);
+
   const handleResend = React.useCallback(() => {
-    setCanResend(false);
-    setCountdownKey(prev => prev + 1); // Reset countdown
+    isResendVisible.value = 0; // Hide button instantly
+    setCountdownKey(prev => prev + 1); // Reset countdown (Trigger 1 re-render)
     showAlert({
       title: t('common.success'),
       content: t('otp.resend_code'),
@@ -186,9 +189,32 @@ const OtpDemoScreen = () => {
   }, [t, showAlert]);
 
   const handleCountdownFinished = React.useCallback(() => {
-    setCanResend(true);
+    // Timer end -> 0 Re-render
+    isResendVisible.value = withTiming(1, { duration: 300 });
   }, []);
 
+  const countdownAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: 1 - isResendVisible.value,
+  }));
+
+  const resendButtonAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: isResendVisible.value,
+  }));
+
+  const countdownProps = useAnimatedProps(
+    () =>
+      ({
+        pointerEvents: isResendVisible.value > 0.5 ? 'none' : 'auto',
+      } as any),
+  );
+
+  const resendButtonProps = useAnimatedProps(
+    () =>
+      ({
+        pointerEvents: isResendVisible.value < 0.5 ? 'none' : 'auto',
+      } as any),
+  );
+  console.log('render màn hình');
   return (
     <AppScreen backgroundColor={COLORS.bg}>
       <View style={styles.header}>
@@ -197,17 +223,6 @@ const OtpDemoScreen = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* 1. Stripe Style */}
-        {/* <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('otp.styles.stripe.title')}</Text>
-            <Text style={styles.sectionDesc}>{t('otp.styles.stripe.desc')}</Text>
-          </View>
-          <View style={styles.otpWrapper}>
-            <StripeOTP />
-          </View>
-        </View> */}
-
         {/* 2. Apple Style */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -243,22 +258,26 @@ const OtpDemoScreen = () => {
 
         {/* Resend Section */}
         <View style={styles.resendContainer}>
-          {!canResend ? (
-            <View style={[styles.row, styles.justifyCenter]}>
-              <Text style={styles.sectionDesc}>{t('otp.resend_after')}</Text>
-              <Countdown
-                key={countdownKey}
-                initialSeconds={60}
-                onFinished={handleCountdownFinished}
-                textStyle={styles.resendText}
-                suffix="s"
-              />
-            </View>
-          ) : (
-            <AppButton onPress={handleResend} color="transparent">
-              {t('otp.resend_code')}
-            </AppButton>
-          )}
+          {/* Countdown Layer */}
+          <Animated.View
+            animatedProps={countdownProps}
+            style={[styles.row, styles.justifyCenter, countdownAnimatedStyle]}>
+            <Text style={styles.sectionDesc}>{t('otp.resend_after')}</Text>
+            <Countdown
+              key={countdownKey}
+              initialSeconds={5}
+              onFinished={handleCountdownFinished}
+              textStyle={styles.resendText}
+              suffix="s"
+            />
+          </Animated.View>
+
+          {/* Resend Button Layer (Overlapping) */}
+          <Animated.View
+            animatedProps={resendButtonProps}
+            style={[StyleSheet.absoluteFill, styles.justifyCenter, resendButtonAnimatedStyle]}>
+            <AppButton onPress={handleResend}>{t('otp.resend_code')}</AppButton>
+          </Animated.View>
         </View>
       </ScrollView>
     </AppScreen>

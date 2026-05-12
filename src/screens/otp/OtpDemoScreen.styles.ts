@@ -41,6 +41,7 @@ export default StyleSheet.create({
   },
   justifyCenter: {
     justifyContent: 'center',
+    paddingHorizontal: s(16),
   },
   scrollContent: {
     paddingBottom: vs(40),
