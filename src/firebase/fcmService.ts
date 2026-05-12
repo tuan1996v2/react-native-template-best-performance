@@ -13,7 +13,8 @@ import {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import NavigationService from '@/navigation/NavigationService';
-import { toast } from '@/components/portals/alert/useAlertStore';
+import { toast } from '@/components/ui/alert/useAlertStore';
+// import { toast } from '@/components/portals/alert/useAlertStore';
 
 // ─── SINGLETON (tránh gọi getMessaging() nhiều lần) ──────────
 const messaging = getMessaging();

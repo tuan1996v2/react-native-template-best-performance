@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import type { CameraDevice } from 'react-native-vision-camera';
-import { FlipCameraIcon } from '@/assets/icon/FlipCameraIcon';
 
 interface Props {
   devices: CameraDevice[];
@@ -47,6 +46,7 @@ export function CameraSelectorButton({ devices, setDevice }: Props): React.React
 }
 
 import { s } from '@/theme/Responsive';
+import { FlipCameraIcon } from '../icons/FlipCameraIcon';
 
 const styles = StyleSheet.create({
   button: {

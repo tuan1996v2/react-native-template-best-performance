@@ -123,5 +123,34 @@
       "no_qr_found_msg": "Could not detect any QR code in the selected image.",
       "scan_error": "Failed to scan image"
     }
+  },
+  "otp": {
+    "resend_code": "Resend Code",
+    "resend_after": "Resend after:",
+    "demo_title": "OTP Showcase",
+    "demo_subtitle": "4 premium styles, optimized for high-performance React Native apps.",
+    "footer": "Built with ❤️ using input-otp-native",
+    "styles": {
+      "stripe": {
+        "title": "Stripe Style",
+        "desc": "Clean, minimal design with connected slots."
+      },
+      "apple": {
+        "title": "Apple Style",
+        "desc": "Premium iOS-style rounded boxes with shadows."
+      },
+      "dashed": {
+        "title": "Dashed Style",
+        "desc": "Simple and effective underline indicators."
+      },
+      "revolt": {
+        "title": "Revolt Style",
+        "desc": "Modern design with subtle backgrounds and gaps."
+      }
+    },
+    "alerts": {
+      "code_completed": "Code completed: {{code}}",
+      "style_code": "{{style}} Code: {{code}}"
+    }
   }
 }

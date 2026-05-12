@@ -62,7 +62,7 @@ const AppButton: React.FC<AppButtonProps> = ({
         { backgroundColor: activeSurfaceColor, borderRadius: s(12), bottom: depth },
         contentStyle,
       ],
-      text: [styles.text, textStyle],
+      text: [styles.text, { marginBottom: -depth }, textStyle],
     };
   }, [color, bottomColor, depth, disabled, style, contentStyle, textStyle]);
 

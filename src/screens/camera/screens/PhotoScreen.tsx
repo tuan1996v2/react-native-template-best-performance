@@ -1,6 +1,5 @@
 import type { StaticScreenProps } from '@react-navigation/native';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { CloseIcon } from '@/assets/icon/CloseIcon';
 import { useSafeAreaPadding } from '../hooks/useSafeAreaPadding';
 import NavigationService from '@/navigation/NavigationService';
 
@@ -31,6 +30,7 @@ export function PhotoScreen({
 }
 
 import { s, vs } from '@/theme/Responsive';
+import { CloseIcon } from '../icons/CloseIcon';
 
 const styles = StyleSheet.create({
   container: {

@@ -45,6 +45,7 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | 💾 **MMKV Storage** | Storage nhanh gấp 30x AsyncStorage | ✅ |
 | 🖐️ **Swipeable Items** | Hệ thống vuốt chạm mượt mà (Left/Right/Full Swipe) — xử lý 100% trên UI thread | ✅ |
 | 📸 **Pro Camera System** | Camera module zero-re-render, focus on tap, background gallery save | ✅ |
+| 🔢 **Premium OTP System** | OTP input 4 phong cách cao cấp, auto-fill SMS, zero-re-render countdown | ✅ |
 
 ---
 
@@ -432,6 +433,24 @@ Hệ thống quét mã được thiết kế theo mô hình **Hook-based Archite
 > - **Responsive Viewfinder**: Khung quét (Overlay) được tính toán tỉ lệ vàng bằng `Responsive.ts`, tự động căn giữa và co giãn theo mọi kích thước màn hình mà không bị méo.
 > - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
 > - **Flashlight Control**: Điều khiển đèn flash native mượt mà, tự động dọn dẹp trạng thái khi thoát màn hình để tiết kiệm pin.
+> - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
+
+### 🔢 Premium OTP & High-Performance Countdown (Zero Re-render)
+
+Hệ thống OTP được thiết kế chuẩn "Premium UX" với sự kết hợp của `input-otp-native` và logic đếm ngược siêu hiệu năng.
+
+```tsx
+// Các đặc điểm "đắt giá" của OTP Module:
+// 1. 4 Phong cách cao cấp: Stripe (liền mạch), Apple (iOS style), Dashed (gạch chân), Revolt (hiện đại).
+// 2. Zero Re-render Countdown: Bộ đếm ngược gửi lại mã chạy 100% trên UI Thread. JS Thread không hề bị đánh thức mỗi giây, giúp pin bền và app mượt.
+// 3. SMS Auto-fill: Tự động bắt mã OTP từ tin nhắn trên cả iOS (textContentType) và Android (autoComplete/SMS Retriever).
+// 4. Thread-safe Persistence: Đếm ngược chính xác ngay cả khi app ở background hoặc bị kill nhờ logic so sánh Timestamp native.
+```
+
+> 🎯 **Tại sao lại đỉnh?**:
+> - **Hiệu năng tuyệt đối**: Hầu hết các bộ đếm ngược trên thị trường đều dùng `setInterval` gây re-render component mỗi giây. Ở đây, chúng tôi dùng `AnimatedTextInput` của Reanimated để cập nhật text trực tiếp trên UI thread. **Zero re-render!**
+> - **Trải nghiệm mượt mà**: Con trỏ chuột (FakeCaret) được giả lập bằng animation Reanimated, nhấp nháy êm ái và không bao giờ bị lag kể cả khi máy đang xử lý tác vụ nặng.
+> - **An toàn & Chính xác**: Logic đếm ngược dựa trên thời gian hệ thống, đảm bảo không bị sai lệch dù người dùng có thoát app ra ngoài.
 
 ---
 
@@ -472,6 +491,7 @@ Template này được tối ưu cho **Android cấu hình yếu**, đảm bảo
 | `memo` + `arePropsEqual` | Custom comparator cho list items — chỉ re-render khi `id` thay đổi |
 | Pre-computed constants | Gradient colors, styles tính sẵn ở module level — không tạo object mới mỗi render |
 | `useImperativeHandle` | Gallery/overlay mở qua ref — parent không re-render |
+| `AnimatedTextInput` | Cập nhật Countdown trực tiếp trên UI thread — zero JS bridge re-render |
 | `Reanimated 4` | Tất cả animation chạy trên UI thread, JS thread không bị nghẽn |
 | `useMemo` / `useCallback` | Memoize inline objects và callbacks — tránh tạo reference mới |
 | `useRenderLog` | Hook debug phát hiện re-render thừa trong development |
@@ -520,6 +540,7 @@ Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
 | **Reanimated Carousel** | 4.0.x | Slider/Banner auto-play mượt mà 60fps |
 | **Gesture Image Viewer** | 2.1.x | Zoom và pan hình ảnh chuẩn Instagram |
 | **Nitro Modules** | 0.35.x | Nền tảng JSI Modules siêu tốc thế hệ mới |
+| **Input OTP Native** | 1.0.x | Hệ thống nhập OTP cao cấp & hiệu năng cao |
 | **QR Scanner** | 3.1.x | Quét mã vạch & QR siêu tốc (@pushpendersingh) |
 | **Blur & Linear Gradient** | - | UI effects: Làm mờ nền và đổ màu gradient |
 | **Native Menu** | 2.0.x | Context Menu chuẩn Native UI iOS/Android |

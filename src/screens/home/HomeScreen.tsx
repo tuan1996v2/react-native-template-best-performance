@@ -6,7 +6,6 @@ import NavigationService from '../../navigation/NavigationService';
 import AppPress from '../../components/ui/appPress/AppPress';
 import { GlobalLoading } from '../../store/useLoadingStore';
 import { useTranslation } from 'react-i18next';
-import { useAlertStore } from '../../components/portals/alert/useAlertStore';
 import i18n from '../../i18n/i18n';
 import { useStyles } from '../../theme/useStyles';
 import { getFCMTokenAndSendToServer } from '@/firebase/fcmService';
@@ -27,8 +26,9 @@ import {
 } from '@/assets/icon';
 
 import createStyles, { COLORS, GRADIENT_START, GRADIENT_END } from './HomeScreen.styles';
-import { CameraIcon } from '@/assets/icon/CameraIcon';
 import AppButton from '@/components/ui/appButton/AppButton';
+import { useAlertStore } from '@/components/ui/alert/useAlertStore';
+import { CameraIcon } from '../camera/icons/CameraIcon';
 
 const { width } = Dimensions.get('window');
 
@@ -142,6 +142,10 @@ const HomeScreen = () => {
 
   const handleNavigateToQrScanScreen = useCallback(() => {
     NavigationService.navigate('QrScanScreen');
+  }, []);
+
+  const handleNavigateToOtp = useCallback(() => {
+    NavigationService.navigate('OtpDemoScreen');
   }, []);
 
   const handleShowLoading = useCallback(() => {
@@ -302,6 +306,13 @@ const HomeScreen = () => {
               icon={CameraIcon}
               color="#10B981"
               onPress={handleNavigateToQrScanScreen}
+            />
+            <FeatureCard
+              title="OTP Input"
+              subtitle="Beautiful & Customizable"
+              icon={IconRegister}
+              color="#4F46E5"
+              onPress={handleNavigateToOtp}
             />
             <FeatureCard
               title={t('home.features.alert.title')}

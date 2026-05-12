@@ -123,5 +123,34 @@
       "no_qr_found_msg": "Không tìm thấy mã QR nào trong ảnh đã chọn.",
       "scan_error": "Lỗi khi quét ảnh"
     }
+  },
+  "otp": {
+    "resend_code": "Gửi lại mã",
+    "resend_after": "Gửi lại sau:",
+    "demo_title": "Minh họa OTP",
+    "demo_subtitle": "4 phong cách cao cấp, tối ưu hiệu năng cho React Native.",
+    "footer": "Được xây dựng với ❤️ sử dụng input-otp-native",
+    "styles": {
+      "stripe": {
+        "title": "Phong cách Stripe",
+        "desc": "Thiết kế tối giản với các ô nhập liền kề."
+      },
+      "apple": {
+        "title": "Phong cách Apple",
+        "desc": "Ô nhập bo góc cao cấp phong cách iOS có đổ bóng."
+      },
+      "dashed": {
+        "title": "Phong cách Gạch chân",
+        "desc": "Các chỉ báo gạch chân đơn giản và hiệu quả."
+      },
+      "revolt": {
+        "title": "Phong cách Revolt",
+        "desc": "Thiết kế hiện đại với màu nền nhẹ và khoảng cách."
+      }
+    },
+    "alerts": {
+      "code_completed": "Mã hoàn thành: {{code}}",
+      "style_code": "Mã {{style}}: {{code}}"
+    }
   }
 }

@@ -1,0 +1,58 @@
+import type { TextInputProps, StyleProp, ViewStyle } from 'react-native';
+
+export interface SlotProps {
+  isActive: boolean;
+  char: string | null;
+  placeholderChar: string | null;
+  hasFakeCaret: boolean;
+  /** Focuses the input at this slot's position. Automatically suppresses iOS clearTextOnFocus. */
+  focus: () => void;
+}
+
+export interface RenderProps {
+  slots: SlotProps[];
+  isFocused: boolean;
+}
+
+type OverrideProps<T, R> = Omit<T, keyof R> & R;
+
+// TODO: remove values from the types  as well as onTextChange
+type OTPInputBaseProps = OverrideProps<
+  TextInputProps,
+  {
+    value?: string;
+    onChange?: (newValue: string) => unknown;
+
+    maxLength: number;
+    pattern?: string | RegExp;
+
+    textAlign?: 'left' | 'center' | 'right';
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onComplete?: (...args: any[]) => unknown;
+    pasteTransformer?: (pasted: string) => string;
+
+    containerClassName?: string;
+    containerStyle?: StyleProp<ViewStyle>;
+  }
+>;
+
+export type InputOTPRenderFn = (props: RenderProps) => React.ReactNode;
+
+export type OTPInputProps = OTPInputBaseProps & {
+  render?: InputOTPRenderFn;
+  /**
+   * Whether to clear the input when it receives focus.
+   * Not needed when using `slot.focus` — suppression is handled automatically.
+   * @default true
+   */
+  clearTextOnFocus?: boolean;
+};
+
+export type OTPInputRef = {
+  setValue: (value: string) => void;
+  focus: () => void;
+  blur: () => void;
+  clear: () => void;
+  focusSlot: (index: number) => void;
+};

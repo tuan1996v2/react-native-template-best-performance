@@ -14,6 +14,7 @@ import { PhotoScreen } from '@/screens/camera/screens/PhotoScreen';
 import { VideoScreen } from '@/screens/camera/screens/VideoScreen';
 import { CameraScreen } from '@/screens/camera/screens/CameraScreen';
 import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
+import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
 
 const MainStack = {
   HomeScreen: {
@@ -70,6 +71,10 @@ const MainStack = {
       contentStyle: { backgroundColor: 'rgba(0,0,0,0.3)' }, // QUAN TRỌNG 2: Đục thủng nền Stack
       animation: 'fade_from_bottom', // Hiệu ứng mờ dần từ dưới lên
     },
+  },
+  OtpDemoScreen: {
+    screen: OtpDemoScreen,
+    options: { title: 'OTP Demo', headerShown: false },
   },
 };
 export const RootStack = createNativeStackNavigator({
