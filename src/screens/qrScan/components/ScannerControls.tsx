@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { styles } from '../screen/QrScanScreen.styles';
+import createStyles from '../screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 import AppButton from '@/components/ui/appButton/AppButton';
 
 interface ScannerControlsProps {
@@ -21,6 +22,7 @@ export const ScannerControls: React.FC<ScannerControlsProps> = ({
   onReleaseCamera,
   onPickImage,
 }) => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
 
   return (

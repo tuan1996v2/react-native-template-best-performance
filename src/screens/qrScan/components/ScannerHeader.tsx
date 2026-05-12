@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { styles } from '../screen/QrScanScreen.styles';
+import createStyles from '../screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 
 interface ScannerHeaderProps {
   isScanning: boolean;
 }
 
 export const ScannerHeader: React.FC<ScannerHeaderProps> = ({ isScanning }) => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 

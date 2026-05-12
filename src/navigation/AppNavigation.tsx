@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigationStore } from '../store/useNavigationStore';
-import { createStaticNavigation } from '@react-navigation/native';
+import { createStaticNavigation, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { navigationRef, RootStackParamList } from '../navigation/NavigationService';
 import DetailScreen from '../screens/detail/DetailScreen';
 import HomeScreen from '../screens/home/HomeScreen';
@@ -15,6 +15,8 @@ import { VideoScreen } from '@/screens/camera/screens/VideoScreen';
 import { CameraScreen } from '@/screens/camera/screens/CameraScreen';
 import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
 import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
+import { useThemeStore } from '../store/useThemeStore';
+import { ThemeTokens } from '../theme/Colors';
 
 const MainStack = {
   HomeScreen: {
@@ -88,9 +90,26 @@ const Navigation = createStaticNavigation(RootStack);
 
 const AppNavigation = () => {
   const setEndTransition = useNavigationStore(state => state.setEndTransition);
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
+
+  const navTheme = {
+    ...(mode === 'dark' ? DarkTheme : DefaultTheme),
+    dark: mode === 'dark',
+    colors: {
+      ...(mode === 'dark' ? DarkTheme.colors : DefaultTheme.colors),
+      primary: theme.primary,
+      background: theme.background,
+      card: theme.card,
+      text: theme.text,
+      border: theme.border,
+      notification: theme.error,
+    },
+  };
 
   return (
     <Navigation
+      theme={navTheme}
       onReady={() => {
         console.log('onReady');
         BootSplash.hide();

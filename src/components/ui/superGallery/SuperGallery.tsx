@@ -3,12 +3,7 @@ import useRenderLog from '@/hooks/useRenderLog';
 import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { GestureViewer, useGestureViewerState } from 'react-native-gesture-image-viewer';
 import { ScrollView } from 'react-native-gesture-handler';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  runOnJS,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 // ─── IMPERATIVE HANDLE TYPE ───────────────────────────────────
 export interface SuperGalleryRef {
@@ -71,7 +66,8 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
         });
       },
     }),
-    [opacity],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const handleDismiss = useCallback(() => {
@@ -80,7 +76,8 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
         runOnJS(setVisible)(false);
       }
     });
-  }, [opacity]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderItem = useCallback((item: string) => <GalleryImage uri={item} />, []);
 
@@ -118,6 +115,7 @@ const SuperGallery = forwardRef<SuperGalleryRef>((_, ref) => {
 
 // ─── STYLES ───────────────────────────────────────────────────
 import { s, vs, fs } from '../../../theme/Responsive';
+import { runOnJS } from 'react-native-worklets';
 
 const styles = StyleSheet.create({
   container: {

@@ -3,7 +3,18 @@ import { View, Text, StyleProp, ViewStyle } from 'react-native';
 import AppImage from '@/components/ui/appImage/AppImage';
 import AppPress from '@/components/ui/appPress/AppPress';
 import type { SocialPost } from './DetailScreen';
-import styles from './HeavyItem.styles';
+import createStyles from './HeavyItem.styles';
+import { useStyles } from '@/theme/useStyles';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
+import {
+  IconVerified,
+  IconMore,
+  IconHeart,
+  IconComment,
+  IconShare,
+  IconBookmark,
+} from '@/assets/icon';
 
 // ─── FAKE API: giả lập gọi server mất 2 giây ─────────────────
 const fakeToggleLikeAPI = (postId: string, newLiked: boolean): Promise<boolean> =>
@@ -17,8 +28,6 @@ const fakeToggleLikeAPI = (postId: string, newLiked: boolean): Promise<boolean> 
 export const getThumbnail = (uri: string) => ({
   uri: uri.replace('/800/', '/80/').replace('/600/', '/60/'),
 });
-
-import { IconVerified, IconMore } from '@/assets/icon';
 
 // ─── ATOM 1: POST HEADER (Avatar & User Info) ─────────────────
 const PostHeader = memo(
@@ -34,33 +43,45 @@ const PostHeader = memo(
     userHandle: string;
     timeAgo: string;
     isVerified: boolean;
-  }) => (
-    <View style={styles.header}>
-      <View style={styles.avatarRing}>
-        <AppImage source={{ uri: userAvatar }} style={styles.avatar} />
-      </View>
-      <View style={styles.headerInfo}>
-        <View style={styles.nameRow}>
-          <Text style={styles.userName} numberOfLines={1}>
-            {userName}
-          </Text>
-          {isVerified && (
-            <IconVerified fill="#3B82F6" width={14} height={14} style={styles.verifiedIcon} />
-          )}
+  }) => {
+    const styles = useStyles(createStyles);
+    const mode = useThemeStore(state => state.mode);
+    const theme = ThemeTokens[mode];
+
+    return (
+      <View style={styles.header}>
+        <View style={styles.avatarRing}>
+          <AppImage source={{ uri: userAvatar }} style={styles.avatar} />
         </View>
-        <Text style={styles.handleTime}>
-          {userHandle} · {timeAgo}
-        </Text>
+        <View style={styles.headerInfo}>
+          <View style={styles.nameRow}>
+            <Text style={styles.userName} numberOfLines={1}>
+              {userName}
+            </Text>
+            {isVerified && (
+              <IconVerified
+                fill={theme.verified}
+                width={14}
+                height={14}
+                style={styles.verifiedIcon}
+              />
+            )}
+          </View>
+          <Text style={styles.handleTime}>
+            {userHandle} · {timeAgo}
+          </Text>
+        </View>
+        <IconMore fill={theme.textMuted} width={20} height={20} />
       </View>
-      <IconMore fill="#6B7280" width={20} height={20} />
-    </View>
-  ),
+    );
+  },
 );
 
 // ─── ATOM 2: POST CONTENT (Text) ──────────────────────────────
-const PostContent = memo(({ content }: { content: string }) => (
-  <Text style={styles.contentText}>{content}</Text>
-));
+const PostContent = memo(({ content }: { content: string }) => {
+  const styles = useStyles(createStyles);
+  return <Text style={styles.contentText}>{content}</Text>;
+});
 
 // ─── ATOM 3: FACEBOOK-STYLE IMAGE GRID ────────────────────────
 const MAX_VISIBLE = 4;
@@ -73,6 +94,7 @@ const ImageGrid = memo(
     images: string[];
     onImagePress: (images: string[], index: number) => void;
   }) => {
+    const styles = useStyles(createStyles);
     const count = images.length;
     if (count === 0) return null;
 
@@ -157,22 +179,23 @@ const ImageGrid = memo(
 
 // ─── ATOM 4: LIKE SUMMARY ─────────────────────────────────────
 const PostLikeSummary = memo(
-  ({ liked, likeCount, lastName }: { liked: boolean; likeCount: number; lastName: string }) => (
-    <View style={styles.likeSummary}>
-      <View style={styles.likeDots}>
-        <View style={styles.likeDotRed} />
-        <View style={styles.likeDotAccent} />
-        <View style={styles.likeDotYellow} />
+  ({ liked, likeCount, lastName }: { liked: boolean; likeCount: number; lastName: string }) => {
+    const styles = useStyles(createStyles);
+    return (
+      <View style={styles.likeSummary}>
+        <View style={styles.likeDots}>
+          <View style={styles.likeDotRed} />
+          <View style={styles.likeDotAccent} />
+          <View style={styles.likeDotYellow} />
+        </View>
+        <Text style={styles.likeSummaryText}>
+          {liked ? 'Bạn' : lastName} và{' '}
+          <Text style={styles.likeSummaryBold}>{likeCount.toLocaleString()}</Text> người khác
+        </Text>
       </View>
-      <Text style={styles.likeSummaryText}>
-        {liked ? 'Bạn' : lastName} và{' '}
-        <Text style={styles.likeSummaryBold}>{likeCount.toLocaleString()}</Text> người khác
-      </Text>
-    </View>
-  ),
+    );
+  },
 );
-
-import { IconHeart, IconComment, IconShare, IconBookmark } from '@/assets/icon';
 
 // ─── ATOM 5: ACTION BAR ───────────────────────────────────────
 const PostActionBar = memo(
@@ -188,30 +211,36 @@ const PostActionBar = memo(
     comments: number;
     shares: number;
     onLikePress: () => void;
-  }) => (
-    <View style={styles.actionBar}>
-      <AppPress onPress={onLikePress} style={[styles.actionBtn, liked && styles.actionBtnLiked]}>
-        <IconHeart liked={liked} fill="#EF4444" width={20} height={20} />
-        <Text style={[styles.actionLabel, liked && styles.actionLabelLiked]}>{likeCount}</Text>
-      </AppPress>
+  }) => {
+    const styles = useStyles(createStyles);
+    const mode = useThemeStore(state => state.mode);
+    const theme = ThemeTokens[mode];
 
-      <AppPress style={styles.actionBtn}>
-        <IconComment fill="#6B7280" width={20} height={20} />
-        <Text style={styles.actionLabel}>{comments}</Text>
-      </AppPress>
+    return (
+      <View style={styles.actionBar}>
+        <AppPress onPress={onLikePress} style={[styles.actionBtn, liked && styles.actionBtnLiked]}>
+          <IconHeart liked={liked} fill={theme.liked} width={20} height={20} />
+          <Text style={[styles.actionLabel, liked && styles.actionLabelLiked]}>{likeCount}</Text>
+        </AppPress>
 
-      <AppPress style={styles.actionBtn}>
-        <IconShare fill="#6B7280" width={20} height={20} />
-        <Text style={styles.actionLabel}>{shares}</Text>
-      </AppPress>
+        <AppPress style={styles.actionBtn}>
+          <IconComment fill={theme.textMuted} width={20} height={20} />
+          <Text style={styles.actionLabel}>{comments}</Text>
+        </AppPress>
 
-      <View style={styles.actionSpacer} />
+        <AppPress style={styles.actionBtn}>
+          <IconShare fill={theme.textMuted} width={20} height={20} />
+          <Text style={styles.actionLabel}>{shares}</Text>
+        </AppPress>
 
-      <AppPress style={styles.bookmarkBtn}>
-        <IconBookmark fill="#6B7280" width={20} height={20} />
-      </AppPress>
-    </View>
-  ),
+        <View style={styles.actionSpacer} />
+
+        <AppPress style={styles.bookmarkBtn}>
+          <IconBookmark fill={theme.textMuted} width={20} height={20} />
+        </AppPress>
+      </View>
+    );
+  },
 );
 
 // ─── MAIN COMPONENT: SOCIAL POST CARD ─────────────────────────
@@ -221,6 +250,7 @@ interface SocialPostCardProps {
 }
 
 const SocialPostCard = ({ item, onImagePress }: SocialPostCardProps) => {
+  const styles = useStyles(createStyles);
   const [likeState, setLikeState] = useState({
     liked: item.isLiked,
     count: item.likes,

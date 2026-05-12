@@ -1,15 +1,17 @@
 import React, { memo, useEffect } from 'react';
 import { Modal, View, StyleSheet, Pressable, Text } from 'react-native';
 import { useAlertStore } from './useAlertStore';
-import { ms, s, vs, fs } from '@/theme/Responsive';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { useStyles } from '@/theme/useStyles';
+import createStyles from './CustomAlert.styles';
 
 const CustomAlert = memo(() => {
+  const styles = useStyles(createStyles);
   const { visible, title, content, buttons } = useAlertStore(state => state.alert);
   const hideAlert = useAlertStore(state => state.hideAlert);
 
@@ -77,78 +79,6 @@ const CustomAlert = memo(() => {
       </View>
     </Modal>
   );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  alertBox: {
-    width: s(280),
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: ms(20),
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  contentContainer: {
-    padding: s(24),
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: fs(18),
-    fontWeight: '700',
-    textAlign: 'center',
-    color: '#111827',
-  },
-  content: {
-    marginTop: vs(8),
-    textAlign: 'center',
-    fontSize: fs(14),
-    lineHeight: vs(20),
-    color: '#4B5563',
-  },
-  footer: {
-    flexDirection: 'row',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  button: {
-    flex: 1,
-    height: vs(50),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lastButton: {
-    // Add specific styles for the primary action if needed
-  },
-  buttonPressed: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  borderRight: {
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderRightColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  btnText: {
-    fontSize: fs(16),
-    color: '#007AFF',
-    fontWeight: '600',
-  },
-  cancelBtnText: {
-    color: '#6B7280',
-    fontWeight: '400',
-  },
 });
 
 export default CustomAlert;

@@ -26,13 +26,16 @@ import {
   IconAlert,
   IconNotification,
   IconRegister,
+  IconTheme,
 } from '@/assets/icon';
 
-import createStyles, { COLORS, GRADIENT_START, GRADIENT_END } from './HomeScreen.styles';
+import createStyles from './HomeScreen.styles';
 import AppButton from '@/components/ui/appButton/AppButton';
 import { useAlertStore } from '@/components/ui/alert/useAlertStore';
 import { CameraIcon } from '../camera/icons/CameraIcon';
 import { BUILD_VERSION } from '@/env';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
 
 // ─── TYPES ────────────────────────────────────────────────────
 interface FeatureCardProps {
@@ -48,6 +51,8 @@ const FeatureCard = React.memo(
   ({ title, subtitle, icon: Icon, color, onPress }: FeatureCardProps) => {
     useRenderLog(`FeatureCard[${title}]`);
     const styles = useStyles(createStyles);
+    const mode = useThemeStore(state => state.mode);
+    const theme = ThemeTokens[mode];
     const iconBgStyle = useMemo(
       () => ({
         backgroundColor: color + '15',
@@ -58,7 +63,7 @@ const FeatureCard = React.memo(
 
     return (
       <Animated.View style={[styles.featureCardContainer]}>
-        <AppButton depth={8} bottomColor={color + '40'} color="#fff" onPress={onPress}>
+        <AppButton depth={8} bottomColor={color + '40'} color={theme.card} onPress={onPress}>
           <View style={styles.center}>
             <View style={[styles.iconContainer, iconBgStyle]}>
               <Icon fill={color} width={32} height={32} />
@@ -74,21 +79,22 @@ const FeatureCard = React.memo(
   },
 );
 
-// ─── MAIN SCREEN ──────────────────────────────────────────────
 const HomeScreen = () => {
   useRenderLog('HomeScreen');
-  const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const styles = useStyles(createStyles);
+  const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   const showToast = useAlertStore(state => state.showToast);
   const showAlert = useAlertStore(state => state.showAlert);
+
+  const mode = useThemeStore(state => state.mode);
+  const setMode = useThemeStore(state => state.setMode);
+  const theme = ThemeTokens[mode];
 
   // 🚀 Animated values for collapsible header
   const headerTranslateY = useSharedValue(0);
   const lastScrollY = useSharedValue(0);
 
-  // Approximate header height (Compact header + insets)
-  // headerContainer paddingBottom(24) + headerContent (approx 100) + search (48) + margins
   const HEADER_COLLAPSE_HEIGHT = useMemo(() => insets.top + 160, [insets.top]);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -116,30 +122,22 @@ const HomeScreen = () => {
     () => [
       {
         id: '1',
-        imageUrl: 'https://picsum.photos/seed/banner1/800/400',
-        title: t('home.banners.explore_world'),
-        subtitle: t('home.banners.explore_world_sub'),
+        title: 'Futuristic UI Kit',
+        subtitle: 'Build faster with zero-re-render components',
+        imageUrl:
+          'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=80',
+        backgroundColor: '#6366F1',
       },
       {
         id: '2',
-        imageUrl: 'https://picsum.photos/seed/banner2/800/400',
-        title: t('home.banners.hot_deal'),
-        subtitle: t('home.banners.hot_deal_sub'),
-      },
-      {
-        id: '3',
-        imageUrl: 'https://picsum.photos/seed/banner3/800/400',
-        title: t('home.banners.new_feature'),
-        subtitle: t('home.banners.new_feature_sub'),
-      },
-      {
-        id: '4',
-        imageUrl: 'https://picsum.photos/seed/banner4/800/400',
-        title: t('home.banners.nature_scenery'),
-        subtitle: t('home.banners.nature_scenery_sub'),
+        title: 'iOS 26 Aesthetic',
+        subtitle: 'Glassmorphism and spring interactions',
+        imageUrl:
+          'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80',
+        backgroundColor: '#EC4899',
       },
     ],
-    [t],
+    [],
   );
 
   useEffect(() => {
@@ -204,6 +202,15 @@ const HomeScreen = () => {
     );
   }, [showToast, t]);
 
+  const handleToggleTheme = useCallback(() => {
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    showToast(
+      newMode === 'dark' ? 'Switched to Dark Mode 🌙' : 'Switched to Light Mode ☀️',
+      'success',
+    );
+  }, [mode, setMode, showToast]);
+
   const handleShowToast = useCallback(() => {
     showToast(t('home.actions.welcome_back'), 'success');
   }, [showToast, t]);
@@ -211,15 +218,15 @@ const HomeScreen = () => {
   const headerPaddingStyle = useMemo(() => ({ paddingTop: insets.top + 10 }), [insets.top]);
 
   return (
-    <AppScreen edges={[]} backgroundColor={COLORS.bg} statusBarStyle="light-content">
+    <AppScreen edges={[]} backgroundColor={theme.background} statusBarStyle="light-content">
       <View style={styles.root}>
         {/* 🚀 COLLAPSIBLE HEADER (Absolute Overlay) ────────────────── */}
         <Animated.View style={[styles.headerWrapper, headerAnimatedStyle]}>
           <View style={[styles.headerContainer, headerPaddingStyle]}>
             <LinearGradient
-              colors={COLORS.gradient as string[]}
-              start={GRADIENT_START}
-              end={GRADIENT_END}
+              colors={theme.gradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
             <View style={styles.headerContent}>
@@ -259,80 +266,87 @@ const HomeScreen = () => {
 
           <View style={styles.grid}>
             <FeatureCard
+              title="Theme Mode"
+              subtitle={mode === 'light' ? 'Light ☀️' : 'Dark 🌙'}
+              icon={IconTheme}
+              color={theme.primary}
+              onPress={handleToggleTheme}
+            />
+            <FeatureCard
               title={t('home.features.social_feed.title')}
               subtitle={t('home.features.social_feed.subtitle')}
               icon={IconSocial}
-              color="#6366F1"
+              color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
               onPress={handleNavigateToDetail}
             />
             <FeatureCard
               title={t('home.features.modal.title')}
               subtitle={t('home.features.modal.subtitle')}
               icon={IconModal}
-              color="#EC4899"
+              color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
               onPress={showModal}
             />
             <FeatureCard
               title={t('home.features.language.title')}
               subtitle={i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
               icon={IconLanguage}
-              color="#F59E0B"
+              color={theme.mode === 'light' ? '#F59E0B' : '#FBBF24'}
               onPress={handleChangeLanguage}
             />
             <FeatureCard
               title={t('home.features.swipe.title')}
               subtitle={t('home.features.swipe.subtitle')}
               icon={IconNotification}
-              color="#10B981"
+              color={theme.mode === 'light' ? '#10B981' : '#34D399'}
               onPress={handleNavigateToSwipeable}
             />
             <FeatureCard
               title={t('home.features.loading.title')}
               subtitle={t('home.features.loading.subtitle')}
               icon={IconLoading}
-              color="#8B5CF6"
+              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
               onPress={handleShowLoading}
             />
             <FeatureCard
               title={t('home.features.camera.title')}
               subtitle={t('home.features.camera.subtitle')}
               icon={CameraIcon}
-              color="#F43F5E"
+              color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
               onPress={handleNavigateToCamera}
             />
             <FeatureCard
               title={t('home.features.qr.title')}
               subtitle={t('home.features.qr.subtitle')}
               icon={CameraIcon}
-              color="#06B6D4"
+              color={theme.mode === 'light' ? '#06B6D4' : '#22D3EE'}
               onPress={handleNavigateToQrScanScreen}
             />
             <FeatureCard
               title="OTP Input"
               subtitle="Zero Re-render & SMS Auto-fill"
               icon={IconRegister}
-              color="#4F46E5"
+              color={theme.mode === 'light' ? '#4F46E5' : '#818CF8'}
               onPress={handleNavigateToOtp}
             />
             <FeatureCard
               title={t('home.features.alert.title')}
               subtitle={t('home.features.alert.subtitle')}
               icon={IconAlert}
-              color="#EF4444"
+              color={theme.mode === 'light' ? '#EF4444' : '#F87171'}
               onPress={handleShowAlert}
             />
             <FeatureCard
               title={t('home.features.notification.title')}
               subtitle={t('home.features.notification.subtitle')}
               icon={IconNotification}
-              color="#3B82F6"
+              color={theme.mode === 'light' ? '#3B82F6' : '#60A5FA'}
               onPress={handleShowToast}
             />
             <FeatureCard
               title={t('home.features.register.title')}
               subtitle={t('home.features.register.subtitle')}
               icon={IconRegister}
-              color="#6366F1"
+              color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
               onPress={goToRegister}
             />
           </View>

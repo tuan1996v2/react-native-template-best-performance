@@ -50,13 +50,11 @@ const AppPress = ({
   useEffect(() => () => {}, []);
 
   // TỐI ƯU 2: Bọc useCallback để tránh tạo mới function
-  const onLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      width.value = event.nativeEvent.layout.width;
-      height.value = event.nativeEvent.layout.height;
-    },
-    [height, width],
-  );
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    width.value = event.nativeEvent.layout.width;
+    height.value = event.nativeEvent.layout.height;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const rippleStyle = useAnimatedStyle(() => {
     const radius = Math.sqrt(width.value ** 2 + height.value ** 2);
@@ -99,7 +97,8 @@ const AppPress = ({
       lastPressTime.current = now;
       onPress?.();
     },
-    [disabled, disableAnimation, debounceTime, rippleDuration, onPress, centerX, centerY, progress],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [disabled, disableAnimation, debounceTime, rippleDuration, onPress],
   );
 
   // Style array memoization

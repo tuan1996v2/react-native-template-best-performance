@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { type BarcodeResult } from '@pushpendersingh/react-native-scanner';
-import { styles } from '../screen/QrScanScreen.styles';
+import createStyles from '../screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 
 interface ScanHistoryProps {
   scanHistory: BarcodeResult[];
@@ -10,6 +11,7 @@ interface ScanHistoryProps {
 }
 
 export const ScanHistory: React.FC<ScanHistoryProps> = ({ scanHistory, onClear }) => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
 
   if (scanHistory.length === 0) return null;

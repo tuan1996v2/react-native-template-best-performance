@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, StatusBar, Platform } from 'react-native';
+import { View, Text, Dimensions, StatusBar } from 'react-native';
 import AppImage from '@/components/ui/appImage/AppImage';
 import AppPress from '@/components/ui/appPress/AppPress';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,7 +12,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { IconClose } from '@/assets/icon';
 import NavigationService from '@/navigation/NavigationService';
-import { runOnJS } from 'react-native-worklets';
+import { runOnJS } from 'react-native-reanimated';
+import { useStyles } from '@/theme/useStyles';
+import { createStyles } from './StoryScreen.style';
 
 const { width, height } = Dimensions.get('window');
 
@@ -60,6 +62,8 @@ const StoryItem = ({ story, isActive, onNext, onPrev }: StoryItemProps) => {
     width: `${progress.value * 100}%`,
   }));
 
+  const styles = useStyles(createStyles);
+
   return (
     <View style={styles.storyContainer}>
       <AppImage
@@ -98,6 +102,7 @@ type StoryScreenRouteProps = {
 };
 
 const StoryScreen = ({ route }: { route: StoryScreenRouteProps }) => {
+  const styles = useStyles(createStyles);
   const { stories, initialIndex } = route.params;
   const [index, setIndex] = useState(initialIndex || 0);
   const insets = useSafeAreaInsets();
@@ -136,82 +141,10 @@ const StoryScreen = ({ route }: { route: StoryScreenRouteProps }) => {
       <AppPress
         onPress={() => NavigationService.back()}
         style={[styles.closeBtn, { top: insets.top + 10 }]}>
-        <IconClose fill="#fff" width={24} height={24} />
+        <IconClose fill={styles.white.color} width={24} height={24} />
       </AppPress>
     </View>
   );
 };
-
-import { s, vs, fs } from '@/theme/Responsive';
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  storyContainer: {
-    flex: 1,
-  },
-  storyImage: {
-    width: width,
-    height: height,
-    backgroundColor: 'black',
-  },
-  progressContainer: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? vs(50) : vs(20),
-    left: s(10),
-    right: s(10),
-    flexDirection: 'row',
-    gap: s(5),
-  },
-  progressBarBg: {
-    flex: 1,
-    height: vs(2),
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    borderRadius: s(1),
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#fff',
-  },
-  userInfo: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? vs(70) : vs(40),
-    left: s(15),
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: s(10),
-  },
-  userAvatar: {
-    width: s(36),
-    height: s(36),
-    borderRadius: s(18),
-    borderWidth: 1,
-    borderColor: '#fff',
-  },
-  userName: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: fs(16),
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  tapAreaContainer: {
-    ...StyleSheet.absoluteFillObject,
-    flexDirection: 'row',
-  },
-  tapArea: {
-    flex: 1,
-  },
-  closeBtn: {
-    position: 'absolute',
-    right: s(15),
-    padding: s(10),
-    zIndex: 100,
-  },
-});
 
 export default StoryScreen;

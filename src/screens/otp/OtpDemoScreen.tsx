@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet, type ViewProps } from 'react-native';
 import { OTPInput } from '@/components/ui/OTP/input';
-import type { SlotProps } from '@/components/ui/OTP/types';
 import Animated, {
   useAnimatedStyle,
   withRepeat,
@@ -10,15 +9,23 @@ import Animated, {
   useSharedValue,
   useAnimatedProps,
 } from 'react-native-reanimated';
-import styles, { COLORS } from './OtpDemoScreen.styles';
+import createStyles from './OtpDemoScreen.styles';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
 import { useTranslation } from 'react-i18next';
 import Countdown from '@/components/ui/countdown/Countdown';
 import AppButton from '@/components/ui/appButton/AppButton';
 import { useAlertStore, toast } from '@/components/ui/alert/useAlertStore';
+import { useStyles } from '@/theme/useStyles';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
 
 // --- Reusable Caret Component ---
-const FakeCaret = ({ color = COLORS.primary }: { color?: string }) => {
+const FakeCaret = ({ color }: { color?: string }) => {
+  const styles = useStyles(createStyles);
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
+  const finalColor = color || theme.primary;
+
   const opacity = useSharedValue(1);
 
   useEffect(() => {
@@ -35,54 +42,14 @@ const FakeCaret = ({ color = COLORS.primary }: { color?: string }) => {
 
   return (
     <View style={styles.caretContainer}>
-      <Animated.View style={[styles.caret, { backgroundColor: color }, animatedStyle]} />
+      <Animated.View style={[styles.caret, { backgroundColor: finalColor }, animatedStyle]} />
     </View>
-  );
-};
-
-// --- 1. Stripe Style (6 slots) ---
-const StripeOTP = () => {
-  const { t } = useTranslation();
-  const onComplete = (code: string) =>
-    toast.success(t('otp.alerts.style_code', { style: 'Stripe', code }));
-
-  const renderSlot = (slot: SlotProps, index: number) => {
-    const isFirst = index === 0;
-    const isLast = index === 2 || index === 5;
-
-    return (
-      <Pressable
-        key={index}
-        onPress={slot.focus}
-        style={[
-          styles.stripeSlot,
-          isFirst && styles.stripeSlotFirst,
-          isLast && styles.stripeSlotLast,
-          slot.isActive && styles.stripeActiveSlot,
-        ]}>
-        {slot.char !== null && <Text style={styles.stripeChar}>{slot.char}</Text>}
-        {slot.hasFakeCaret && <FakeCaret />}
-      </Pressable>
-    );
-  };
-
-  return (
-    <OTPInput
-      maxLength={6}
-      onComplete={onComplete}
-      render={({ slots }) => (
-        <View style={styles.stripeContainer}>
-          <View style={styles.row}>{slots.slice(0, 3).map((slot, i) => renderSlot(slot, i))}</View>
-          <View style={styles.stripeDash} />
-          <View style={styles.row}>{slots.slice(3).map((slot, i) => renderSlot(slot, i + 3))}</View>
-        </View>
-      )}
-    />
   );
 };
 
 // --- 2. Apple Style (6 slots) ---
 const AppleOTP = () => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
   const onComplete = (code: string) =>
     toast.success(t('otp.alerts.style_code', { style: 'Apple', code }));
@@ -110,6 +77,7 @@ const AppleOTP = () => {
 
 // --- 3. Dashed Style (6 slots) ---
 const DashedOTP = () => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
   const onComplete = (code: string) =>
     toast.success(t('otp.alerts.style_code', { style: 'Dashed', code }));
@@ -137,6 +105,9 @@ const DashedOTP = () => {
 
 // --- 4. Revolt Style (6 slots) ---
 const RevoltOTP = () => {
+  const styles = useStyles(createStyles);
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
   const { t } = useTranslation();
   const onComplete = (code: string) =>
     toast.success(t('otp.alerts.style_code', { style: 'Revolt', code }));
@@ -155,7 +126,7 @@ const RevoltOTP = () => {
                 {slot.char !== null && (
                   <Text style={[styles.stripeChar, styles.revoltChar]}>{slot.char}</Text>
                 )}
-                {slot.hasFakeCaret && <FakeCaret color="#2563EB" />}
+                {slot.hasFakeCaret && <FakeCaret color={theme.info} />}
               </Pressable>
               {index === 2 && (
                 <View style={styles.centerJustify}>
@@ -171,6 +142,7 @@ const RevoltOTP = () => {
 };
 
 const OtpDemoScreen = () => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
   const showAlert = useAlertStore(state => state.showAlert);
   const [countdownKey, setCountdownKey] = React.useState(0);
@@ -186,11 +158,13 @@ const OtpDemoScreen = () => {
       content: t('otp.resend_code'),
       buttons: [{ text: t('common.close'), onPress: () => {} }],
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, showAlert]);
 
   const handleCountdownFinished = React.useCallback(() => {
     // Timer end -> 0 Re-render
     isResendVisible.value = withTiming(1, { duration: 300 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const countdownAnimatedStyle = useAnimatedStyle(() => ({
@@ -201,22 +175,16 @@ const OtpDemoScreen = () => {
     opacity: isResendVisible.value,
   }));
 
-  const countdownProps = useAnimatedProps(
-    () =>
-      ({
-        pointerEvents: isResendVisible.value > 0.5 ? 'none' : 'auto',
-      } as any),
-  );
+  const countdownProps = useAnimatedProps<ViewProps>(() => ({
+    pointerEvents: isResendVisible.value > 0.5 ? 'none' : 'auto',
+  }));
 
-  const resendButtonProps = useAnimatedProps(
-    () =>
-      ({
-        pointerEvents: isResendVisible.value < 0.5 ? 'none' : 'auto',
-      } as any),
-  );
-  console.log('render màn hình');
+  const resendButtonProps = useAnimatedProps<ViewProps>(() => ({
+    pointerEvents: isResendVisible.value < 0.5 ? 'none' : 'auto',
+  }));
+
   return (
-    <AppScreen backgroundColor={COLORS.bg}>
+    <AppScreen>
       <View style={styles.header}>
         <Text style={styles.title}>{t('otp.demo_title')}</Text>
         <Text style={styles.subtitle}>{t('otp.demo_subtitle')}</Text>
@@ -265,7 +233,7 @@ const OtpDemoScreen = () => {
             <Text style={styles.sectionDesc}>{t('otp.resend_after')}</Text>
             <Countdown
               key={countdownKey}
-              initialSeconds={5}
+              initialSeconds={60}
               onFinished={handleCountdownFinished}
               textStyle={styles.resendText}
               suffix="s"

@@ -3,7 +3,8 @@ import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useQrScanner } from '../hooks/useQrScanner';
-import { styles } from './QrScanScreen.styles';
+import createStyles from './QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 import { PermissionView } from '../components/PermissionView';
 import { ScannerHeader } from '../components/ScannerHeader';
 import { CameraViewfinder } from '@/components/ui/cameraViewfinder/CameraViewfinder';
@@ -12,6 +13,7 @@ import { ScanResult } from '../components/ScanResult';
 import { ScanHistory } from '../components/ScanHistory';
 
 export default function QrScanScreen() {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
   const {
     isCameraPermissionGranted,
@@ -51,7 +53,7 @@ export default function QrScanScreen() {
         onPickImage={pickImage}
       />
 
-      <ScanResult scannedData={scannedData} onClear={clearHistory} />
+      <ScanResult scannedData={scannedData} />
 
       <ScanHistory scanHistory={scanHistory} onClear={clearHistory} />
 

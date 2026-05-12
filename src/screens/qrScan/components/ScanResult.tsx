@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { type BarcodeResult } from '@pushpendersingh/react-native-scanner';
-import { styles } from '../screen/QrScanScreen.styles';
+import createStyles from '../screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 
 interface ScanResultProps {
   scannedData: BarcodeResult | null;
 }
 
 export const ScanResult: React.FC<ScanResultProps> = ({ scannedData }) => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
 
   if (!scannedData) return null;

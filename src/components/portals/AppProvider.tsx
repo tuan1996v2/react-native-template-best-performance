@@ -5,6 +5,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/i18n/i18n';
 import { NavDebugger } from '@/navigation/NavDebugger';
+import { ButtonSwitchTheme } from '@/components/portals/ButtonSwitchTheme';
 import CustomAlert from '@/components/ui/alert/CustomAlert';
 import ToastContainer from '@/components/ui/toast/ToastContainer';
 import GlobalLoadingComponent from '@/components/ui/loading/GlobalLoadingComponent';
@@ -25,7 +26,6 @@ export default function AppProvider(props: Props) {
       StatusBar.setBackgroundColor('transparent');
     }
     StatusBar.setHidden(false);
-    StatusBar.setBarStyle('dark-content');
   };
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export default function AppProvider(props: Props) {
           <I18nextProvider i18n={i18n}>{props.children}</I18nextProvider>
         </GestureHandlerRootView>
         <NavDebugger />
+        <ButtonSwitchTheme />
         <GlobalLoadingComponent />
         <ToastContainer />
         <CustomAlert />

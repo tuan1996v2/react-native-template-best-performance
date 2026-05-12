@@ -5,7 +5,8 @@ import { usePanXGesture } from '../hooks/usePanXGesture';
 import type { TListItem } from '../types';
 import { ESwipeType } from '../constants';
 import { View } from 'react-native';
-import { styles } from './SwipeRevealWrapper/SwipeRevealWrapper.styles';
+import createStyles from './SwipeRevealWrapper/SwipeRevealWrapper.styles';
+import { useStyles } from '@/theme/useStyles';
 
 export const GestureDetectorComponent = ({
   id,
@@ -18,6 +19,8 @@ export const GestureDetectorComponent = ({
   itemWidth,
   itemContainerStyle,
 }: TListItem) => {
+  const styles = useStyles(createStyles);
+
   const isLeftSwipe = useMemo(
     () =>
       (animationType === ESwipeType.LEFT || animationType === ESwipeType.LEFT_RIGHT) &&

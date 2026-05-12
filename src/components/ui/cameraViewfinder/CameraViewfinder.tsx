@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { CameraView } from '@pushpendersingh/react-native-scanner';
-// import { styles } from '../screen/QrScanScreen.styles';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -11,13 +10,15 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from 'react-native-reanimated';
-import { styles } from '@/screens/qrScan/screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
+import createStyles from '@/screens/qrScan/screen/QrScanScreen.styles';
 
 interface CameraViewfinderProps {
   isScanning: boolean;
 }
 
 export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({ isScanning }) => {
+  const styles = useStyles(createStyles);
   const opacity = useSharedValue(0);
   const height = useSharedValue(0);
   const scanLinePos = useSharedValue(0);

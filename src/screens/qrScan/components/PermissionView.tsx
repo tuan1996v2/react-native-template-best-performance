@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { styles } from '../screen/QrScanScreen.styles';
+import createStyles from '../screen/QrScanScreen.styles';
+import { useStyles } from '@/theme/useStyles';
 
 interface PermissionViewProps {
   onGrant: () => void;
 }
 
 export const PermissionView: React.FC<PermissionViewProps> = ({ onGrant }) => {
+  const styles = useStyles(createStyles);
   const { t } = useTranslation();
 
   return (

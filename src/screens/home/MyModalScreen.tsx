@@ -7,10 +7,14 @@ import { useStyles } from '../../theme/useStyles';
 import createStyles from './MyModalScreen.styles';
 import NavigationService from '@/navigation/NavigationService';
 import { IconSocial } from '@/assets/icon';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
 
 const MyModalScreen = () => {
   const styles = useStyles(createStyles);
   const { t } = useTranslation();
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
 
   const handleClose = useCallback(() => {
     NavigationService.back();
@@ -24,7 +28,7 @@ const MyModalScreen = () => {
 
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.iconWrapper}>
-            <IconSocial fill="#6366F1" width={48} height={48} />
+            <IconSocial fill={theme.primary} width={48} height={48} />
           </View>
 
           <Text style={styles.subtitle}>System Update</Text>
@@ -40,8 +44,8 @@ const MyModalScreen = () => {
           <View style={styles.buttonGroup}>
             <AppButton
               onPress={handleClose}
-              color="#6366F1"
-              bottomColor="#4F46E5"
+              color={theme.primary}
+              bottomColor={theme.primary + 'CC'}
               depth={6}
               style={styles.primaryButton}>
               {t('common.confirm') || 'Xác nhận'}
@@ -49,10 +53,10 @@ const MyModalScreen = () => {
 
             <AppButton
               onPress={handleClose}
-              color="rgba(241, 245, 249, 0.8)"
-              bottomColor="rgba(203, 213, 225, 0.8)"
+              color={theme.mode === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)'}
+              bottomColor="transparent"
               textStyle={styles.secondaryButtonText}
-              depth={4}
+              depth={0}
               style={styles.secondaryButton}>
               {t('common.close') || 'Để sau'}
             </AppButton>

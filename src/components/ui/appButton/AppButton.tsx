@@ -10,6 +10,8 @@ import {
   ColorValue,
 } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
 
 import { s, vs, fs } from '../../../theme/Responsive';
 
@@ -25,6 +27,7 @@ interface AppButtonProps {
   disabled?: boolean;
   disableAnimation?: boolean;
   debounceTime?: number;
+  title?: string;
 }
 
 const SPRING_CONFIG = {
@@ -39,34 +42,53 @@ const AppButton: React.FC<AppButtonProps> = ({
   style,
   contentStyle,
   textStyle,
-  color = '#3498db',
-  bottomColor = '#2980b9',
+  color,
+  bottomColor,
   depth = vs(6),
   disabled = false,
   disableAnimation = false,
   debounceTime = 0,
+  title,
 }) => {
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
+
+  const finalColor = color || theme.primary;
+  // If bottomColor is not provided, we could derive it or use a default
+  const finalBottomColor =
+    bottomColor || (mode === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.1)');
+
   const push = useSharedValue(0);
   const lastPressTime = useRef<number>(0);
 
-  // 1. GOM TOÀN BỘ MẢNG STYLE VÀO useMemo (Tránh tạo mảng mới mỗi lần render)
   const memoizedStyles = useMemo(() => {
-    const activeSurfaceColor = disabled ? '#D1D5DB' : color;
-    const activeBottomColor = disabled ? '#9CA3AF' : bottomColor;
+    const activeSurfaceColor = disabled ? theme.disabled : finalColor;
+    const activeBottomColor = disabled ? theme.disabledBottom : finalBottomColor;
 
     return {
       wrapper: [style, disabled && { opacity: 0.6 }],
       bottom: [styles.bottomLayer, { backgroundColor: activeBottomColor, borderRadius: s(12) }],
       surface: [
         styles.surface,
-        { backgroundColor: activeSurfaceColor, borderRadius: s(12), bottom: depth },
+        {
+          backgroundColor: activeSurfaceColor,
+          borderRadius: s(12),
+          bottom: depth,
+          borderColor: theme.glassBorder,
+        },
         contentStyle,
       ],
-      text: [styles.text, { marginBottom: -depth }, textStyle],
+      text: [
+        styles.text,
+        {
+          marginBottom: -depth,
+          color: disabled ? theme.disabledText : '#FFFFFF',
+        },
+        textStyle,
+      ],
     };
-  }, [color, bottomColor, depth, disabled, style, contentStyle, textStyle]);
+  }, [finalColor, finalBottomColor, depth, disabled, style, contentStyle, textStyle, theme]);
 
-  // 2. ANIMATION CHẠY 100% TRÊN UI THREAD
   const animatedSurfaceStyle = useAnimatedStyle(() => {
     if (disableAnimation) return { transform: [{ translateY: 0 }] };
     return {
@@ -74,7 +96,6 @@ const AppButton: React.FC<AppButtonProps> = ({
     };
   });
 
-  // 3. CACHE LẠI CÁC HÀM SỰ KIỆN BẰNG useCallback
   const handlePressIn = useCallback(() => {
     if (disabled || disableAnimation) return;
     push.value = 1;
@@ -109,10 +130,11 @@ const AppButton: React.FC<AppButtonProps> = ({
           disabled={disabled}
           unstable_pressDelay={0}
           hitSlop={s(8)}
-          // Chuyền thẳng mảng style đã cache vào đây
           style={memoizedStyles.surface}>
           <View style={styles.contentContainer}>
-            {typeof children === 'string' ? (
+            {title ? (
+              <Text style={memoizedStyles.text}>{title}</Text>
+            ) : typeof children === 'string' ? (
               <Text style={memoizedStyles.text}>{children}</Text>
             ) : (
               children
@@ -138,11 +160,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(255,255,255,0.2)',
   },
   contentContainer: { justifyContent: 'center', alignItems: 'center' },
   text: {
-    color: 'white',
     fontSize: fs(18),
     fontWeight: '900',
     textTransform: 'uppercase',

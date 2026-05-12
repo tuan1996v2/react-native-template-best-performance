@@ -15,9 +15,29 @@ import Animated, {
   runOnJS,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { s, fs } from '@/theme/Responsive';
+import { AppTheme } from '@/theme/Colors';
+import { useStyles } from '@/theme/useStyles';
+import { fs, s } from '@/theme/Responsive';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+
+const createStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    timerText: {
+      fontSize: fs(14),
+      fontWeight: 'bold',
+      color: theme.text,
+      textAlign: 'center',
+      paddingVertical: 0,
+      paddingHorizontal: s(4), // Thêm padding ngang để tránh mất ký tự
+      includeFontPadding: false,
+      minWidth: s(60), // Đảm bảo đủ chiều rộng cho mm:ss
+    },
+  });
 
 interface CountdownProps {
   initialSeconds: number;
@@ -30,6 +50,7 @@ interface CountdownProps {
 
 const Countdown = memo(
   ({ initialSeconds, onFinished, style, textStyle, prefix = '', suffix = '' }: CountdownProps) => {
+    const styles = useStyles(createStyles);
     const endTime = useSharedValue(Date.now() + initialSeconds * 1000);
     const remainingTime = useSharedValue(initialSeconds);
     const appState = useRef(AppState.currentState);
@@ -102,22 +123,5 @@ const Countdown = memo(
     );
   },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  timerText: {
-    fontSize: fs(14),
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
-    paddingVertical: 0,
-    paddingHorizontal: s(4), // Thêm padding ngang để tránh mất ký tự
-    includeFontPadding: false,
-    minWidth: s(60), // Đảm bảo đủ chiều rộng cho mm:ss
-  },
-});
 
 export default Countdown;

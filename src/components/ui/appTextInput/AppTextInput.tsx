@@ -7,13 +7,14 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   TextInputProps,
   StyleProp,
   ViewStyle,
   TextStyle,
   Text,
 } from 'react-native';
+import { useStyles } from '@/theme/useStyles';
+import { AppTheme } from '@/theme/Colors';
 
 // 1. Tách Label ra thành Component độc lập và memoize để nó KHÔNG BAO GIỜ render lại
 // khi user gõ phím vào ô input bên dưới.
@@ -22,14 +23,18 @@ interface AppInputLabelProps {
   required?: boolean;
   labelStyle?: StyleProp<TextStyle>;
   inline?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  styles: any;
 }
 
-const AppInputLabel = memo(({ label, required, labelStyle, inline }: AppInputLabelProps) => (
-  <View style={[styles.labelContainer, inline && styles.inlineLabel]}>
-    <Text style={[styles.labelText, labelStyle]}>{label}</Text>
-    {required ? <Text style={styles.colorRed}> *</Text> : null}
-  </View>
-));
+const AppInputLabel = memo(
+  ({ label, required, labelStyle, inline, styles }: AppInputLabelProps) => (
+    <View style={[styles.labelContainer, inline && styles.inlineLabel]}>
+      <Text style={[styles.labelText, labelStyle]}>{label}</Text>
+      {required ? <Text style={styles.colorRed}> *</Text> : null}
+    </View>
+  ),
+);
 
 export interface AppInputProps extends TextInputProps {
   label?: string;
@@ -66,6 +71,8 @@ const AppTextInput = forwardRef<TextInput, AppInputProps>((props, ref) => {
     ...rest
   } = props;
 
+  const styles = useStyles(createStyles);
+
   // 2. CHỈ giữ lại state cho những thứ thuộc về UI nội bộ (như ẩn/hiện password)
   const [showPassword, setShowPassword] = useState(false);
 
@@ -82,6 +89,7 @@ const AppTextInput = forwardRef<TextInput, AppInputProps>((props, ref) => {
           label={label}
           required={required}
           labelStyle={[styles.labelText, labelStyle]}
+          styles={styles}
         />
       )}
 
@@ -141,10 +149,7 @@ const arePropsEqual = (prevProps: AppInputProps, nextProps: AppInputProps) =>
   prevProps.editable === nextProps.editable &&
   prevProps.secureTextEntry === nextProps.secureTextEntry;
 
-export default memo(AppTextInput, arePropsEqual);
-
-// 8. Đưa TẤT CẢ styles tĩnh ra ngoài component để tránh khởi tạo lại object
-const styles = StyleSheet.create({
+const createStyles = (theme: AppTheme) => ({
   container: {
     marginBottom: vs(16),
   },
@@ -163,10 +168,10 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: fs(14),
     fontWeight: '600',
-    color: '#374151',
+    color: theme.text,
   },
   colorRed: {
-    color: '#EF4444',
+    color: theme.error,
     fontSize: fs(14),
     fontWeight: '600',
   },
@@ -176,21 +181,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: vs(48),
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: theme.border,
     borderRadius: s(8),
     paddingHorizontal: s(12),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.inputBg,
   },
   disabledWrapper: {
-    backgroundColor: '#F3F4F6',
+    opacity: 0.6,
   },
   errorWrapper: {
-    borderColor: '#EF4444',
+    borderColor: theme.error,
   },
   input: {
     flex: 1,
     fontSize: fs(14),
-    color: '#111827',
+    color: theme.text,
     paddingVertical: 0, // Quan trọng trên Android để chữ không bị lệch
   },
   pl0: {
@@ -203,8 +208,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    color: '#EF4444',
+    color: theme.error,
     fontSize: fs(12),
     marginTop: vs(4),
   },
 });
+
+export default memo(AppTextInput, arePropsEqual);

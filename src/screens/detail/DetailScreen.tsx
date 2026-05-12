@@ -20,19 +20,19 @@ import SocialPostCard from './HeavyItem';
 import SuperGallery, { type SuperGalleryRef } from '@/components/ui/superGallery/SuperGallery';
 import { IconAlert, IconArrowUp, IconPlus } from '@/assets/icon';
 
-import styles, {
-  COLORS,
+import createStyles, {
   HEADER_HEIGHT,
   STORIES_HEIGHT,
   GRADIENT_START,
   GRADIENT_END,
-  BG_GRADIENT_COLORS,
-  HEADER_GRADIENT_COLORS,
-  FAB_GRADIENT_COLORS,
   STORY_RING_COLORS_FULL,
   STORY_RING_COLORS,
 } from './DetailScreen.styles';
 import NavigationService from '@/navigation/NavigationService';
+import { useStyles } from '@/theme/useStyles';
+import { useThemeStore } from '@/store/useThemeStore';
+import { ThemeTokens } from '@/theme/Colors';
+
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 // ─── TYPES ────────────────────────────────────────────────────
@@ -171,62 +171,72 @@ const StoriesBar = React.memo(
   }: {
     stories: typeof STORIES;
     onStoryPress: (index: number) => void;
-  }) => (
-    <View style={styles.storiesBar}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.storiesContent}>
-        <View style={styles.storyItem}>
-          <LinearGradient
-            colors={STORY_RING_COLORS_FULL}
-            style={styles.storyRing}
-            start={GRADIENT_START}
-            end={GRADIENT_END}>
-            <View style={styles.storyAvatarInner}>
-              <IconPlus fill="#fff" width={20} height={20} />
-            </View>
-          </LinearGradient>
-          <Text style={styles.storyName}>Của bạn</Text>
-        </View>
-
-        {stories.map((item, idx) => (
-          <AppPress key={item.id} style={styles.storyItem} onPress={() => onStoryPress(idx)}>
+  }) => {
+    const mode = useThemeStore(state => state.mode);
+    const theme = ThemeTokens[mode];
+    const styles = useStyles(createStyles);
+    return (
+      <View style={styles.storiesBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.storiesContent}>
+          <View style={styles.storyItem}>
             <LinearGradient
-              colors={STORY_RING_COLORS}
+              colors={STORY_RING_COLORS_FULL}
               style={styles.storyRing}
               start={GRADIENT_START}
               end={GRADIENT_END}>
               <View style={styles.storyAvatarInner}>
-                <AppImage source={{ uri: item.avatar }} style={styles.storyAvatarImage} />
+                <IconPlus fill={theme.textInverted} width={20} height={20} />
               </View>
             </LinearGradient>
-            <Text style={styles.storyName} numberOfLines={1}>
-              {item.userName.split(' ').pop()}
-            </Text>
-          </AppPress>
-        ))}
-      </ScrollView>
-    </View>
-  ),
+            <Text style={styles.storyName}>Của bạn</Text>
+          </View>
+
+          {stories.map((item, idx) => (
+            <AppPress key={item.id} style={styles.storyItem} onPress={() => onStoryPress(idx)}>
+              <LinearGradient
+                colors={STORY_RING_COLORS}
+                style={styles.storyRing}
+                start={GRADIENT_START}
+                end={GRADIENT_END}>
+                <View style={styles.storyAvatarInner}>
+                  <AppImage source={{ uri: item.avatar }} style={styles.storyAvatarImage} />
+                </View>
+              </LinearGradient>
+              <Text style={styles.storyName} numberOfLines={1}>
+                {item.userName.split(' ').pop()}
+              </Text>
+            </AppPress>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  },
 );
 
 // ─── HEADER BAR (extracted + memoized) ────────────────────────
-const HeaderBar = React.memo(({ scrollToTop }: { scrollToTop: () => void }) => (
-  <View style={styles.headerInner}>
-    <AppPress onPress={scrollToTop} style={styles.headerLeft}>
-      <Text style={styles.headerTitle}>Social Feed</Text>
-      <Text style={styles.headerSubtitle}>Khám phá thế giới</Text>
-    </AppPress>
-    <View style={styles.headerRight}>
-      <View style={styles.notificationDot} />
-      <IconAlert fill="#fff" width={24} height={24} />
-      <View style={styles.headerAvatarWrap}>
-        <Text style={styles.headerAvatarText}>T</Text>
+const HeaderBar = React.memo(({ scrollToTop }: { scrollToTop: () => void }) => {
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
+  const styles = useStyles(createStyles);
+  return (
+    <View style={styles.headerInner}>
+      <AppPress onPress={scrollToTop} style={styles.headerLeft}>
+        <Text style={styles.headerTitle}>Social Feed</Text>
+        <Text style={styles.headerSubtitle}>Khám phá thế giới</Text>
+      </AppPress>
+      <View style={styles.headerRight}>
+        <View style={styles.notificationDot} />
+        <IconAlert fill={theme.textInverted} width={24} height={24} />
+        <View style={styles.headerAvatarWrap}>
+          <Text style={styles.headerAvatarText}>T</Text>
+        </View>
       </View>
     </View>
-  </View>
-));
+  );
+});
 
 // ─── KEY EXTRACTOR (stable ref outside component) ───
 const keyExtractor = (item: SocialPost) => item.id;
@@ -234,8 +244,11 @@ const keyExtractor = (item: SocialPost) => item.id;
 // ─── MAIN SCREEN ──────────────────────────────────────────────
 const DetailScreen = () => {
   useRenderLog('DetailScreen');
-  const listRef = useRef<FlashList<SocialPost>>(null);
+  const styles = useStyles(createStyles);
+  const mode = useThemeStore(state => state.mode);
+  const theme = ThemeTokens[mode];
 
+  const listRef = useRef<FlashList<SocialPost>>(null);
   const insets = useSafeAreaInsets();
 
   // ── Gallery ref (ZERO re-render ─ parent không biết gì về state gallery) ──
@@ -323,7 +336,7 @@ const DetailScreen = () => {
 
   return (
     <AppScreen edges={[]} style={styles.root}>
-      <LinearGradient colors={BG_GRADIENT_COLORS} style={styles.gradient}>
+      <LinearGradient colors={theme.bgGradient} style={styles.gradient}>
         {/* ── FEED LIST ──────────────────── */}
         <AnimatedFlashList
           ref={listRef}
@@ -340,7 +353,7 @@ const DetailScreen = () => {
 
         {/* ── COLLAPSIBLE HEADER (absolute overlay) ─── */}
         <Animated.View style={[styles.collapsibleHeader, headerAnimatedStyle]}>
-          <LinearGradient colors={HEADER_GRADIENT_COLORS} style={styles.headerGradient}>
+          <LinearGradient colors={[theme.headerBg, theme.headerBg]} style={styles.headerGradient}>
             <View style={spacerStyle} />
             <HeaderBar scrollToTop={scrollToTop} />
             <StoriesBar stories={STORIES} onStoryPress={handleStoryPress} />
@@ -351,11 +364,11 @@ const DetailScreen = () => {
         <Animated.View style={[styles.fabContainer, fabAnimatedStyle]} pointerEvents="box-none">
           <AppPress onPress={scrollToTop} style={styles.fabTouchable}>
             <LinearGradient
-              colors={FAB_GRADIENT_COLORS}
+              colors={theme.fabGradient}
               style={styles.fab}
               start={GRADIENT_START}
               end={GRADIENT_END}>
-              <IconArrowUp fill="#fff" width={24} height={24} />
+              <IconArrowUp fill={theme.textInverted} width={24} height={24} />
             </LinearGradient>
           </AppPress>
         </Animated.View>
@@ -368,4 +381,3 @@ const DetailScreen = () => {
 };
 
 export default DetailScreen;
-export { COLORS };

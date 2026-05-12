@@ -236,16 +236,13 @@ export const usePanXGesture = (
       }
     });
 
-  const panXAnimatedStyles = useAnimatedStyle(
-    () => ({
-      transform: [
-        {
-          translateX: offsetX.value,
-        },
-      ],
-    }),
-    [offsetX.value],
-  );
+  const panXAnimatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: offsetX.value,
+      },
+    ],
+  }));
 
   return {
     panXAnimatedStyles,

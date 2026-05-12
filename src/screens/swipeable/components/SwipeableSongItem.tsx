@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
-import { StyleSheet } from 'react-native';
 import { ESwipeType, SwipeableItemWrapper } from '@/components/ui/swipeItem';
 import { Song } from '../types';
 import SongItem from './SongItem';
 import { FullSwipeAction, LeftActions, RightActions } from './SwipeActionViews';
+import { useStyles } from '@/theme/useStyles';
+import createStyles from '../SwipeableScreen.styles';
 
 interface SwipeableSongItemProps {
   item: Song;
@@ -11,6 +12,7 @@ interface SwipeableSongItemProps {
 }
 
 const SwipeableSongItem = ({ item, onDelete }: SwipeableSongItemProps) => {
+  const styles = useStyles(createStyles);
   const isLeftSwipe = item.type === ESwipeType.LEFT || item.type === ESwipeType.LEFT_RIGHT;
 
   const isRightSwipe = item.type === ESwipeType.RIGHT || item.type === ESwipeType.LEFT_RIGHT;
@@ -33,11 +35,5 @@ const SwipeableSongItem = ({ item, onDelete }: SwipeableSongItemProps) => {
     </SwipeableItemWrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  swipeViewContainer: {
-    paddingVertical: 20,
-  },
-});
 
 export default memo(SwipeableSongItem);

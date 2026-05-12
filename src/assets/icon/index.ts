@@ -15,3 +15,4 @@ export { default as IconComment } from './IconComment';
 export { default as IconVerified } from './IconVerified';
 export { default as IconMore } from './IconMore';
 export { default as IconPlus } from './IconPlus';
+export { default as IconTheme } from './IconTheme';
