@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAlertStore } from './useAlertStore';
+import { useAlertStore } from '../alert/useAlertStore';
 import Message from './Message';
-import { vs } from '../../../theme/Responsive';
+import { vs } from '@/theme/Responsive';
 
 const ToastContainer = memo(() => {
   const { top, bottom } = useSafeAreaInsets();

@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { useLoadingStore } from '../../store/useLoadingStore';
-import { ms, fs } from '../../theme/Responsive';
+import { useLoadingStore } from '@/store/useLoadingStore';
+import { ms, fs } from '@/theme/Responsive';
 
 const GlobalLoadingComponent = () => {
   const { isLoading, message } = useLoadingStore();

@@ -6,7 +6,7 @@ import { useQrScanner } from '../hooks/useQrScanner';
 import { styles } from './QrScanScreen.styles';
 import { PermissionView } from '../components/PermissionView';
 import { ScannerHeader } from '../components/ScannerHeader';
-import { CameraViewfinder } from '../components/CameraViewfinder';
+import { CameraViewfinder } from '@/components/ui/cameraViewfinder/CameraViewfinder';
 import { ScannerControls } from '../components/ScannerControls';
 import { ScanResult } from '../components/ScanResult';
 import { ScanHistory } from '../components/ScanHistory';

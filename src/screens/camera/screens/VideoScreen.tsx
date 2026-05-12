@@ -1,7 +1,7 @@
 import type { StaticScreenProps } from '@react-navigation/native';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useVideoPlayer, VideoView } from 'react-native-video';
-import { CloseIcon } from '../icons/CloseIcon';
+import { CloseIcon } from '@/assets/icon/CloseIcon';
 import { useSafeAreaPadding } from '../hooks/useSafeAreaPadding';
 import NavigationService from '@/navigation/NavigationService';
 

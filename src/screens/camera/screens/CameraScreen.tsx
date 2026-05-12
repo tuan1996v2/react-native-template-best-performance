@@ -15,7 +15,7 @@ import { CameraSelectorButton } from '../components/CameraSelectorButton';
 import { CameraView } from '../components/CameraView';
 import { CaptureButton } from '../components/CaptureButton';
 import { LastMediaThumbnail, type LastMediaThumbnailRef } from '../components/LastMediaThumbnail';
-import { RecordingTimer } from '../components/RecordingTimer';
+import { RecordingTimer } from '@/components/ui/recordingTimer/RecordingTimer';
 import { useCameraLocation } from '../hooks/useCameraLocation';
 import { useIsActive } from '../hooks/useIsActive';
 import { useSafeAreaPadding } from '../hooks/useSafeAreaPadding';

@@ -38,6 +38,10 @@ const createStyles = () =>
       color: 'rgba(255,255,255,0.8)',
       fontWeight: '500',
     },
+    center: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     headerTitleText: {
       fontSize: fs(24),
       fontWeight: 'bold',

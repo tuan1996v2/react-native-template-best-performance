@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useAlertStore } from './useAlertStore';
-import { ms, s, vs } from '../../../theme/Responsive';
+import { ms, s, vs } from '@/theme/Responsive';
 
 const CustomAlert = memo(() => {
   const { visible, title, content, buttons } = useAlertStore(state => state.alert);

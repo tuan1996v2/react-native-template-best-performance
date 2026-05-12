@@ -3,11 +3,11 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { LogBox, Platform, StatusBar } from 'react-native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../../i18n/i18n';
-import { NavDebugger } from '../../navigation/NavDebugger';
-import CustomAlert from './alert/CustomAlert';
-import ToastContainer from './alert/ToastContainer';
-import GlobalLoadingComponent from './GlobalLoadingComponent';
+import i18n from '@/i18n/i18n';
+import { NavDebugger } from '@/navigation/NavDebugger';
+import CustomAlert from '@/components/ui/alert/CustomAlert';
+import ToastContainer from '@/components/ui/toast/ToastContainer';
+import GlobalLoadingComponent from '@/components/ui/loading/GlobalLoadingComponent';
 import { setupFCM } from '@/firebase/fcmService';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 

@@ -8,7 +8,7 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 import { runOnJS } from 'react-native-worklets';
-import { s, ms } from '../../../theme/Responsive';
+import { s, ms } from '@/theme/Responsive';
 
 interface MessageProps {
   message: string;

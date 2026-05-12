@@ -27,7 +27,8 @@ import {
 } from '@/assets/icon';
 
 import createStyles, { COLORS, GRADIENT_START, GRADIENT_END } from './HomeScreen.styles';
-import { CameraIcon } from '../camera/icons/CameraIcon';
+import { CameraIcon } from '@/assets/icon/CameraIcon';
+import AppButton from '@/components/ui/appButton/AppButton';
 
 const { width } = Dimensions.get('window');
 
@@ -58,15 +59,17 @@ const FeatureCard = React.memo(
 
     return (
       <Animated.View style={[styles.featureCardContainer, animatedStyle]}>
-        <AppPress onPress={onPress} style={styles.featureCard} rippleColor="rgba(0,0,0,0.05)">
-          <View style={[styles.iconContainer, iconBgStyle]}>
-            <Icon fill={color} width={32} height={32} />
+        <AppButton depth={5} bottomColor={COLORS.shadow} color="#fff" onPress={onPress}>
+          <View style={styles.center}>
+            <View style={[styles.iconContainer, iconBgStyle]}>
+              <Icon fill={color} width={32} height={32} />
+            </View>
+            <Text style={styles.featureTitle}>{title}</Text>
+            <Text style={styles.featureSubtitle} numberOfLines={1}>
+              {subtitle}
+            </Text>
           </View>
-          <Text style={styles.featureTitle}>{title}</Text>
-          <Text style={styles.featureSubtitle} numberOfLines={1}>
-            {subtitle}
-          </Text>
-        </AppPress>
+        </AppButton>
       </Animated.View>
     );
   },
