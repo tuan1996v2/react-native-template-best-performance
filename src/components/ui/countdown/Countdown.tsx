@@ -95,7 +95,7 @@ const Countdown = memo(
           spellCheck={false}
           style={[styles.timerText, textStyle]}
           animatedProps={animatedProps}
-          defaultValue=""
+          defaultValue={timeString.value}
           pointerEvents="none"
         />
       </View>
