@@ -15,6 +15,8 @@ import { VideoScreen } from '@/screens/camera/screens/VideoScreen';
 import { CameraScreen } from '@/screens/camera/screens/CameraScreen';
 import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
 import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
+import ChatSimulatorScreen from '@/screens/chatSimulator/ChatSimulatorScreen';
+import ChatDemoScreen from '@/screens/chatDemo/ChatDemoScreen';
 import { useThemeStore } from '../store/useThemeStore';
 import { ThemeTokens } from '../theme/Colors';
 
@@ -77,6 +79,14 @@ const MainStack = {
   OtpDemoScreen: {
     screen: OtpDemoScreen,
     options: { title: 'OTP Demo', headerShown: false },
+  },
+  ChatSimulatorScreen: {
+    screen: ChatSimulatorScreen,
+    options: { title: 'Mô phỏng Chat', headerShown: false },
+  },
+  ChatDemoScreen: {
+    screen: ChatDemoScreen,
+    options: { title: 'Mô phỏng Tin Nhắn', headerShown: false },
   },
 };
 export const RootStack = createNativeStackNavigator({

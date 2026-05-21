@@ -8,6 +8,7 @@ import { NavDebugger } from '@/navigation/NavDebugger';
 import { ButtonSwitchTheme } from '@/components/portals/ButtonSwitchTheme';
 import CustomAlert from '@/components/ui/alert/CustomAlert';
 import ToastContainer from '@/components/ui/toast/ToastContainer';
+import ChatToastContainer from '@/components/ui/toast/ChatToastContainer';
 import GlobalLoadingComponent from '@/components/ui/loading/GlobalLoadingComponent';
 import { setupFCM } from '@/firebase/fcmService';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -43,6 +44,7 @@ export default function AppProvider(props: Props) {
         <ButtonSwitchTheme />
         <GlobalLoadingComponent />
         <ToastContainer />
+        <ChatToastContainer />
         <CustomAlert />
       </KeyboardProvider>
     </SafeAreaProvider>

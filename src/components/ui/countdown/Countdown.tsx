@@ -12,12 +12,12 @@ import {
 import Animated, {
   useSharedValue,
   useAnimatedProps,
-  runOnJS,
   useDerivedValue,
 } from 'react-native-reanimated';
 import { AppTheme } from '@/theme/Colors';
 import { useStyles } from '@/theme/useStyles';
 import { fs, s } from '@/theme/Responsive';
+import { runOnJS } from 'react-native-worklets';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 

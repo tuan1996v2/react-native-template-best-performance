@@ -11,17 +11,10 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { s, ms, vs, fs } from '@/theme/Responsive';
-import { toastManager } from './ToastManager';
-import { runOnJS } from 'react-native-worklets';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
-// Static callback to call JS-thread ToastManager from UI-thread without serialization errors
-const triggerNotifyFinished = () => {
-  toastManager.notifyFinished();
-};
-
-export interface MessageRef {
+export interface ChatMessageRef {
   animate: (item: {
     message: string;
     type: 'success' | 'error' | 'warning';
@@ -29,12 +22,12 @@ export interface MessageRef {
   }) => void;
 }
 
-interface MessageProps {
+interface ChatMessageProps {
   isBottom?: boolean;
 }
 
-const Message = memo(
-  forwardRef<MessageRef, MessageProps>(({ isBottom }, ref) => {
+const ChatMessage = memo(
+  forwardRef<ChatMessageRef, ChatMessageProps>(({ isBottom }, ref) => {
     const message = useSharedValue('');
     const type = useSharedValue<'success' | 'error' | 'warning'>('success');
     const opacity = useSharedValue(0);
@@ -70,14 +63,7 @@ const Message = memo(
 
           opacity.value = withSequence(
             withTiming(1, { duration: 80 }),
-            withDelay(
-              duration,
-              withTiming(0, { duration: 250 }, finished => {
-                if (finished) {
-                  runOnJS(triggerNotifyFinished)();
-                }
-              }),
-            ),
+            withDelay(duration, withTiming(0, { duration: 250 })),
           );
         } else {
           // Toast is not visible, animate in fully
@@ -86,14 +72,7 @@ const Message = memo(
 
           opacity.value = withSequence(
             withTiming(1, { duration: 250 }),
-            withDelay(
-              duration,
-              withTiming(0, { duration: 250 }, finished => {
-                if (finished) {
-                  runOnJS(triggerNotifyFinished)();
-                }
-              }),
-            ),
+            withDelay(duration, withTiming(0, { duration: 250 })),
           );
 
           translateY.value = withSequence(
@@ -159,11 +138,9 @@ const Message = memo(
 
     const indicatorAnimatedProps = useAnimatedProps(() => {
       const currentType = type.value;
-      let label = '✓';
-      if (currentType === 'error') {
-        label = '✕';
-      } else if (currentType === 'warning') {
-        label = '!';
+      let label = '💬'; // Chat icon
+      if (currentType === 'warning') {
+        label = '🔔'; // Mention / High-priority icon
       }
       return {
         text: label,
@@ -238,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Message;
+export default ChatMessage;

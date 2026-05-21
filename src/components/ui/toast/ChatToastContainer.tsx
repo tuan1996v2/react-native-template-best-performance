@@ -1,17 +1,21 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Message, { MessageRef } from './Message';
+import ChatMessage, { ChatMessageRef } from './ChatMessage';
 import { vs } from '@/theme/Responsive';
-import { toastManager, ToastItem } from './ToastManager';
+import { chatToastManager } from './ChatToastManager';
 
-const ToastContainer = memo(() => {
+const ChatToastContainer = memo(() => {
   const { top, bottom } = useSafeAreaInsets();
-  const topRef = useRef<MessageRef>(null);
-  const bottomRef = useRef<MessageRef>(null);
+  const topRef = useRef<ChatMessageRef>(null);
+  const bottomRef = useRef<ChatMessageRef>(null);
 
   useEffect(() => {
-    const handleShow = (item: ToastItem & { duration: number }) => {
+    const handleShow = (item: {
+      message: string;
+      type: 'success' | 'error' | 'warning';
+      duration: number;
+    }) => {
       if (item.positionDown) {
         bottomRef.current?.animate(item);
       } else {
@@ -19,19 +23,19 @@ const ToastContainer = memo(() => {
       }
     };
 
-    toastManager.addListener(handleShow);
+    chatToastManager.addListener(handleShow);
     return () => {
-      toastManager.removeListener(handleShow);
+      chatToastManager.removeListener(handleShow);
     };
   }, []);
 
   return (
     <>
       <View style={[styles.container, { top: top + vs(10) }]} pointerEvents="box-none">
-        <Message ref={topRef} />
+        <ChatMessage ref={topRef} />
       </View>
       <View style={[styles.container, { bottom: bottom + vs(20) }]} pointerEvents="box-none">
-        <Message ref={bottomRef} isBottom />
+        <ChatMessage ref={bottomRef} isBottom />
       </View>
     </>
   );
@@ -42,8 +46,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    zIndex: 100000,
+    zIndex: 99999, // Render just behind system toast
   },
 });
 
-export default ToastContainer;
+export default ChatToastContainer;

@@ -44,11 +44,12 @@ interface FeatureCardProps {
   icon: React.ElementType;
   color: string;
   onPress: () => void;
+  debounceTime?: number;
 }
 
 // ─── FEATURE CARD COMPONENT ─────────────────────────────────
 const FeatureCard = React.memo(
-  ({ title, subtitle, icon: Icon, color, onPress }: FeatureCardProps) => {
+  ({ title, subtitle, icon: Icon, color, onPress, debounceTime = 400 }: FeatureCardProps) => {
     useRenderLog(`FeatureCard[${title}]`);
     const styles = useStyles(createStyles);
     const mode = useThemeStore(state => state.mode);
@@ -63,7 +64,12 @@ const FeatureCard = React.memo(
 
     return (
       <Animated.View style={[styles.featureCardContainer]}>
-        <AppButton depth={8} bottomColor={color + '40'} color={theme.card} onPress={onPress}>
+        <AppButton
+          debounceTime={debounceTime}
+          depth={8}
+          bottomColor={color + '40'}
+          color={theme.card}
+          onPress={onPress}>
           <View style={styles.center}>
             <View style={[styles.iconContainer, iconBgStyle]}>
               <Icon fill={color} width={32} height={32} />
@@ -348,6 +354,21 @@ const HomeScreen = () => {
               icon={IconRegister}
               color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
               onPress={goToRegister}
+            />
+
+            <FeatureCard
+              title="💬 Mô phỏng Tin Nhắn"
+              subtitle="Chat thực tế: group + 1vs1"
+              icon={IconSocial}
+              color="#6366F1"
+              onPress={() => NavigationService.navigate('ChatDemoScreen')}
+            />
+            <FeatureCard
+              title="💬 Mô phỏng Tin Nhắn thủ công"
+              subtitle="Chat thực tế: group + 1vs1"
+              icon={IconSocial}
+              color="#6366F1"
+              onPress={() => NavigationService.navigate('ChatSimulatorScreen')}
             />
           </View>
 

@@ -28,6 +28,7 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | 🧭 **Navigation v8** | React Navigation Static API + Performance Tracker đo ms chuyển màn | ✅ |
 | ⚡ **Zustand State Management** | 3 store sẵn sàng: Loading, Navigation, Theme — gọi được cả ngoài component | ✅ |
 | 🔔 **Toast & Alert System** | Custom alert + toast (success/error/warning) — không phụ thuộc thư viện | ✅ |
+| 💬 **Chat Toast Aggregator** | Xử lý >150 tin/phút: throttle 1v1, gom nhóm per-room, burst detection — giống Zalo | ✅ |
 | 💀 **Skeleton Loading** | Component skeleton đẹp mắt, plug-and-play | ✅ |
 | 🧱 **UI Kit sẵn sàng** | AppButton (3D depth), AppPress (ripple), AppTextInput, AppImage (3-layer progressive) | ✅ |
 | 🖼️ **SVG Icon System** | Tích hợp bộ icon SVG tự quản lý (`react-native-svg`), giải quyết triệt để lỗi font iOS | ✅ |
@@ -290,6 +291,131 @@ showAlert({
   ],
 });
 ```
+
+### 💬 Chat Toast Aggregator (Zalo-style, >150 msg/min)
+
+`ChatToastManager` là một singleton xử lý thông báo chat tốc độ cao mà không làm spam UI. Toàn bộ logic chạy trên JS thread, không có React state, không re-render.
+
+#### Kiến trúc 3 tầng ưu tiên
+
+```
+Tin nhắn đến
+     │
+     ▼
+┌─────────────────────────────────────────────────────────┐
+│  PRIORITY 1 — Mention / Admin / System                  │
+│  → Luôn hiển thị ngay, bypass mọi throttle             │
+│  → Duration: 4s, type: warning (màu vàng 🔔)           │
+└─────────────────────────────────────────────────────────┘
+     │ (nếu không phải priority 1)
+     ▼
+┌─────────────────────────────────────────────────────────┐
+│  PRIORITY 2 — Tin nhắn riêng (1v1)                     │
+│                                                         │
+│  Bước A: Cập nhật burst tracker (sliding window 4s)    │
+│  Bước B: Nếu đang trong cooldown → nuốt im lặng        │
+│  Bước C: Nếu ≥3 sender khác nhau trong 4s              │
+│          → Gom: "X người đang nhắn tin cho bạn"        │
+│          → Cooldown 5s, sau đó reset hoàn toàn         │
+│  Bước D: Cùng sender → throttle 1s (chỉ show lần đầu) │
+└─────────────────────────────────────────────────────────┘
+     │ (nếu là group)
+     ▼
+┌─────────────────────────────────────────────────────────┐
+│  PRIORITY 3 — Tin nhắn nhóm (per-group, độc lập)       │
+│                                                         │
+│  Mỗi nhóm có RoomState riêng (sliding window 5s)       │
+│  ≤3 tin trong 5s → hiển thị từng tin bình thường       │
+│  >3 tin trong 5s → gom: "X người · Y tin mới"         │
+│                    → Cooldown 5s, sau đó reset          │
+│  4 nhóm spam cùng lúc → 4 aggregation hoàn toàn độc lập│
+└─────────────────────────────────────────────────────────┘
+```
+
+#### Bảng thông số
+
+| Hằng số | Giá trị | Ý nghĩa |
+|---------|---------|---------|
+| `PRIVATE_THROTTLE_MS` | 1s | Cùng sender: mute sau lần show đầu tiên |
+| `PRIVATE_BURST_WINDOW_MS` | 4s | Cửa sổ phát hiện nhiều sender cùng nhắn |
+| `PRIVATE_BURST_THRESHOLD` | 3 người | Ngưỡng kích hoạt gom 1v1 |
+| `PRIVATE_BURST_COOLDOWN_MS` | 5s | Cooldown sau khi hiện toast gom 1v1 |
+| `GROUP_WINDOW_MS` | 5s | Sliding window per-group |
+| `GROUP_AGGREGATE_THRESHOLD` | 3 tin | Ngưỡng kích hoạt gom nhóm |
+| `GROUP_COOLDOWN_MS` | 5s | Cooldown sau khi hiện toast gom nhóm |
+| `NORMAL_TOAST_DURATION` | 2.5s | Thời gian hiển thị toast thường |
+| `AGGREGATE_TOAST_DURATION` | 4s | Thời gian hiển thị toast gom |
+| `MENTION_TOAST_DURATION` | 4s | Thời gian hiển thị mention/admin |
+
+#### Ví dụ thực tế
+
+```
+Timeline (mỗi dấu = 500ms):
+
+[Nhóm Alpha spam 20 tin/10s]
+t=0.0s  An: "Deadline sắp tới rồi!"      → SHOW  (tin 1, window=1)
+t=0.5s  Bình: "Ai review PR không?"      → SHOW  (tin 2, window=2)
+t=1.0s  Cường: "Deploy staging đi!"      → SHOW  (tin 3, window=3)
+t=1.5s  Đức: "Xong chưa ae?"             → AGGREGATE
+        → "[Nhóm Alpha] 4 người · 4 tin nhắn mới" (4s)
+t=2.0s  Em: "Sếp đang hỏi 😅"           → SWALLOW (cooldown 5s)
+t=6.5s  (cooldown hết) An: "Update đi!" → SHOW lại bình thường
+
+[3 người nhắn 1v1 cùng lúc]
+t=0.0s  An: "Ê rảnh không?"              → SHOW
+t=0.2s  Bình: "Check tin nhắn gấp!"      → SHOW
+t=0.4s  Cường: "Gửi file cho tôi nhé"    → BURST
+        → "💬 3 người đang nhắn tin cho bạn" (4s)
+t=0.6s  Đức: "Tối nay ăn gì?"            → SWALLOW (cooldown 5s)
+t=5.4s  (cooldown hết) reset hoàn toàn
+
+[Mention xuyên qua spam — luôn thắng]
+t=1.5s  (đang trong cooldown nhóm)
+        An: "@bạn check PR gấp nhé!"     → SHOW NGAY (bypass tất cả)
+```
+
+#### Sử dụng
+
+```tsx
+import { chatToastManager } from '@/components/ui/toast/ChatToastManager';
+
+// Tin nhắn 1v1
+chatToastManager.onNewMessage({
+  id: 'msg_001',
+  senderId: 'user_123',
+  senderName: 'Nguyễn Văn A',
+  text: 'Ê rảnh không?',
+  isGroup: false,
+});
+
+// Tin nhắn nhóm — dùng groupId (stable) để track per-room
+chatToastManager.onNewMessage({
+  id: 'msg_002',
+  senderId: 'user_456',
+  senderName: 'Trần Thị B',
+  text: 'Deadline sắp tới rồi!',
+  isGroup: true,
+  groupId: 'group_alpha',   // key ổn định để track state
+  groupName: 'Dự án Alpha', // tên hiển thị trên toast
+});
+
+// Mention — bypass tất cả throttle, luôn hiển thị
+chatToastManager.onNewMessage({
+  id: 'msg_003',
+  senderId: 'user_789',
+  senderName: 'Lê Hoàng C',
+  text: '@bạn review code đi!',
+  isGroup: true,
+  groupId: 'group_alpha',
+  groupName: 'Dự án Alpha',
+  isMentioned: true,
+});
+
+// Reset toàn bộ state (gọi khi unmount màn hình chat)
+chatToastManager.reset();
+```
+
+> 🎯 **Kiến trúc**: Singleton thuần JS, pub/sub với `Set<listener>`. Không có React state, không re-render. `ChatToastContainer` subscribe vào manager và gọi `ref.animate()` trực tiếp trên Reanimated shared values — **zero bridge overhead**. Có thể test thủ công qua màn hình `ChatSimulatorScreen` với 10 kịch bản sẵn có.
 
 ### ⏳ Global Loading
 

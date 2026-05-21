@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { toastManager } from '../toast/ToastManager';
 
 interface AlertButton {
   text: string;
@@ -37,9 +38,12 @@ export const useAlertStore = create<AlertState>(set => ({
   showAlert: config => set({ alert: { ...config, visible: true } }),
   hideAlert: () => set(state => ({ alert: { ...state.alert, visible: false } })),
 
-  showToast: (message, type, positionDown) =>
-    set({ toast: { message, type, visible: true, positionDown } }),
-  hideToast: () => set(state => ({ toast: { ...state.toast, visible: false } })),
+  showToast: (message, type, positionDown) => {
+    toastManager.show(message, type, positionDown);
+  },
+  hideToast: () => {
+    toastManager.clear();
+  },
 }));
 
 export const toast = {
@@ -52,7 +56,6 @@ export const toast = {
   warning: (message: string, positionDown?: boolean) => {
     useAlertStore.getState().showToast(message, 'warning', positionDown);
   },
-  // Hàm ẩn toast nếu cần
   hide: () => {
     useAlertStore.getState().hideToast();
   },
