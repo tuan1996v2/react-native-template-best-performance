@@ -17,6 +17,7 @@ import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
 import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
 import { useThemeStore } from '../store/useThemeStore';
 import { ThemeTokens } from '../theme/Colors';
+import AudioRecorderScreen from '@/screens/audioRecorder/AudioRecorderScreen';
 
 const MainStack = {
   HomeScreen: {
@@ -50,6 +51,10 @@ const MainStack = {
   RegisterScreen: {
     screen: RegisterScreen,
     options: { title: 'Màn RegisterScreen' },
+  },
+  AudioRecorderScreen: {
+    screen: AudioRecorderScreen,
+    options: { title: 'Màn Ghi âm', headerShown: false },
   },
   StoryScreen: {
     screen: StoryScreen,

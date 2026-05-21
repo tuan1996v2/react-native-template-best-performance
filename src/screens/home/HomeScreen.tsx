@@ -164,6 +164,10 @@ const HomeScreen = () => {
     NavigationService.navigate('CameraScreen');
   }, []);
 
+  const handleNavigateToAudioRecorder = useCallback(() => {
+    NavigationService.navigate('AudioRecorderScreen');
+  }, []);
+
   const handleNavigateToQrScanScreen = useCallback(() => {
     NavigationService.navigate('QrScanScreen');
   }, []);
@@ -313,6 +317,13 @@ const HomeScreen = () => {
               icon={CameraIcon}
               color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
               onPress={handleNavigateToCamera}
+            />
+            <FeatureCard
+              title={t('home.features.audioRecorder.title')}
+              subtitle={t('home.features.audioRecorder.subtitle')}
+              icon={CameraIcon}
+              color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
+              onPress={handleNavigateToAudioRecorder}
             />
             <FeatureCard
               title={t('home.features.qr.title')}

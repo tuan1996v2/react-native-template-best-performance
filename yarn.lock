@@ -2300,6 +2300,11 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
+"@react-native-community/slider@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-5.2.0.tgz#c154ac4ec10537160462d7a9f3e2e43098257302"
+  integrity sha512-484sH8aWEaSjxaZ7HT3YZ8CKDcNes2synko1vdEz5DFEdvKAduxKJTj22L/qBMD7rtIkfbX69DMzWDAGbOAV6w==
+
 "@react-native-firebase/app@^23.8.6":
   version "23.8.8"
   resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-23.8.8.tgz"
@@ -7047,10 +7052,17 @@ react-native-nitro-image@^0.14.0:
   resolved "https://registry.yarnpkg.com/react-native-nitro-image/-/react-native-nitro-image-0.14.0.tgz#a3102c038e192e71e03370d69d1f57839abcbce4"
   integrity sha512-yLBm+SC/bdssO5XJhYOxVf6UeFfcUoRLwR1YXPJpNZyv65aHPijDg/nklJ/spAonWEl4yfPpATGSqo8mvVEjlQ==
 
-react-native-nitro-modules@^0.35.6:
-  version "0.35.6"
-  resolved "https://registry.yarnpkg.com/react-native-nitro-modules/-/react-native-nitro-modules-0.35.6.tgz#717a890fa033083f91765a586d433dd60492ac8b"
-  integrity sha512-3Cb7s+O5tpZ6RdIiPOB/wi3IMfBxD6tl6VDF8gJ5zvM/BEGTWxwMMLjzmWmsYPKekdbYBznF6qp2d2SxixPy8g==
+react-native-nitro-modules@^0.35.7:
+  version "0.35.7"
+  resolved "https://registry.yarnpkg.com/react-native-nitro-modules/-/react-native-nitro-modules-0.35.7.tgz#0983103d7a7803e71aeaabee9d8e3db147a6a74e"
+  integrity sha512-3EiU27EmnxTlD3pAXR2OBWeDg7+9tdjKrNQOPX08rFX5hJPNIT/h1i2PjvTUieOypCGTEi9nW/SNBtK3F+4HYg==
+
+react-native-nitro-sound@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/react-native-nitro-sound/-/react-native-nitro-sound-0.2.14.tgz#cf992628297a20054a7d39bdbd20a619f6ba4ffe"
+  integrity sha512-1yToz4Ug0lj+9zwFO+cRBI1ygQCJyDgR5kK68/7n7ZUgiLqwELZcNU/yxt8bH30fwkYKKD0lfkrrB8Xaq3qnSg==
+  dependencies:
+    "@react-native-community/slider" "^5.2.0"
 
 react-native-reanimated-carousel@^4.0.3:
   version "4.0.3"

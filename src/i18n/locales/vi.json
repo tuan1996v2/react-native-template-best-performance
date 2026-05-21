@@ -54,6 +54,10 @@
         "title": "Camera",
         "subtitle": "Kiểm tra camera"
       },
+      "audioRecorder": {
+        "title": "Ghi âm",
+        "subtitle": "Kiểm tra ghi âm"
+      },
       "qr": {
         "title": "QR",
         "subtitle": "Kiểm tra QR"

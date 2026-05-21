@@ -54,6 +54,10 @@
         "title": "Camera",
         "subtitle": "Test camera"
       },
+      "audioRecorder": {
+        "title": "Audio Recorder",
+        "subtitle": "Test audio recorder"
+      },
       "qr": {
         "title": "QR",
         "subtitle": "Test QR"
