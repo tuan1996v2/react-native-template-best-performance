@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { fs, ms, s, vs } from '../../../theme/Responsive';
+import { fs, ms, s, vs } from '../utils/responsive';
 import { copyToClipboard, extractAuthToken } from '../clipboardHelper';
 import { useNetworkStore } from '../networkStore';
 import { NetworkLog } from '../types';

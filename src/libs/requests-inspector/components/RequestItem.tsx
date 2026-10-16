@@ -1,7 +1,7 @@
 import React, { FC, memo, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { fs, ms, s, vs } from '../../../theme/Responsive';
+import { fs, ms, s, vs } from '../utils/responsive';
 import { NetworkLog } from '../types';
 
 interface RequestItemProps {

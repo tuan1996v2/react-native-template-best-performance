@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { fs, ms, s, vs } from '../../../theme/Responsive';
+import { fs, ms, s, vs } from '../utils/responsive';
 import { copyToClipboard, extractAuthToken } from '../clipboardHelper';
 import { generateCurlCommand } from '../curlHelper';
 import { NetworkLog } from '../types';

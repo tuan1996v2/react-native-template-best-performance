@@ -3,6 +3,8 @@ import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } 
 import { useNetworkStore } from './networkStore';
 import { HttpMethod, ResponseDetails } from './types';
 
+const MAX_STORED_BODY_SIZE = 250 * 1024; // 250 KB limit to prevent OOM on huge payloads
+
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _requestsInspectorId?: string;
   _requestsInspectorSentTime?: number;
@@ -44,6 +46,38 @@ const resolveFullUrl = (baseURL?: string, url?: string): string => {
   return `${baseURL.replace(/\/+$/, '')}/${url.replace(/^\/+/, '')}`;
 };
 
+const safeExtractBody = (data: unknown): unknown => {
+  if (data === undefined || data === null) {
+    return undefined;
+  }
+
+  // Handle FormData in React Native
+  if (
+    typeof data === 'object' &&
+    data !== null &&
+    '_parts' in data &&
+    Array.isArray((data as { _parts: unknown[] })._parts)
+  ) {
+    const parts = (data as { _parts: [string, unknown][] })._parts;
+    const formDataObj: Record<string, unknown> = {};
+    parts.forEach(([key, val]) => {
+      if (typeof val === 'object' && val !== null && 'uri' in val) {
+        const file = val as { uri: string; name?: string; type?: string };
+        formDataObj[key] = `[File: ${file.name || 'unnamed'} (${file.type || 'unknown'})]`;
+      } else {
+        formDataObj[key] = val;
+      }
+    });
+    return formDataObj;
+  }
+
+  if (typeof data === 'string' && data.length > MAX_STORED_BODY_SIZE) {
+    return `${data.slice(0, MAX_STORED_BODY_SIZE)}\n\n...[Body truncated: Exceeds 250KB limit]`;
+  }
+
+  return data;
+};
+
 export const requestsInspectorAxiosInterceptor = {
   request: (config: ExtendedAxiosRequestConfig): ExtendedAxiosRequestConfig => {
     const isEnabled = useNetworkStore.getState().isEnabled;
@@ -59,7 +93,7 @@ export const requestsInspectorAxiosInterceptor = {
       url: fullUrl,
       method,
       headers: safeHeadersToRecord(config.headers),
-      body: config.data,
+      body: safeExtractBody(config.data),
       queryParameters: config.params,
       sentTime,
     });
@@ -85,7 +119,7 @@ export const requestsInspectorAxiosInterceptor = {
     const responseDetails: ResponseDetails = {
       statusCode: response.status,
       headers: safeHeadersToRecord(response.headers),
-      body: response.data,
+      body: safeExtractBody(response.data),
       receivedTime,
       durationMs: receivedTime - sentTime,
     };
@@ -106,7 +140,7 @@ export const requestsInspectorAxiosInterceptor = {
       const responseDetails: ResponseDetails = {
         statusCode: error.response?.status || 0,
         headers: safeHeadersToRecord(error.response?.headers),
-        body: error.response?.data,
+        body: safeExtractBody(error.response?.data),
         receivedTime,
         durationMs: receivedTime - sentTime,
         error: error.message || 'Network Request Failed',
@@ -120,6 +154,12 @@ export const requestsInspectorAxiosInterceptor = {
 };
 
 export const attachRequestsInspector = (axiosInstance: AxiosInstance): void => {
+  const customAxios = axiosInstance as AxiosInstance & { __requestsInspectorAttached?: boolean };
+  if (customAxios.__requestsInspectorAttached) {
+    return;
+  }
+  customAxios.__requestsInspectorAttached = true;
+
   axiosInstance.interceptors.request.use(requestsInspectorAxiosInterceptor.request);
   axiosInstance.interceptors.response.use(
     requestsInspectorAxiosInterceptor.response,
@@ -163,7 +203,7 @@ export const requestsInspectorFetch = async (
     url,
     method,
     headers: headersRecord,
-    body: init?.body,
+    body: safeExtractBody(init?.body),
     sentTime,
   });
 
@@ -192,7 +232,7 @@ export const requestsInspectorFetch = async (
     useNetworkStore.getState().updateResponse(id, {
       statusCode: res.status,
       headers: responseHeaders,
-      body: bodyData,
+      body: safeExtractBody(bodyData),
       receivedTime,
       durationMs: receivedTime - sentTime,
       error: res.ok ? undefined : `HTTP Error ${res.status}`,

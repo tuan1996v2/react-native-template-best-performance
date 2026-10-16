@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -8,8 +8,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { fs, ms, s, vs } from '../../../theme/Responsive';
 import { useNetworkStore } from '../networkStore';
+import { fs, ms, s, vs } from '../utils/responsive';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -72,17 +72,19 @@ export const FloatingButton: FC = () => {
   }
 
   return (
-    <View pointerEvents="box-none" style={styles.overlayContainer}>
-      <GestureDetector gesture={gesture}>
-        <Animated.View style={[styles.floatingButton, animatedStyle]}>
-          <Text style={styles.iconText}>🕵️</Text>
-          <View style={styles.countBadge}>
-            <Text style={styles.countText}>{logs.length}</Text>
+    <Animated.View style={[styles.floatingContainer, animatedStyle]}>
+      <GestureHandlerRootView style={styles.gestureRoot}>
+        <GestureDetector gesture={gesture}>
+          <View style={styles.floatingButton}>
+            <Text style={styles.iconText}>🕵️</Text>
+            <View style={styles.countBadge}>
+              <Text style={styles.countText}>{logs.length}</Text>
+            </View>
+            {hasErrors ? <View style={styles.errorDot} /> : null}
           </View>
-          {hasErrors ? <View style={styles.errorDot} /> : null}
-        </Animated.View>
-      </GestureDetector>
-    </View>
+        </GestureDetector>
+      </GestureHandlerRootView>
+    </Animated.View>
   );
 };
 
@@ -129,12 +131,20 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     width: BUTTON_SIZE,
   },
+  floatingContainer: {
+    elevation: 9999,
+    height: BUTTON_SIZE,
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: BUTTON_SIZE,
+    zIndex: 9999,
+  },
+  gestureRoot: {
+    height: BUTTON_SIZE,
+    width: BUTTON_SIZE,
+  },
   iconText: {
     fontSize: fs(20),
-  },
-  overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
-    elevation: 9999,
-    zIndex: 9999,
   },
 });
