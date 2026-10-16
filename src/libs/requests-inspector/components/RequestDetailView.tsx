@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { fs, ms, s, vs } from '../utils/responsive';
 import { copyToClipboard, extractAuthToken } from '../clipboardHelper';
 import { generateCurlCommand } from '../curlHelper';
 import { NetworkLog } from '../types';
+import { fs, ms, s, vs } from '../utils/responsive';
+import { ChevronLeftIcon, CopyIcon, KeyIcon } from './Icons';
 
 interface RequestDetailViewProps {
   log: NetworkLog;
@@ -78,7 +79,8 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
       {/* Top Header */}
       <View style={styles.header}>
         <TouchableOpacity activeOpacity={0.7} onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>‹ Back</Text>
+          <ChevronLeftIcon color="#3B82F6" size={s(16)} />
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
 
         <View style={styles.headerActions}>
@@ -87,7 +89,8 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
               activeOpacity={0.7}
               onPress={handleCopyToken}
               style={styles.tokenButton}>
-              <Text style={styles.tokenButtonText}>🔑 Token</Text>
+              <KeyIcon color="#FBBF24" size={s(12)} />
+              <Text style={styles.tokenButtonText}>Token</Text>
             </TouchableOpacity>
           ) : null}
 
@@ -95,7 +98,8 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
             activeOpacity={0.7}
             onPress={handleCopyCurl}
             style={styles.headerActionButton}>
-            <Text style={styles.headerActionText}>📋 cURL</Text>
+            <CopyIcon color="#60A5FA" size={s(12)} />
+            <Text style={styles.headerActionText}>cURL</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -280,7 +284,8 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
               activeOpacity={0.8}
               onPress={handleCopyCurl}
               style={styles.copyCurlButton}>
-              <Text style={styles.copyCurlButtonText}>📋 Copy cURL to Clipboard</Text>
+              <CopyIcon color="#FFFFFF" size={s(14)} />
+              <Text style={styles.copyCurlButtonText}>Copy cURL to Clipboard</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -291,13 +296,16 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
 
 const styles = StyleSheet.create({
   backButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingHorizontal: s(8),
     paddingVertical: vs(6),
   },
   backButtonText: {
     color: '#3B82F6',
-    fontSize: fs(16),
+    fontSize: fs(15),
     fontWeight: '600',
+    marginLeft: s(4),
   },
   card: {
     backgroundColor: '#1E1E1E',
@@ -328,6 +336,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2563EB',
     borderRadius: ms(8),
+    flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: vs(12),
   },
@@ -335,6 +344,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: fs(14),
     fontWeight: '600',
+    marginLeft: s(6),
   },
   copySmallButton: {
     backgroundColor: '#374151',
@@ -390,16 +400,19 @@ const styles = StyleSheet.create({
     paddingVertical: vs(8),
   },
   headerActionButton: {
+    alignItems: 'center',
     backgroundColor: '#27272A',
     borderRadius: ms(6),
+    flexDirection: 'row',
     marginLeft: s(8),
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
   },
   headerActionText: {
-    color: '#E4E4E7',
+    color: '#60A5FA',
     fontSize: fs(12),
     fontWeight: '600',
+    marginLeft: s(4),
   },
   headerActions: {
     alignItems: 'center',
@@ -499,10 +512,12 @@ const styles = StyleSheet.create({
     color: '#3B82F6',
   },
   tokenButton: {
+    alignItems: 'center',
     backgroundColor: 'rgba(245, 158, 11, 0.2)',
     borderColor: '#F59E0B',
     borderRadius: ms(6),
     borderWidth: 1,
+    flexDirection: 'row',
     marginLeft: s(8),
     paddingHorizontal: s(10),
     paddingVertical: vs(5),
@@ -511,6 +526,7 @@ const styles = StyleSheet.create({
     color: '#FBBF24',
     fontSize: fs(12),
     fontWeight: '600',
+    marginLeft: s(4),
   },
   urlBanner: {
     backgroundColor: '#18181B',

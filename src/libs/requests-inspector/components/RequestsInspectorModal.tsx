@@ -17,6 +17,7 @@ import { useNetworkStore } from '../networkStore';
 import { NetworkLog } from '../types';
 import { fs, ms, s, vs } from '../utils/responsive';
 import { useSafeDeviceInsets } from '../utils/safeArea';
+import { CloseIcon, EmptyBoxIcon, KeyIcon, NetworkIcon, TrashIcon } from './Icons';
 import { RequestDetailView } from './RequestDetailView';
 import { RequestItem } from './RequestItem';
 
@@ -109,7 +110,10 @@ const ModalContent: FC = () => {
           {/* Top Bar */}
           <View style={styles.topBar}>
             <View style={styles.titleGroup}>
-              <Text style={styles.appTitle}>🕵️ Network Inspector</Text>
+              <View style={styles.titleRow}>
+                <NetworkIcon color="#60A5FA" size={s(16)} />
+                <Text style={styles.appTitle}>Network Inspector</Text>
+              </View>
               <Text style={styles.subTitle}>
                 {logs.length} {logs.length === 1 ? 'request' : 'requests'}
               </Text>
@@ -120,21 +124,23 @@ const ModalContent: FC = () => {
                 activeOpacity={0.7}
                 onPress={handleCopyLatestToken}
                 style={styles.actionButtonToken}>
-                <Text style={styles.actionTextToken}>🔑 Token</Text>
+                <KeyIcon color="#FBBF24" size={s(12)} />
+                <Text style={styles.actionTextToken}>Token</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={clearLogs}
                 style={styles.actionButtonClear}>
-                <Text style={styles.actionTextClear}>🗑️ Clear</Text>
+                <TrashIcon color="#EF4444" size={s(12)} />
+                <Text style={styles.actionTextClear}>Clear</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={handleClose}
                 style={styles.actionButtonClose}>
-                <Text style={styles.actionTextClose}>✕</Text>
+                <CloseIcon color="#A1A1AA" size={s(14)} />
               </TouchableOpacity>
             </View>
           </View>
@@ -169,12 +175,13 @@ const ModalContent: FC = () => {
               activeOpacity={0.7}
               onPress={() => setFilter('ERROR')}
               style={[styles.filterChip, filter === 'ERROR' && styles.filterChipErrorActive]}>
+              <View style={[styles.filterDot, styles.filterDotError]} />
               <Text
                 style={[
                   styles.filterChipText,
                   filter === 'ERROR' && styles.filterChipTextErrorActive,
                 ]}>
-                🔴 Errors ({errorCount})
+                Errors ({errorCount})
               </Text>
             </TouchableOpacity>
 
@@ -182,12 +189,13 @@ const ModalContent: FC = () => {
               activeOpacity={0.7}
               onPress={() => setFilter('SUCCESS')}
               style={[styles.filterChip, filter === 'SUCCESS' && styles.filterChipSuccessActive]}>
+              <View style={[styles.filterDot, styles.filterDotSuccess]} />
               <Text
                 style={[
                   styles.filterChipText,
                   filter === 'SUCCESS' && styles.filterChipTextSuccessActive,
                 ]}>
-                🟢 Success ({successCount})
+                Success ({successCount})
               </Text>
             </TouchableOpacity>
           </View>
@@ -200,7 +208,7 @@ const ModalContent: FC = () => {
             keyExtractor={keyExtractor}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
-                <Text style={styles.emptyIcon}>🔍</Text>
+                <EmptyBoxIcon color="#3F3F46" size={s(44)} />
                 <Text style={styles.emptyTitle}>No Requests Recorded</Text>
                 <Text style={styles.emptySub}>
                   {searchQuery
@@ -249,8 +257,10 @@ export const RequestsInspectorModal: FC = () => {
 
 const styles = StyleSheet.create({
   actionButtonClear: {
+    alignItems: 'center',
     backgroundColor: '#27272A',
     borderRadius: ms(6),
+    flexDirection: 'row',
     marginRight: s(6),
     paddingHorizontal: s(8),
     paddingVertical: vs(5),
@@ -264,10 +274,12 @@ const styles = StyleSheet.create({
     width: s(28),
   },
   actionButtonToken: {
+    alignItems: 'center',
     backgroundColor: 'rgba(245, 158, 11, 0.15)',
     borderColor: '#F59E0B',
     borderRadius: ms(6),
     borderWidth: 1,
+    flexDirection: 'row',
     marginRight: s(6),
     paddingHorizontal: s(8),
     paddingVertical: vs(5),
@@ -276,21 +288,19 @@ const styles = StyleSheet.create({
     color: '#EF4444',
     fontSize: fs(12),
     fontWeight: '600',
-  },
-  actionTextClose: {
-    color: '#A1A1AA',
-    fontSize: fs(14),
-    fontWeight: '700',
+    marginLeft: s(4),
   },
   actionTextToken: {
     color: '#FBBF24',
     fontSize: fs(12),
     fontWeight: '600',
+    marginLeft: s(4),
   },
   appTitle: {
     color: '#F4F4F5',
     fontSize: fs(15),
     fontWeight: '700',
+    marginLeft: s(6),
   },
   container: {
     backgroundColor: '#121212',
@@ -301,10 +311,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: vs(60),
     paddingHorizontal: s(32),
-  },
-  emptyIcon: {
-    fontSize: fs(36),
-    marginBottom: vs(12),
   },
   emptySub: {
     color: '#71717A',
@@ -317,12 +323,15 @@ const styles = StyleSheet.create({
     fontSize: fs(16),
     fontWeight: '600',
     marginBottom: vs(6),
+    marginTop: vs(12),
   },
   filterChip: {
+    alignItems: 'center',
     backgroundColor: '#1E1E1E',
     borderColor: '#2A2A2A',
     borderRadius: ms(16),
     borderWidth: 1,
+    flexDirection: 'row',
     marginRight: s(8),
     paddingHorizontal: s(12),
     paddingVertical: vs(6),
@@ -352,6 +361,18 @@ const styles = StyleSheet.create({
   },
   filterChipTextSuccessActive: {
     color: '#D1FAE5',
+  },
+  filterDot: {
+    borderRadius: s(3.5),
+    height: s(7),
+    marginRight: s(6),
+    width: s(7),
+  },
+  filterDotError: {
+    backgroundColor: '#EF4444',
+  },
+  filterDotSuccess: {
+    backgroundColor: '#10B981',
   },
   filterRow: {
     flexDirection: 'row',
@@ -386,6 +407,10 @@ const styles = StyleSheet.create({
   },
   titleGroup: {
     flex: 1,
+  },
+  titleRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   topActions: {
     alignItems: 'center',

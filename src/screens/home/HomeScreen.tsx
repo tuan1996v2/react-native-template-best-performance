@@ -273,7 +273,7 @@ const HomeScreen = () => {
           <View style={styles.grid}>
             <FeatureCard
               title="Theme Mode"
-              subtitle={mode === 'light' ? 'Light ☀️' : 'Dark 🌙'}
+              subtitle={mode === 'light' ? 'Light Mode' : 'Dark Mode'}
               icon={IconTheme}
               color={theme.primary}
               onPress={handleToggleTheme}

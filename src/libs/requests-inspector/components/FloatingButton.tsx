@@ -11,6 +11,7 @@ import Animated, {
 import { useNetworkStore } from '../networkStore';
 import { fs, ms, s, vs } from '../utils/responsive';
 import { useSafeDeviceInsets } from '../utils/safeArea';
+import { NetworkIcon } from './Icons';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -80,7 +81,7 @@ export const FloatingButton: FC = () => {
       <GestureHandlerRootView style={styles.gestureRoot}>
         <GestureDetector gesture={gesture}>
           <View style={styles.floatingButton}>
-            <Text style={styles.iconText}>🕵️</Text>
+            <NetworkIcon color="#60A5FA" size={s(24)} />
             <View style={styles.countBadge}>
               <Text style={styles.countText}>{logs.length}</Text>
             </View>
@@ -147,8 +148,5 @@ const styles = StyleSheet.create({
   gestureRoot: {
     height: BUTTON_SIZE,
     width: BUTTON_SIZE,
-  },
-  iconText: {
-    fontSize: fs(20),
   },
 });
