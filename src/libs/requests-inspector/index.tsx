@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { FloatingButton } from './components/FloatingButton';
 import { RequestsInspectorModal } from './components/RequestsInspectorModal';
@@ -18,11 +19,13 @@ export const RequestsInspector: FC<RequestsInspectorProps> = ({ children, enable
   }
 
   return (
-    <View style={styles.container}>
-      {children}
-      <FloatingButton />
-      <RequestsInspectorModal />
-    </View>
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        {children}
+        <FloatingButton />
+        <RequestsInspectorModal />
+      </View>
+    </SafeAreaProvider>
   );
 };
 
@@ -41,3 +44,4 @@ export {
 } from './interceptor';
 export { useNetworkStore } from './networkStore';
 export * from './types';
+export { useSafeDeviceInsets } from './utils/safeArea';

@@ -3,24 +3,24 @@ import {
   Alert,
   FlatList,
   Modal,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { fs, ms, s, vs } from '../utils/responsive';
 import { copyToClipboard, extractAuthToken } from '../clipboardHelper';
 import { useNetworkStore } from '../networkStore';
 import { NetworkLog } from '../types';
+import { fs, ms, s, vs } from '../utils/responsive';
+import { useSafeDeviceInsets } from '../utils/safeArea';
 import { RequestDetailView } from './RequestDetailView';
 import { RequestItem } from './RequestItem';
 
-export const RequestsInspectorModal: FC = () => {
-  const isVisible = useNetworkStore(state => state.isModalVisible);
-  const setVisible = useNetworkStore(state => state.setModalVisible);
+const ModalContent: FC = () => {
   const logs = useNetworkStore(state => state.logs);
   const selectedLogId = useNetworkStore(state => state.selectedLogId);
   const setSelectedLogId = useNetworkStore(state => state.setSelectedLogId);
@@ -29,6 +29,19 @@ export const RequestsInspectorModal: FC = () => {
   const searchQuery = useNetworkStore(state => state.searchQuery);
   const setSearchQuery = useNetworkStore(state => state.setSearchQuery);
   const clearLogs = useNetworkStore(state => state.clearLogs);
+  const setVisible = useNetworkStore(state => state.setModalVisible);
+
+  const insets = useSafeDeviceInsets();
+
+  const safeContainerStyle = useMemo(
+    () => ({
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right,
+    }),
+    [insets],
+  );
 
   const selectedLog = useMemo(
     () => logs.find(item => item.id === selectedLogId),
@@ -86,6 +99,136 @@ export const RequestsInspectorModal: FC = () => {
 
   const keyExtractor = useCallback((item: NetworkLog) => item.id, []);
 
+  return (
+    <View style={[styles.safeArea, safeContainerStyle]}>
+      <StatusBar backgroundColor="#121212" barStyle="light-content" translucent />
+      {selectedLog ? (
+        <RequestDetailView log={selectedLog} onBack={() => setSelectedLogId(null)} />
+      ) : (
+        <View style={styles.container}>
+          {/* Top Bar */}
+          <View style={styles.topBar}>
+            <View style={styles.titleGroup}>
+              <Text style={styles.appTitle}>🕵️ Network Inspector</Text>
+              <Text style={styles.subTitle}>
+                {logs.length} {logs.length === 1 ? 'request' : 'requests'}
+              </Text>
+            </View>
+
+            <View style={styles.topActions}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={handleCopyLatestToken}
+                style={styles.actionButtonToken}>
+                <Text style={styles.actionTextToken}>🔑 Token</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={clearLogs}
+                style={styles.actionButtonClear}>
+                <Text style={styles.actionTextClear}>🗑️ Clear</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={handleClose}
+                style={styles.actionButtonClose}>
+                <Text style={styles.actionTextClose}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Search Input */}
+          <View style={styles.searchContainer}>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              onChangeText={setSearchQuery}
+              placeholder="Search URL or method (e.g. /auth, POST)..."
+              placeholderTextColor="#71717A"
+              style={styles.searchInput}
+              value={searchQuery}
+            />
+          </View>
+
+          {/* Filter Chips */}
+          <View style={styles.filterRow}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setFilter('ALL')}
+              style={[styles.filterChip, filter === 'ALL' && styles.filterChipActive]}>
+              <Text
+                style={[styles.filterChipText, filter === 'ALL' && styles.filterChipTextActive]}>
+                All ({logs.length})
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setFilter('ERROR')}
+              style={[styles.filterChip, filter === 'ERROR' && styles.filterChipErrorActive]}>
+              <Text
+                style={[
+                  styles.filterChipText,
+                  filter === 'ERROR' && styles.filterChipTextErrorActive,
+                ]}>
+                🔴 Errors ({errorCount})
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setFilter('SUCCESS')}
+              style={[styles.filterChip, filter === 'SUCCESS' && styles.filterChipSuccessActive]}>
+              <Text
+                style={[
+                  styles.filterChipText,
+                  filter === 'SUCCESS' && styles.filterChipTextSuccessActive,
+                ]}>
+                🟢 Success ({successCount})
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* List */}
+          <FlatList
+            contentContainerStyle={styles.listContent}
+            data={filteredLogs}
+            initialNumToRender={10}
+            keyExtractor={keyExtractor}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyIcon}>🔍</Text>
+                <Text style={styles.emptyTitle}>No Requests Recorded</Text>
+                <Text style={styles.emptySub}>
+                  {searchQuery
+                    ? 'No requests match your current search query.'
+                    : 'Trigger an API call from the app to inspect network traffic.'}
+                </Text>
+              </View>
+            }
+            maxToRenderPerBatch={10}
+            renderItem={renderItem}
+            windowSize={5}
+          />
+        </View>
+      )}
+    </View>
+  );
+};
+
+export const RequestsInspectorModal: FC = () => {
+  const isVisible = useNetworkStore(state => state.isModalVisible);
+  const setVisible = useNetworkStore(state => state.setModalVisible);
+  const setSelectedLogId = useNetworkStore(state => state.setSelectedLogId);
+
+  const handleClose = useCallback(() => {
+    setSelectedLogId(null);
+    setVisible(false);
+  }, [setSelectedLogId, setVisible]);
+
   if (!isVisible) {
     return null;
   }
@@ -97,121 +240,9 @@ export const RequestsInspectorModal: FC = () => {
       onRequestClose={handleClose}
       statusBarTranslucent
       visible={isVisible}>
-      <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.safeArea}>
-        {selectedLog ? (
-          <RequestDetailView log={selectedLog} onBack={() => setSelectedLogId(null)} />
-        ) : (
-          <View style={styles.container}>
-            {/* Top Bar */}
-            <View style={styles.topBar}>
-              <View style={styles.titleGroup}>
-                <Text style={styles.appTitle}>🕵️ Network Inspector</Text>
-                <Text style={styles.subTitle}>
-                  {logs.length} {logs.length === 1 ? 'request' : 'requests'}
-                </Text>
-              </View>
-
-              <View style={styles.topActions}>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={handleCopyLatestToken}
-                  style={styles.actionButtonToken}>
-                  <Text style={styles.actionTextToken}>🔑 Token</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={clearLogs}
-                  style={styles.actionButtonClear}>
-                  <Text style={styles.actionTextClear}>🗑️ Clear</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={handleClose}
-                  style={styles.actionButtonClose}>
-                  <Text style={styles.actionTextClose}>✕</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* Search Input */}
-            <View style={styles.searchContainer}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                clearButtonMode="while-editing"
-                onChangeText={setSearchQuery}
-                placeholder="Search URL or method (e.g. /auth, POST)..."
-                placeholderTextColor="#71717A"
-                style={styles.searchInput}
-                value={searchQuery}
-              />
-            </View>
-
-            {/* Filter Chips */}
-            <View style={styles.filterRow}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setFilter('ALL')}
-                style={[styles.filterChip, filter === 'ALL' && styles.filterChipActive]}>
-                <Text
-                  style={[styles.filterChipText, filter === 'ALL' && styles.filterChipTextActive]}>
-                  All ({logs.length})
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setFilter('ERROR')}
-                style={[styles.filterChip, filter === 'ERROR' && styles.filterChipErrorActive]}>
-                <Text
-                  style={[
-                    styles.filterChipText,
-                    filter === 'ERROR' && styles.filterChipTextErrorActive,
-                  ]}>
-                  🔴 Errors ({errorCount})
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => setFilter('SUCCESS')}
-                style={[styles.filterChip, filter === 'SUCCESS' && styles.filterChipSuccessActive]}>
-                <Text
-                  style={[
-                    styles.filterChipText,
-                    filter === 'SUCCESS' && styles.filterChipTextSuccessActive,
-                  ]}>
-                  🟢 Success ({successCount})
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* List */}
-            <FlatList
-              contentContainerStyle={styles.listContent}
-              data={filteredLogs}
-              initialNumToRender={10}
-              keyExtractor={keyExtractor}
-              ListEmptyComponent={
-                <View style={styles.emptyContainer}>
-                  <Text style={styles.emptyIcon}>🔍</Text>
-                  <Text style={styles.emptyTitle}>No Requests Recorded</Text>
-                  <Text style={styles.emptySub}>
-                    {searchQuery
-                      ? 'No requests match your current search query.'
-                      : 'Trigger an API call from the app to inspect network traffic.'}
-                  </Text>
-                </View>
-              }
-              maxToRenderPerBatch={10}
-              renderItem={renderItem}
-              windowSize={5}
-            />
-          </View>
-        )}
-      </SafeAreaView>
+      <SafeAreaProvider>
+        <ModalContent />
+      </SafeAreaProvider>
     </Modal>
   );
 };

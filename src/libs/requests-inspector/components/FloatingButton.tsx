@@ -10,25 +10,29 @@ import Animated, {
 
 import { useNetworkStore } from '../networkStore';
 import { fs, ms, s, vs } from '../utils/responsive';
+import { useSafeDeviceInsets } from '../utils/safeArea';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const BUTTON_SIZE = s(54);
-const MARGIN = s(12);
-const MIN_X = MARGIN;
-const MAX_X = SCREEN_WIDTH - BUTTON_SIZE - MARGIN;
-const MIN_Y = vs(60);
-const MAX_Y = SCREEN_HEIGHT - BUTTON_SIZE - vs(80);
 
 export const FloatingButton: FC = () => {
   const isEnabled = useNetworkStore(state => state.isEnabled);
   const logs = useNetworkStore(state => state.logs);
   const setModalVisible = useNetworkStore(state => state.setModalVisible);
+  const insets = useSafeDeviceInsets();
 
-  const translateX = useSharedValue(MAX_X);
-  const translateY = useSharedValue(SCREEN_HEIGHT * 0.45);
-  const prevX = useSharedValue(MAX_X);
-  const prevY = useSharedValue(SCREEN_HEIGHT * 0.45);
+  const minX = insets.left + s(8);
+  const maxX = SCREEN_WIDTH - BUTTON_SIZE - insets.right - s(8);
+  const minY = insets.top + vs(6);
+  const maxY = SCREEN_HEIGHT - BUTTON_SIZE - insets.bottom - vs(6);
+
+  const initialY = Math.min(Math.max(SCREEN_HEIGHT * 0.45, minY), maxY);
+
+  const translateX = useSharedValue(maxX);
+  const translateY = useSharedValue(initialY);
+  const prevX = useSharedValue(maxX);
+  const prevY = useSharedValue(initialY);
 
   const openModal = useCallback(() => {
     setModalVisible(true);
@@ -45,11 +49,11 @@ export const FloatingButton: FC = () => {
       const nextX = prevX.value + event.translationX;
       const nextY = prevY.value + event.translationY;
 
-      translateX.value = Math.min(Math.max(nextX, MIN_X), MAX_X);
-      translateY.value = Math.min(Math.max(nextY, MIN_Y), MAX_Y);
+      translateX.value = Math.min(Math.max(nextX, minX), maxX);
+      translateY.value = Math.min(Math.max(nextY, minY), maxY);
     })
     .onEnd(() => {
-      const targetX = translateX.value < SCREEN_WIDTH / 2 - BUTTON_SIZE / 2 ? MIN_X : MAX_X;
+      const targetX = translateX.value < SCREEN_WIDTH / 2 - BUTTON_SIZE / 2 ? minX : maxX;
       translateX.value = withSpring(targetX, {
         damping: 18,
         stiffness: 140,
