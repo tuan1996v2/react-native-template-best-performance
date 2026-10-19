@@ -47,6 +47,10 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 | 🖐️ **Swipeable Items** | Hệ thống vuốt chạm mượt mà (Left/Right/Full Swipe) — xử lý 100% trên UI thread | ✅ |
 | 📸 **Pro Camera System** | Camera module zero-re-render, focus on tap, background gallery save | ✅ |
 | 🔢 **Premium OTP System** | OTP input 4 phong cách cao cấp, auto-fill SMS, zero-re-render countdown | ✅ |
+| 🕵️ **In-App Network Inspector** | Debugger HTTP/HTTPS nội bộ (`react-native-requests-inspector`): bong bóng nổi draggable, cURL/Token copy 1 chạm, filter & search, zero-dependency | ✅ |
+| 🌐 **Network API Simulator** | Mô phỏng 12 kịch bản API thực tế (Bearer Auth, POST, PUT, DELETE, 404, 500, Timeout, Slow 3s, Heavy 50KB, Concurrent Blast x5) | ✅ |
+| 💬 **Realtime Chat & Simulator** | Phòng chat 1v1 & nhóm thực chiến + Simulator 10 kịch bản test stress test `ChatToastManager` (>150 msg/min) | ✅ |
+| 🤖 **AI Agent Coding Skills** | Bộ kỹ năng `.agents/skills/rn-best-performance-dev` giúp AI coding assistants (Antigravity, Cursor, Claude) sinh code chuẩn template 100% | ✅ |
 
 ---
 
@@ -54,6 +58,9 @@ Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ
 
 ```
 template/
+├── .agents/                   # 🤖 Bộ kỹ năng AI Agent tích hợp
+│   └── skills/
+│       └── rn-best-performance-dev/ # Quy chuẩn code, zero re-render, git commit
 ├── App.tsx                    # 🏠 Entry point — đơn giản, sạch sẽ
 ├── index.js                   # 📌 Đăng ký app
 ├── build.sh                   # 🏗️ Script build multi-env (dev/prod)
@@ -62,20 +69,20 @@ template/
 │
 ├── src/
 │   ├── api/                   # 🌐 API Layer
-│   │   ├── apiClient.ts       #     Axios client (interceptors, token, v.v.)
+│   │   ├── apiClient.ts       #     Axios client (interceptors, gắn requests-inspector)
 │   │   └── endpoints.ts       #     Danh sách API endpoints
 │   │
 │   ├── assets/                # 🎨 Tài nguyên tĩnh
 │   │   ├── animations/        #     Lottie hoặc animations
 │   │   ├── bootsplash/        #     Assets cho splash screen
 │   │   ├── fonts/             #     Custom fonts
-│   │   ├── icon/              #     ✨ SVG Icon System (react-native-svg)
+│   │   ├── icon/              #     ✨ SVG Icon System (react-native-svg, IconNetwork, ...)
 │   │   ├── images/            #     Hình ảnh
 │   │   └── logo.png           #     Logo app
 │   │
 │   ├── components/            # 🧩 Components tái sử dụng
 │   │   ├── portals/           #     Components "bay" trên mọi màn hình
-│   │   │   ├── AppProvider.tsx         # Provider tổng (SafeArea, i18n, FCM, ...)
+│   │   │   ├── AppProvider.tsx         # Provider tổng (SafeArea, i18n, FCM, Inspector, ...)
 │   │   │   ├── GlobalLoadingComponent  # Loading overlay toàn app
 │   │   │   └── alert/                  # Custom Alert + Toast system
 │   │   │       ├── CustomAlert.tsx
@@ -91,7 +98,8 @@ template/
 │   │       ├── skeleton/      #     Skeleton loading placeholder
 │   │       ├── superGallery/  #     🖼️ Full-screen image viewer (zoom + swipe)
 │   │       ├── superBanner/   #     Carousel auto-play với parallax
-│   │       └── swipeItem/     #     🖐️ Swipeable Item (Gesture + Reanimated)
+│   │       ├── swipeItem/     #     🖐️ Swipeable Item (Gesture + Reanimated)
+│   │       └── toast/         #     💬 ChatToastManager + ChatToastContainer
 │   │
 │   ├── env/                   # ⚙️ Cấu hình môi trường
 │   │   ├── index.tsx          #     Export ENV, BASE_URL, IS_DEV, ...
@@ -112,19 +120,26 @@ template/
 │   │       ├── vi.json        #     🇻🇳 Tiếng Việt
 │   │       └── en.json        #     🇺🇸 English
 │   │
+│   ├── libs/                  # 📦 Thư viện nội bộ độc lập
+│   │   └── requests-inspector/#     🕵️ In-app HTTP/HTTPS Network Inspector (Floating bubble, cURL copy, token copy)
+│   │
 │   ├── navigation/            # 🧭 Điều hướng
 │   │   ├── AppNavigation.tsx  #     Stack navigator (Static API v8)
 │   │   ├── NavigationService  #     navigate(), push(), replace(), back() — gọi ở mọi nơi
 │   │   └── NavDebugger.tsx    #     Widget debug hiển thị tên màn hình + thời gian chuyển
 │   │
 │   ├── screens/               # 📱 Màn hình
-│   │   ├── home/
-│   │   │   ├── HomeScreen.tsx      # Trang chủ — banner, feature grid, demo hub
-│   │   │   └── MyModalScreen.tsx   # Modal screen mẫu (transparent + fade)
-│   │   └── detail/
-│   │       ├── DetailScreen.tsx    # Social Feed — collapsible header, Animated.FlatList
-│   │       ├── HeavyItem.tsx       # SocialPostCard — optimized với memo comparator
-│   │       └── StoryScreen.tsx     # 🎬 Story viewer chuyên nghiệp (Animated progress, Carousel)
+│   │   ├── home/              #     Trang chủ — banner, feature grid, demo hub
+│   │   │   ├── HomeScreen.tsx
+│   │   │   └── MyModalScreen.tsx
+│   │   ├── detail/            #     DetailScreen, HeavyItem, StoryScreen
+│   │   ├── networkSimulator/  #     🌐 Mô phỏng 12 kịch bản API thực tế
+│   │   ├── chatDemo/          #     💬 Màn hình chat 1v1 & nhóm thực tế
+│   │   ├── chatSimulator/     #     🧪 Giả lập spam tin nhắn (>150 msg/min)
+│   │   ├── camera/            #     📸 Pro Camera Native Module
+│   │   ├── qrScan/            #     🔍 QR/Barcode Scanner
+│   │   ├── otp/               #     🔢 Premium OTP input
+│   │   └── swipeable/         #     🖐️ Swipe-to-action list
 │   │
 │   ├── store/                 # 🗃️ State Management (Zustand)
 │   │   ├── useLoadingStore    #     Global loading state (gọi được ngoài component)
@@ -559,7 +574,6 @@ Hệ thống quét mã được thiết kế theo mô hình **Hook-based Archite
 > - **Responsive Viewfinder**: Khung quét (Overlay) được tính toán tỉ lệ vàng bằng `Responsive.ts`, tự động căn giữa và co giãn theo mọi kích thước màn hình mà không bị méo.
 > - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
 > - **Flashlight Control**: Điều khiển đèn flash native mượt mà, tự động dọn dẹp trạng thái khi thoát màn hình để tiết kiệm pin.
-> - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
 
 ### 🔢 Premium OTP & High-Performance Countdown (Zero Re-render)
 
@@ -577,6 +591,98 @@ Hệ thống OTP được thiết kế chuẩn "Premium UX" với sự kết h�
 > - **Hiệu năng tuyệt đối**: Hầu hết các bộ đếm ngược trên thị trường đều dùng `setInterval` gây re-render component mỗi giây. Ở đây, chúng tôi dùng `AnimatedTextInput` của Reanimated để cập nhật text trực tiếp trên UI thread. **Zero re-render!**
 > - **Trải nghiệm mượt mà**: Con trỏ chuột (FakeCaret) được giả lập bằng animation Reanimated, nhấp nháy êm ái và không bao giờ bị lag kể cả khi máy đang xử lý tác vụ nặng.
 > - **An toàn & Chính xác**: Logic đếm ngược dựa trên thời gian hệ thống, đảm bảo không bị sai lệch dù người dùng có thoát app ra ngoài.
+
+### 🕵️ In-App Network Inspector (react-native-requests-inspector)
+
+Không cần cài đặt Charles Proxy, Wireshark hay cấu hình Flipper rối rắm — template tích hợp sẵn bộ **Network Inspector** chuyên nghiệp hoạt động trực tiếp trong app (cả máy ảo và máy thật release/debug test).
+
+Thư viện được đóng gói độc lập tại `src/libs/requests-inspector/` và open-source trên GitHub ([tuan1996v2/react-native-requests-inspector](https://github.com/tuan1996v2/react-native-requests-inspector)).
+
+```tsx
+import { attachRequestsInspector, requestsInspectorFetch, RequestsInspectorModal } from '@/libs/requests-inspector';
+import apiClient from '@/api/apiClient';
+
+// 1. Tự động hook toàn bộ Axios request/response
+attachRequestsInspector(apiClient);
+
+// 2. Tự động hook Fetch API nếu dùng native fetch
+const res = await requestsInspectorFetch('https://api.example.com/users', { method: 'GET' });
+
+// 3. Tích hợp Modal & Floating Bubble tại AppProvider (Root)
+<RequestsInspectorModal
+  visible={isInspectorVisible}
+  onClose={() => setInspectorVisible(false)}
+  floatingButton={true} // Bong bóng nổi kéo thả
+/>
+```
+
+> 🎯 **Tính năng "vũ khí bí mật"**:
+> - 🎈 **Floating Bubble Edge-Snapping**: Nút tròn nổi di động, tự động hít vào mép trái/phải màn hình khi thả tay, kèm badge đếm số request mới và hiệu ứng pulse viền mượt mà.
+> - ⚡ **1-Tap Quick Actions**:
+>   - 📋 **Copy cURL**: Bấm 1 phát ra ngay lệnh cURL chuẩn chỉnh (headers, body, method, url) để paste thẳng vào Terminal hoặc Postman debug.
+>   - 🔑 **Copy Bearer Token**: Tự động bóc tách token từ header `Authorization: Bearer <token>` mà không cần bôi đen thủ công.
+>   - 📄 **Copy JSON Response**: Format JSON đẹp đẽ, sẵn sàng gửi cho Backend dev đối soát.
+> - 🔍 **Smart Search & Filters**: Tìm kiếm URL tức thì; lọc nhanh theo Method (`ALL`, `GET`, `POST`, `PUT`, `PATCH`, `DELETE`) hoặc Status (`2xx`, `4xx`, `5xx`).
+> - ⏸️ **Pause / Resume Capture**: Tạm dừng ghi log khi cần soi kỹ một request mà không bị các polling request khác làm trôi danh sách.
+> - 🛡️ **Zero External Dependency & Bulletproof Insets**: Sử dụng icon vector SVG thuần khiết, tính toán safe area tự động cho iPhone Dynamic Island / Tai thỏ và thanh điều hướng Android 3 nút / cử chỉ.
+
+### 🌐 Network API Simulator (Mô phỏng 12 kịch bản mạng thực chiến)
+
+Màn hình `NetworkSimulatorScreen` được xây dựng để kiểm thử toàn diện khả năng xử lý network của ứng dụng cũng như trải nghiệm sức mạnh của Network Inspector.
+
+```tsx
+// 12 kịch bản API đa dạng sẵn có trong màn hình test:
+// 1. Authenticated GET: Kiểm tra gửi header Authorization Bearer token.
+// 2. POST Entity: Gửi payload JSON tạo mới bản ghi.
+// 3. PUT Resource: Cập nhật toàn diện dữ liệu.
+// 4. PATCH Resource: Cập nhật một phần thuộc tính.
+// 5. DELETE Resource: Thao tác xóa bản ghi với status 200/204.
+// 6. 404 Not Found: Xử lý lỗi Not Found phía client.
+// 7. 500 Server Error: Giả lập lỗi sập máy chủ phía backend.
+// 8. Request Timeout: Kiểm tra cơ chế tự động abort khi mạng quá hạn.
+// 9. Slow Network (3000ms delay): Kiểm thử loading state & đo đạc latency.
+// 10. Query Parameters: Gửi query string phức tạp (?page=1&limit=20&filter=active).
+// 11. Heavy Payload (50KB JSON): Thử thách khả năng render & copy dữ liệu lớn.
+// 12. Native Fetch API: Kiểm tra wrapper requestsInspectorFetch độc lập với Axios.
+// + 🔥 CONCURRENT BLAST (x5): Kích hoạt đồng thời 5 request cùng lúc để stress-test UI.
+```
+
+> 🎯 **Điểm sáng**:
+> - **Giao diện chuẩn Adaptive**: Tương thích hoàn hảo cả Light Theme và Dark Theme, thẻ badge phương thức HTTP phân màu trực quan (`GET` xanh lá, `POST` xanh dương, `PUT` cam, `DELETE` đỏ, `PATCH` tím).
+> - **Chi tiết tức thì**: Bấm vào bất kỳ kịch bản nào, phản hồi hiển thị ngay dưới dạng card chi tiết (Status code, Duration ms, Payload preview) hoặc mở ngay Inspector để xem full log.
+
+### 💬 Realtime Chat & Simulator System
+
+Bên cạnh `ChatToastManager` xử lý gom cụm thông báo siêu tốc (>150 tin/phút), template cung cấp hai màn hình thực chiến hoàn chỉnh:
+
+1. **`ChatDemoScreen`**:
+   - Giao diện trò chuyện thời gian thực hiện đại (1v1 & nhóm), bong bóng chat phân chia người gửi/người nhận.
+   - Hỗ trợ gửi tin nhắn nhanh, trạng thái đã gửi/đã nhận, hiển thị avatar người dùng và chuyển đổi phòng chat mượt mà.
+
+2. **`ChatSimulatorScreen`**:
+   - Môi trường giả lập 10 kịch bản dội bom tin nhắn cực hạn:
+     - *Spam 1v1 dồn dập (10 tin/2s)* → Kiểm tra throttle 1s.
+     - *Nhiều người nhắn cùng lúc* → Kích hoạt burst detection ("3 người đang nhắn tin cho bạn").
+     - *Spam tin nhắn nhóm* → Kích hoạt gom cụm theo phòng ("Nhóm X · Y người · Z tin mới").
+     - *Mention (@bạn) xuyên spam* → Bypass toàn bộ cơ chế throttle, luôn hiển thị ngay lập tức.
+
+### 🤖 AI Agent Coding Skills (.agents/skills)
+
+Bạn dùng **Google Antigravity**, **Cursor**, hay **Claude Code** để code cùng? Template này đã chuẩn bị sẵn bộ skill chuyên nghiệp tại `.agents/skills/rn-best-performance-dev/SKILL.md` để bất kỳ AI nào khi đọc dự án đều tự động tuân thủ 100% triết lý kỹ thuật:
+
+```
+.agents/skills/rn-best-performance-dev/
+└── SKILL.md     # Bộ quy chuẩn vàng cho AI Coding Assistant
+```
+
+> 🎯 **Các quy chuẩn AI bắt buộc phải tuân theo**:
+> 1. **Zero Re-render Rule**: Tuyệt đối không dùng `useState` cho animation, scroll tracking hay countdown. Bắt buộc dùng Reanimated SharedValues, `useImperativeHandle` hoặc `memo` comparator.
+> 2. **100% Responsive Scaling**: Cấm tuyệt đối việc hardcode số pixel tĩnh như `margin: 16`. Mọi kích thước đều phải qua `s()`, `vs()`, `ms()`, `fs()` từ `src/theme/Responsive.ts`.
+> 3. **Theme Token Consistency**: Không inline style, không dùng mã hex `#FFFFFF` trực tiếp trong component. Mọi component đều phải dùng `useStyles(createStyles)` với `AppTheme`.
+> 4. **SVG Icon Vector System**: Sử dụng các icon trong `src/assets/icon/`. Cấm dùng icon font rời (dễ vỡ giao diện trên iOS) hoặc emoji ký tự (bị lỗi dấu `?` trên Android).
+> 5. **Quy chuẩn Git Commit**:
+>    - **Tiêu đề**: Bắt buộc Tiếng Anh theo chuẩn Conventional Commits (`feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`).
+>    - **Nội dung chi tiết**: Bắt buộc Tiếng Việt có dấu, gạch đầu dòng rõ ràng, mô tả chính xác thay đổi kỹ thuật và nghiệp vụ thực tế.
 
 ---
 
@@ -670,6 +776,8 @@ Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
 | **QR Scanner** | 3.1.x | Quét mã vạch & QR siêu tốc (@pushpendersingh) |
 | **Blur & Linear Gradient** | - | UI effects: Làm mờ nền và đổ màu gradient |
 | **Native Menu** | 2.0.x | Context Menu chuẩn Native UI iOS/Android |
+| **Requests Inspector** | 1.0.x | Thư viện in-app HTTP/HTTPS network debugger & packet analyzer (`react-native-requests-inspector`) |
+| **AI Agent Skills** | Built-in | Bộ skill `.agents/skills` tối ưu hóa sinh code cho AI agents (Antigravity/Cursor/Claude) |
 
 ---
 
