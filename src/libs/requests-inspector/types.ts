@@ -26,7 +26,7 @@ export interface NetworkLog extends RequestDetails {
   status: 'pending' | 'success' | 'error';
 }
 
-export type FilterType = 'ALL' | 'ERROR' | 'SUCCESS';
+export type FilterType = 'ALL' | 'ERROR' | 'SUCCESS' | 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface RequestsInspectorProps {
   children: React.ReactNode;

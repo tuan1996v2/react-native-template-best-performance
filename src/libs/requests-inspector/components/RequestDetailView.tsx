@@ -78,7 +78,11 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
     <View style={styles.container}>
       {/* Top Header */}
       <View style={styles.header}>
-        <TouchableOpacity activeOpacity={0.7} onPress={onBack} style={styles.backButton}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          hitSlop={{ top: 12, bottom: 12, left: 10, right: 10 }}
+          onPress={onBack}
+          style={styles.backButton}>
           <ChevronLeftIcon color="#3B82F6" size={s(16)} />
           <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
@@ -87,6 +91,7 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
           {authToken ? (
             <TouchableOpacity
               activeOpacity={0.7}
+              hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
               onPress={handleCopyToken}
               style={styles.tokenButton}>
               <KeyIcon color="#FBBF24" size={s(12)} />
@@ -96,6 +101,7 @@ export const RequestDetailView: FC<RequestDetailViewProps> = ({ log, onBack }) =
 
           <TouchableOpacity
             activeOpacity={0.7}
+            hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
             onPress={handleCopyCurl}
             style={styles.headerActionButton}>
             <CopyIcon color="#60A5FA" size={s(12)} />

@@ -7,6 +7,7 @@ const MAX_LOGS = 50;
 interface NetworkState {
   logs: NetworkLog[];
   isEnabled: boolean;
+  isPaused: boolean;
   isModalVisible: boolean;
   selectedLogId: string | null;
   filter: FilterType;
@@ -23,18 +24,20 @@ interface NetworkState {
   setFilter: (filter: FilterType) => void;
   setSearchQuery: (query: string) => void;
   setEnabled: (enabled: boolean) => void;
+  togglePause: () => void;
 }
 
 export const useNetworkStore = create<NetworkState>((set, get) => ({
   logs: [],
   isEnabled: true,
+  isPaused: false,
   isModalVisible: false,
   selectedLogId: null,
   filter: 'ALL',
   searchQuery: '',
 
   addRequest: req => {
-    if (!get().isEnabled) {
+    if (!get().isEnabled || get().isPaused) {
       return '';
     }
 
@@ -86,4 +89,5 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
   setFilter: filter => set({ filter }),
   setSearchQuery: query => set({ searchQuery: query }),
   setEnabled: enabled => set({ isEnabled: enabled }),
+  togglePause: () => set(state => ({ isPaused: !state.isPaused })),
 }));

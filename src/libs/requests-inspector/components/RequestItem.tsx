@@ -1,8 +1,9 @@
 import React, { FC, memo, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { fs, ms, s, vs } from '../utils/responsive';
 import { NetworkLog } from '../types';
+import { fs, ms, s, vs } from '../utils/responsive';
+import { WarningIcon } from './Icons';
 
 interface RequestItemProps {
   log: NetworkLog;
@@ -64,6 +65,20 @@ export const RequestItem: FC<RequestItemProps> = memo(({ log, onPress }) => {
     return '...';
   }, [log.response?.durationMs]);
 
+  const durationStyle = useMemo(() => {
+    const msVal = log.response?.durationMs;
+    if (msVal === undefined) {
+      return styles.durationNeutral;
+    }
+    if (msVal < 500) {
+      return styles.durationFast;
+    }
+    if (msVal < 1500) {
+      return styles.durationMedium;
+    }
+    return styles.durationSlow;
+  }, [log.response?.durationMs]);
+
   const formattedUrl = useMemo(() => {
     try {
       const parsed = new URL(log.url);
@@ -92,7 +107,7 @@ export const RequestItem: FC<RequestItemProps> = memo(({ log, onPress }) => {
         </View>
 
         <View style={styles.timeGroup}>
-          <Text style={styles.durationText}>{durationText}</Text>
+          <Text style={[styles.durationText, durationStyle]}>{durationText}</Text>
           <Text style={styles.timestampText}>{formatTime(log.sentTime)}</Text>
         </View>
       </View>
@@ -105,9 +120,12 @@ export const RequestItem: FC<RequestItemProps> = memo(({ log, onPress }) => {
       </View>
 
       {log.response?.error ? (
-        <Text numberOfLines={1} style={styles.errorText}>
-          ⚠️ {log.response.error}
-        </Text>
+        <View style={styles.errorRow}>
+          <WarningIcon color="#F87171" size={s(12)} />
+          <Text numberOfLines={1} style={styles.errorText}>
+            {log.response.error}
+          </Text>
+        </View>
       ) : null}
     </TouchableOpacity>
   );
@@ -127,18 +145,35 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: vs(8),
     marginHorizontal: s(12),
-    padding: ms(12),
+    padding: ms(13),
+  },
+  durationFast: {
+    color: '#34D399',
+  },
+  durationMedium: {
+    color: '#FBBF24',
+  },
+  durationNeutral: {
+    color: '#9CA3AF',
+  },
+  durationSlow: {
+    color: '#F87171',
   },
   durationText: {
-    color: '#9CA3AF',
     fontSize: fs(11),
     fontWeight: '600',
     marginRight: s(8),
   },
+  errorRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: vs(5),
+  },
   errorText: {
     color: '#F87171',
+    flex: 1,
     fontSize: fs(11),
-    marginTop: vs(4),
+    marginLeft: s(4),
   },
   hostText: {
     color: '#6B7280',

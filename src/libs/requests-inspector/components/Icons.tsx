@@ -97,3 +97,48 @@ export const EmptyBoxIcon: FC<IconProps> = ({ size = 48, color = '#3F3F46' }) =>
     />
   </Svg>
 );
+
+export const PauseIcon: FC<IconProps> = ({ size = 14, color = '#E4E4E7' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Rect x="5" y="4" width="4" height="16" rx="1.5" fill={color} />
+    <Rect x="15" y="4" width="4" height="16" rx="1.5" fill={color} />
+  </Svg>
+);
+
+export const PlayIcon: FC<IconProps> = ({ size = 14, color = '#10B981' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M6 4.5l14 7.5-14 7.5V4.5z" fill={color} />
+  </Svg>
+);
+
+export const SearchIcon: FC<IconProps> = ({ size = 16, color = '#71717A' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="11" cy="11" r="7" stroke={color} strokeWidth="2" />
+    <Path d="M20 20l-4-4" stroke={color} strokeWidth="2" strokeLinecap="round" />
+  </Svg>
+);
+
+export const ShareIcon: FC<IconProps> = ({ size = 14, color = '#60A5FA' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6l-4-4-4 4m4-4v13"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const WarningIcon: FC<IconProps> = ({ size = 12, color = '#F87171' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path d="M12 9v4m0 4h.01" stroke={color} strokeWidth="2" strokeLinecap="round" />
+  </Svg>
+);

@@ -3,6 +3,7 @@ import {
   Alert,
   FlatList,
   Modal,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -14,12 +15,32 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { copyToClipboard, extractAuthToken } from '../clipboardHelper';
 import { useNetworkStore } from '../networkStore';
-import { NetworkLog } from '../types';
+import { FilterType, NetworkLog } from '../types';
 import { fs, ms, s, vs } from '../utils/responsive';
 import { useSafeDeviceInsets } from '../utils/safeArea';
-import { CloseIcon, EmptyBoxIcon, KeyIcon, NetworkIcon, TrashIcon } from './Icons';
+import {
+  CloseIcon,
+  EmptyBoxIcon,
+  KeyIcon,
+  NetworkIcon,
+  PauseIcon,
+  PlayIcon,
+  SearchIcon,
+  ShareIcon,
+  TrashIcon,
+} from './Icons';
 import { RequestDetailView } from './RequestDetailView';
 import { RequestItem } from './RequestItem';
+
+const FILTER_ITEMS: { key: FilterType; label: string }[] = [
+  { key: 'ALL', label: 'All' },
+  { key: 'ERROR', label: 'Errors' },
+  { key: 'SUCCESS', label: 'Success' },
+  { key: 'POST', label: 'POST' },
+  { key: 'GET', label: 'GET' },
+  { key: 'PUT', label: 'PUT' },
+  { key: 'DELETE', label: 'DELETE' },
+];
 
 const ModalContent: FC = () => {
   const logs = useNetworkStore(state => state.logs);
@@ -31,6 +52,8 @@ const ModalContent: FC = () => {
   const setSearchQuery = useNetworkStore(state => state.setSearchQuery);
   const clearLogs = useNetworkStore(state => state.clearLogs);
   const setVisible = useNetworkStore(state => state.setModalVisible);
+  const isPaused = useNetworkStore(state => state.isPaused);
+  const togglePause = useNetworkStore(state => state.togglePause);
 
   const insets = useSafeDeviceInsets();
 
@@ -50,9 +73,9 @@ const ModalContent: FC = () => {
   );
 
   const errorCount = useMemo(() => logs.filter(item => item.status === 'error').length, [logs]);
-
   const successCount = useMemo(() => logs.filter(item => item.status === 'success').length, [logs]);
 
+  // Smart Search & Multi-criteria filter
   const filteredLogs = useMemo(() => {
     let result = logs;
 
@@ -60,13 +83,19 @@ const ModalContent: FC = () => {
       result = result.filter(item => item.status === 'error');
     } else if (filter === 'SUCCESS') {
       result = result.filter(item => item.status === 'success');
+    } else if (filter === 'GET' || filter === 'POST' || filter === 'PUT' || filter === 'DELETE') {
+      result = result.filter(item => item.method === filter);
     }
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      result = result.filter(
-        item => item.url.toLowerCase().includes(q) || item.method.toLowerCase().includes(q),
-      );
+      result = result.filter(item => {
+        const urlMatch = item.url.toLowerCase().includes(q);
+        const methodMatch = item.method.toLowerCase().includes(q);
+        const statusMatch = String(item.response?.statusCode ?? '').includes(q);
+        const errorMatch = item.response?.error?.toLowerCase().includes(q) ?? false;
+        return urlMatch || methodMatch || statusMatch || errorMatch;
+      });
     }
 
     return result;
@@ -78,12 +107,42 @@ const ModalContent: FC = () => {
       if (token) {
         const success = await copyToClipboard(token);
         if (success) {
-          Alert.alert('Token Found', 'Latest authorization token copied to clipboard!');
+          Alert.alert('Token Copied', 'Latest Authorization token copied to clipboard!');
           return;
         }
       }
     }
-    Alert.alert('No Token', 'No authorization token found in recorded requests.');
+    Alert.alert('No Token Found', 'No authorization header detected in recorded requests.');
+  }, [logs]);
+
+  const handleExportLogs = useCallback(async () => {
+    if (logs.length === 0) {
+      Alert.alert('No Logs', 'There are no recorded requests to export.');
+      return;
+    }
+
+    const exportData = logs.map(log => ({
+      id: log.id,
+      method: log.method,
+      url: log.url,
+      status: log.response?.statusCode ?? (log.status === 'pending' ? 'PENDING' : 'ERROR'),
+      durationMs: log.response?.durationMs,
+      sentTime: new Date(log.sentTime).toISOString(),
+      headers: log.headers,
+      body: log.body,
+      responseHeaders: log.response?.headers,
+      responseBody: log.response?.body,
+      error: log.response?.error,
+    }));
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const success = await copyToClipboard(jsonString);
+    if (success) {
+      Alert.alert(
+        'Logs Exported',
+        `Successfully exported ${logs.length} request logs and copied JSON dump to clipboard!`,
+      );
+    }
   }, [logs]);
 
   const handleClose = useCallback(() => {
@@ -107,113 +166,177 @@ const ModalContent: FC = () => {
         <RequestDetailView log={selectedLog} onBack={() => setSelectedLogId(null)} />
       ) : (
         <View style={styles.container}>
-          {/* Top Bar */}
+          {/* Top Header */}
           <View style={styles.topBar}>
             <View style={styles.titleGroup}>
               <View style={styles.titleRow}>
-                <NetworkIcon color="#60A5FA" size={s(16)} />
+                <NetworkIcon color="#60A5FA" size={s(18)} />
                 <Text style={styles.appTitle}>Network Inspector</Text>
               </View>
-              <Text style={styles.subTitle}>
-                {logs.length} {logs.length === 1 ? 'request' : 'requests'}
+              <Text style={isPaused ? styles.subTitlePaused : styles.subTitle}>
+                {isPaused
+                  ? `PAUSED • ${logs.length} requests`
+                  : `${logs.length} ${logs.length === 1 ? 'request' : 'requests'}`}
               </Text>
             </View>
 
-            <View style={styles.topActions}>
+            <View style={styles.topControls}>
+              {/* Pause / Resume Button */}
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={handleCopyLatestToken}
-                style={styles.actionButtonToken}>
-                <KeyIcon color="#FBBF24" size={s(12)} />
-                <Text style={styles.actionTextToken}>Token</Text>
+                hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+                onPress={togglePause}
+                style={[
+                  styles.pauseControlButton,
+                  isPaused ? styles.pauseActive : styles.pauseInactive,
+                ]}>
+                {isPaused ? (
+                  <PlayIcon color="#10B981" size={s(11)} />
+                ) : (
+                  <PauseIcon color="#A1A1AA" size={s(11)} />
+                )}
+                <Text
+                  style={[
+                    styles.pauseControlText,
+                    isPaused ? styles.pauseTextActive : styles.pauseTextInactive,
+                  ]}>
+                  {isPaused ? 'Resume' : 'Pause'}
+                </Text>
               </TouchableOpacity>
 
+              {/* Close Button with generous tap area */}
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={clearLogs}
-                style={styles.actionButtonClear}>
-                <TrashIcon color="#EF4444" size={s(12)} />
-                <Text style={styles.actionTextClear}>Clear</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.7}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 onPress={handleClose}
-                style={styles.actionButtonClose}>
-                <CloseIcon color="#A1A1AA" size={s(14)} />
+                style={styles.closeButton}>
+                <CloseIcon color="#A1A1AA" size={s(15)} />
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* Search Input */}
+          {/* Utility Action Bar: Export, Token, Clear */}
+          <View style={styles.actionBar}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              onPress={handleExportLogs}
+              style={styles.actionBtnExport}>
+              <ShareIcon color="#60A5FA" size={s(13)} />
+              <Text style={styles.actionTextExport}>Export</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              onPress={handleCopyLatestToken}
+              style={styles.actionBtnToken}>
+              <KeyIcon color="#FBBF24" size={s(13)} />
+              <Text style={styles.actionTextToken}>Token</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              onPress={clearLogs}
+              style={styles.actionBtnClear}>
+              <TrashIcon color="#EF4444" size={s(13)} />
+              <Text style={styles.actionTextClear}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Search Bar with Left Icon and Cross-platform Clear Button */}
           <View style={styles.searchContainer}>
-            <TextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              clearButtonMode="while-editing"
-              onChangeText={setSearchQuery}
-              placeholder="Search URL or method (e.g. /auth, POST)..."
-              placeholderTextColor="#71717A"
-              style={styles.searchInput}
-              value={searchQuery}
-            />
+            <View style={styles.searchBox}>
+              <SearchIcon color="#71717A" size={s(15)} />
+              <TextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={setSearchQuery}
+                placeholder="Search URL, method, status (e.g. 404, /auth)..."
+                placeholderTextColor="#71717A"
+                style={styles.searchInput}
+                value={searchQuery}
+              />
+              {searchQuery.length > 0 ? (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                  onPress={() => setSearchQuery('')}
+                  style={styles.searchClearBtn}>
+                  <CloseIcon color="#9CA3AF" size={s(12)} />
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
 
-          {/* Filter Chips */}
-          <View style={styles.filterRow}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => setFilter('ALL')}
-              style={[styles.filterChip, filter === 'ALL' && styles.filterChipActive]}>
-              <Text
-                style={[styles.filterChipText, filter === 'ALL' && styles.filterChipTextActive]}>
-                All ({logs.length})
-              </Text>
-            </TouchableOpacity>
+          {/* Filter Chips (Horizontal Scrollable for easy tap) */}
+          <View style={styles.filterWrapper}>
+            <ScrollView
+              contentContainerStyle={styles.filterScroll}
+              horizontal
+              keyboardShouldPersistTaps="handled"
+              showsHorizontalScrollIndicator={false}>
+              {FILTER_ITEMS.map(item => {
+                const isActive = filter === item.key;
+                let badgeText = item.label;
+                if (item.key === 'ALL') {
+                  badgeText = `All (${logs.length})`;
+                } else if (item.key === 'ERROR') {
+                  badgeText = `Errors (${errorCount})`;
+                } else if (item.key === 'SUCCESS') {
+                  badgeText = `Success (${successCount})`;
+                }
 
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => setFilter('ERROR')}
-              style={[styles.filterChip, filter === 'ERROR' && styles.filterChipErrorActive]}>
-              <View style={[styles.filterDot, styles.filterDotError]} />
-              <Text
-                style={[
-                  styles.filterChipText,
-                  filter === 'ERROR' && styles.filterChipTextErrorActive,
-                ]}>
-                Errors ({errorCount})
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => setFilter('SUCCESS')}
-              style={[styles.filterChip, filter === 'SUCCESS' && styles.filterChipSuccessActive]}>
-              <View style={[styles.filterDot, styles.filterDotSuccess]} />
-              <Text
-                style={[
-                  styles.filterChipText,
-                  filter === 'SUCCESS' && styles.filterChipTextSuccessActive,
-                ]}>
-                Success ({successCount})
-              </Text>
-            </TouchableOpacity>
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+                    key={item.key}
+                    onPress={() => setFilter(item.key)}
+                    style={[
+                      styles.filterChip,
+                      isActive && styles.filterChipActive,
+                      item.key === 'ERROR' && isActive && styles.filterChipErrorActive,
+                      item.key === 'SUCCESS' && isActive && styles.filterChipSuccessActive,
+                    ]}>
+                    {item.key === 'ERROR' ? (
+                      <View style={[styles.filterDot, styles.filterDotError]} />
+                    ) : null}
+                    {item.key === 'SUCCESS' ? (
+                      <View style={[styles.filterDot, styles.filterDotSuccess]} />
+                    ) : null}
+                    <Text
+                      style={[
+                        styles.filterChipText,
+                        isActive && styles.filterChipTextActive,
+                        item.key === 'ERROR' && isActive && styles.filterChipTextErrorActive,
+                        item.key === 'SUCCESS' && isActive && styles.filterChipTextSuccessActive,
+                      ]}>
+                      {badgeText}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
           </View>
 
-          {/* List */}
+          {/* Requests List with optimized keyboard dismiss */}
           <FlatList
             contentContainerStyle={styles.listContent}
             data={filteredLogs}
             initialNumToRender={10}
             keyExtractor={keyExtractor}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
-                <EmptyBoxIcon color="#3F3F46" size={s(44)} />
+                <EmptyBoxIcon color="#3F3F46" size={s(48)} />
                 <Text style={styles.emptyTitle}>No Requests Recorded</Text>
                 <Text style={styles.emptySub}>
                   {searchQuery
-                    ? 'No requests match your current search query.'
-                    : 'Trigger an API call from the app to inspect network traffic.'}
+                    ? 'No requests match your search criteria.'
+                    : 'Trigger an API call from the app to inspect live network traffic.'}
                 </Text>
               </View>
             }
@@ -230,12 +353,17 @@ const ModalContent: FC = () => {
 export const RequestsInspectorModal: FC = () => {
   const isVisible = useNetworkStore(state => state.isModalVisible);
   const setVisible = useNetworkStore(state => state.setModalVisible);
+  const selectedLogId = useNetworkStore(state => state.selectedLogId);
   const setSelectedLogId = useNetworkStore(state => state.setSelectedLogId);
 
-  const handleClose = useCallback(() => {
-    setSelectedLogId(null);
-    setVisible(false);
-  }, [setSelectedLogId, setVisible]);
+  // Fix Android hardware back button: Detail -> List -> Close Modal
+  const handleHardwareBack = useCallback(() => {
+    if (selectedLogId) {
+      setSelectedLogId(null);
+    } else {
+      setVisible(false);
+    }
+  }, [selectedLogId, setSelectedLogId, setVisible]);
 
   if (!isVisible) {
     return null;
@@ -245,7 +373,7 @@ export const RequestsInspectorModal: FC = () => {
     <Modal
       animationType="slide"
       hardwareAccelerated
-      onRequestClose={handleClose}
+      onRequestClose={handleHardwareBack}
       statusBarTranslucent
       visible={isVisible}>
       <SafeAreaProvider>
@@ -256,51 +384,78 @@ export const RequestsInspectorModal: FC = () => {
 };
 
 const styles = StyleSheet.create({
-  actionButtonClear: {
-    alignItems: 'center',
-    backgroundColor: '#27272A',
-    borderRadius: ms(6),
+  actionBar: {
     flexDirection: 'row',
-    marginRight: s(6),
-    paddingHorizontal: s(8),
-    paddingVertical: vs(5),
+    marginBottom: vs(10),
+    paddingHorizontal: s(12),
   },
-  actionButtonClose: {
+  actionBtnClear: {
     alignItems: 'center',
-    backgroundColor: '#27272A',
-    borderRadius: ms(6),
-    height: s(28),
-    justifyContent: 'center',
-    width: s(28),
-  },
-  actionButtonToken: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(245, 158, 11, 0.15)',
-    borderColor: '#F59E0B',
-    borderRadius: ms(6),
+    backgroundColor: 'rgba(239, 68, 68, 0.12)',
+    borderColor: '#EF4444',
+    borderRadius: ms(8),
     borderWidth: 1,
+    flex: 1,
     flexDirection: 'row',
-    marginRight: s(6),
-    paddingHorizontal: s(8),
-    paddingVertical: vs(5),
+    justifyContent: 'center',
+    marginLeft: s(4),
+    paddingVertical: vs(7),
+  },
+  actionBtnExport: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(59, 130, 246, 0.12)',
+    borderColor: '#3B82F6',
+    borderRadius: ms(8),
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginRight: s(4),
+    paddingVertical: vs(7),
+  },
+  actionBtnToken: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(245, 158, 11, 0.12)',
+    borderColor: '#F59E0B',
+    borderRadius: ms(8),
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginHorizontal: s(4),
+    paddingVertical: vs(7),
   },
   actionTextClear: {
     color: '#EF4444',
     fontSize: fs(12),
     fontWeight: '600',
-    marginLeft: s(4),
+    marginLeft: s(5),
+  },
+  actionTextExport: {
+    color: '#60A5FA',
+    fontSize: fs(12),
+    fontWeight: '600',
+    marginLeft: s(5),
   },
   actionTextToken: {
     color: '#FBBF24',
     fontSize: fs(12),
     fontWeight: '600',
-    marginLeft: s(4),
+    marginLeft: s(5),
   },
   appTitle: {
     color: '#F4F4F5',
     fontSize: fs(15),
     fontWeight: '700',
     marginLeft: s(6),
+  },
+  closeButton: {
+    alignItems: 'center',
+    backgroundColor: '#27272A',
+    borderRadius: ms(8),
+    height: s(32),
+    justifyContent: 'center',
+    width: s(32),
   },
   container: {
     backgroundColor: '#121212',
@@ -333,8 +488,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     marginRight: s(8),
-    paddingHorizontal: s(12),
-    paddingVertical: vs(6),
+    paddingHorizontal: s(13),
+    paddingVertical: vs(7),
   },
   filterChipActive: {
     backgroundColor: '#2563EB',
@@ -374,45 +529,87 @@ const styles = StyleSheet.create({
   filterDotSuccess: {
     backgroundColor: '#10B981',
   },
-  filterRow: {
-    flexDirection: 'row',
-    marginBottom: vs(10),
+  filterScroll: {
     paddingHorizontal: s(12),
+  },
+  filterWrapper: {
+    marginBottom: vs(10),
   },
   listContent: {
     paddingBottom: vs(24),
   },
+  pauseActive: {
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+    borderColor: '#10B981',
+  },
+  pauseControlButton: {
+    alignItems: 'center',
+    borderRadius: ms(8),
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginRight: s(8),
+    paddingHorizontal: s(9),
+    paddingVertical: vs(6),
+  },
+  pauseInactive: {
+    backgroundColor: '#27272A',
+    borderColor: '#3F3F46',
+  },
+  pauseControlText: {
+    fontSize: fs(12),
+    fontWeight: '600',
+    marginLeft: s(4),
+  },
+  pauseTextActive: {
+    color: '#34D399',
+  },
+  pauseTextInactive: {
+    color: '#D4D4D8',
+  },
   safeArea: {
     backgroundColor: '#121212',
     flex: 1,
+  },
+  searchBox: {
+    alignItems: 'center',
+    backgroundColor: '#1E1E1E',
+    borderColor: '#2A2A2A',
+    borderRadius: ms(8),
+    borderWidth: 1,
+    flexDirection: 'row',
+    paddingHorizontal: s(10),
+  },
+  searchClearBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: s(4),
   },
   searchContainer: {
     marginBottom: vs(10),
     paddingHorizontal: s(12),
   },
   searchInput: {
-    backgroundColor: '#1E1E1E',
-    borderColor: '#2A2A2A',
-    borderRadius: ms(8),
-    borderWidth: 1,
     color: '#F4F4F5',
+    flex: 1,
     fontSize: fs(13),
-    paddingHorizontal: s(12),
+    marginLeft: s(8),
     paddingVertical: vs(8),
   },
   subTitle: {
     color: '#71717A',
     fontSize: fs(11),
-    marginTop: vs(1),
+    marginTop: vs(2),
+  },
+  subTitlePaused: {
+    color: '#FBBF24',
+    fontSize: fs(11),
+    fontWeight: '600',
+    marginTop: vs(2),
   },
   titleGroup: {
     flex: 1,
   },
   titleRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  topActions: {
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -422,7 +619,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: vs(10),
     paddingHorizontal: s(12),
     paddingVertical: vs(10),
+  },
+  topControls: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
