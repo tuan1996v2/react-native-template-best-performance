@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import useRenderLog from '@/hooks/useRenderLog';
 import { Pressable, Text, View, ScrollView } from 'react-native';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
@@ -88,9 +88,11 @@ const HomeScreen = () => {
   const setMode = useThemeStore(state => state.setMode);
   const theme = ThemeTokens[mode];
 
+  const scrollRef = useRef<ScrollView>(null);
   const [triggerCrash, setTriggerCrash] = useState(false);
 
   useEffect(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
     getFCMTokenAndSendToServer();
   }, []);
 
@@ -219,6 +221,7 @@ const HomeScreen = () => {
         </View>
 
         <ScrollView
+          ref={scrollRef}
           style={styles.scrollview}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}>
