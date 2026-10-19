@@ -71,10 +71,10 @@ const MainStack = {
     // },
 
     options: {
-      presentation: 'transparentModal', // QUAN TRỌNG 1
+      presentation: 'transparentModal',
       headerShown: false,
-      contentStyle: { backgroundColor: 'rgba(0,0,0,0.3)' }, // QUAN TRỌNG 2: Đục thủng nền Stack
-      animation: 'fade_from_bottom', // Hiệu ứng mờ dần từ dưới lên
+      contentStyle: { backgroundColor: 'transparent' },
+      animation: 'fade_from_bottom',
     },
   },
   OtpDemoScreen: {

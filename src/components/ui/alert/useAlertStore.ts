@@ -4,7 +4,7 @@ import { toastManager } from '../toast/ToastManager';
 interface AlertButton {
   text: string;
   onPress: () => void;
-  style?: 'default' | 'cancel';
+  style?: 'default' | 'cancel' | 'destructive';
 }
 
 interface AlertConfig {

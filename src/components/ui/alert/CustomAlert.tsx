@@ -55,7 +55,8 @@ const CustomAlert = memo(() => {
           <View style={styles.footer}>
             {buttons.map((btn, i) => {
               const isLast = i === buttons.length - 1;
-              const isCancel = btn.style === 'cancel' || (i === 0 && buttons.length > 1);
+              const isDestructive = btn.style === 'destructive';
+              const isCancel = btn.style === 'cancel';
 
               return (
                 <Pressable
@@ -70,7 +71,14 @@ const CustomAlert = memo(() => {
                     !isLast && styles.borderRight,
                     pressed && styles.buttonPressed,
                   ]}>
-                  <Text style={[styles.btnText, isCancel && styles.cancelBtnText]}>{btn.text}</Text>
+                  <Text
+                    style={[
+                      styles.btnText,
+                      isCancel && styles.cancelBtnText,
+                      isDestructive && styles.destructiveBtnText,
+                    ]}>
+                    {btn.text}
+                  </Text>
                 </Pressable>
               );
             })}
