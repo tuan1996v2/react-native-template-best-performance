@@ -7,18 +7,28 @@ import { useAlertStore } from '../ui/alert/useAlertStore';
 import { IconTheme } from '@/assets/icon';
 
 export const ButtonSwitchTheme = () => {
-  const mode = useThemeStore(state => state.mode);
-  const setMode = useThemeStore(state => state.setMode);
+  const themePreference = useThemeStore(state => state.themePreference);
+  const setThemePreference = useThemeStore(state => state.setThemePreference);
   const showToast = useAlertStore(state => state.showToast);
 
   const handleToggleTheme = useCallback(() => {
-    const newMode = mode === 'light' ? 'dark' : 'light';
-    setMode(newMode);
-    showToast(
-      newMode === 'dark' ? 'Switched to Dark Mode 🌙' : 'Switched to Light Mode ☀️',
-      'success',
-    );
-  }, [mode, setMode, showToast]);
+    let nextPref: 'light' | 'dark' | 'system';
+    let message: string;
+
+    if (themePreference === 'light') {
+      nextPref = 'dark';
+      message = 'Chế độ Tối 🌙';
+    } else if (themePreference === 'dark') {
+      nextPref = 'system';
+      message = 'Chế độ Tự động theo Hệ thống ⚙️';
+    } else {
+      nextPref = 'light';
+      message = 'Chế độ Sáng ☀️';
+    }
+
+    setThemePreference(nextPref);
+    showToast(message, 'success');
+  }, [themePreference, setThemePreference, showToast]);
   return (
     <AppPress style={styles.container} onPress={handleToggleTheme}>
       <IconTheme />

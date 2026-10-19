@@ -77,4 +77,4 @@ export const ThemeTokens = {
   },
 };
 
-export type AppTheme = typeof ThemeTokens.light;
+export type AppTheme = typeof ThemeTokens.light | typeof ThemeTokens.dark;
