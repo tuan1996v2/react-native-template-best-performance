@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -11,12 +12,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import apiClient from '@/api/apiClient';
+import { IconNetwork } from '@/assets/icon';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
 import { requestsInspectorFetch, useNetworkStore } from '@/libs/requests-inspector';
 import NavigationService from '@/navigation/NavigationService';
+import { useThemeStore } from '@/store/useThemeStore';
 import { ThemeTokens } from '@/theme/Colors';
 import { useStyles } from '@/theme/useStyles';
-import { useThemeStore } from '@/store/useThemeStore';
 
 import createStyles from './NetworkSimulatorScreen.styles';
 
@@ -236,7 +238,7 @@ export const NetworkSimulatorScreen: FC = () => {
             colors={theme.gradient}
             end={{ x: 1, y: 1 }}
             start={{ x: 0, y: 0 }}
-            style={styles.root}
+            style={StyleSheet.absoluteFill}
           />
           <View style={styles.headerRow}>
             <TouchableOpacity
@@ -244,20 +246,21 @@ export const NetworkSimulatorScreen: FC = () => {
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               onPress={handleBack}
               style={styles.headerBackButton}>
-              <Text style={styles.headerBackText}>‹ Back</Text>
+              <Text style={styles.headerBackText}>‹ Quay lại</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={handleOpenInspector}
               style={styles.headerOpenInspectorBtn}>
-              <Text style={styles.headerOpenInspectorText}>🕵️ Mở Inspector</Text>
+              <IconNetwork fill="#FFFFFF" height={16} width={16} />
+              <Text style={styles.headerOpenInspectorText}>Mở Inspector</Text>
             </TouchableOpacity>
           </View>
 
           <Text style={styles.headerTitle}>Network Simulator</Text>
           <Text style={styles.headerSubtitle}>
-            Bấm các nút dưới đây để kích hoạt API giả lập và kiểm tra Inspector
+            Kích hoạt các API giả lập đa dạng để kiểm tra và soi log trên Inspector
           </Text>
         </View>
 
@@ -266,7 +269,7 @@ export const NetworkSimulatorScreen: FC = () => {
           showsVerticalScrollIndicator={false}>
           {/* Banner Tip */}
           <View style={styles.bannerNotice}>
-            <Text style={styles.bannerNoticeTitle}>💡 Hướng dẫn kiểm tra:</Text>
+            <Text style={styles.bannerNoticeTitle}>Hướng dẫn kiểm tra:</Text>
             <Text style={styles.bannerNoticeSub}>
               Mỗi khi bấm một nút, request sẽ được tự động ghi nhận vào nút Floating tròn trên màn
               hình. Bấm vào nút tròn hoặc nút "Mở Inspector" ở góc trên để soi chi tiết headers,
@@ -308,7 +311,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgeGet]}>
                     <Text style={styles.apiMethodText}>GET</Text>
                   </View>
-                  <Text style={styles.apiTitle}>GET kèm Auth Token (Bearer)</Text>
+                  <Text style={styles.apiTitle}>Bearer Auth Token (Headers)</Text>
                 </View>
                 <Text style={styles.apiDesc}>
                   Header chứa Authorization để test nút trích xuất token 1-chạm
@@ -329,7 +332,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgePost]}>
                     <Text style={styles.apiMethodText}>POST</Text>
                   </View>
-                  <Text style={styles.apiTitle}>POST với JSON Body</Text>
+                  <Text style={styles.apiTitle}>Tạo bài viết mới (JSON Body)</Text>
                 </View>
                 <Text style={styles.apiDesc}>
                   Gửi JSON payload để test trích xuất cURL và định dạng JSON
@@ -350,7 +353,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgePut]}>
                     <Text style={styles.apiMethodText}>PUT</Text>
                   </View>
-                  <Text style={styles.apiTitle}>PUT thay thế tài nguyên</Text>
+                  <Text style={styles.apiTitle}>Thay thế bài viết (Replace Object)</Text>
                 </View>
                 <Text style={styles.apiDesc}>Test badge màu tím của phương thức PUT</Text>
               </View>
@@ -369,7 +372,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgePatch]}>
                     <Text style={styles.apiMethodText}>PATCH</Text>
                   </View>
-                  <Text style={styles.apiTitle}>PATCH cập nhật 1 phần</Text>
+                  <Text style={styles.apiTitle}>Cập nhật một phần (Patch Field)</Text>
                 </View>
                 <Text style={styles.apiDesc}>Test badge màu xanh teal của phương thức PATCH</Text>
               </View>
@@ -388,7 +391,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgeDelete]}>
                     <Text style={styles.apiMethodText}>DELETE</Text>
                   </View>
-                  <Text style={styles.apiTitle}>DELETE xoá tài nguyên</Text>
+                  <Text style={styles.apiTitle}>Xóa bài viết (Delete Resource)</Text>
                 </View>
                 <Text style={styles.apiDesc}>Test badge màu đỏ của phương thức DELETE</Text>
               </View>
@@ -412,7 +415,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badge4xx]}>
                     <Text style={styles.apiMethodText}>404</Text>
                   </View>
-                  <Text style={styles.apiTitle}>404 Not Found (Client Error)</Text>
+                  <Text style={styles.apiTitle}>Endpoint không tồn tại (404 Not Found)</Text>
                 </View>
                 <Text style={styles.apiDesc}>Test filter thẻ Errors và status badge đỏ</Text>
               </View>
@@ -431,7 +434,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badge5xx]}>
                     <Text style={styles.apiMethodText}>500</Text>
                   </View>
-                  <Text style={styles.apiTitle}>500 Internal Server Error</Text>
+                  <Text style={styles.apiTitle}>Máy chủ gặp sự cố (500 Server Error)</Text>
                 </View>
                 <Text style={styles.apiDesc}>Test tab Error và bắt lỗi máy chủ</Text>
               </View>
@@ -450,7 +453,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badge4xx]}>
                     <Text style={styles.apiMethodText}>TIMEOUT</Text>
                   </View>
-                  <Text style={styles.apiTitle}>Network Timeout / Mất kết nối</Text>
+                  <Text style={styles.apiTitle}>Mất kết nối / Timeout sau 2s</Text>
                 </View>
                 <Text style={styles.apiDesc}>IP không phản hồi sau 2s để test lỗi rớt mạng</Text>
               </View>
@@ -474,7 +477,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgeSlow]}>
                     <Text style={styles.apiMethodText}>SLOW</Text>
                   </View>
-                  <Text style={styles.apiTitle}>API Chậm (&gt; 2.2 giây)</Text>
+                  <Text style={styles.apiTitle}>Phản hồi chậm (&gt; 2.2 giây)</Text>
                 </View>
                 <Text style={styles.apiDesc}>
                   Test tính năng đổi màu cảnh báo độ trễ (màu đỏ &gt; 1500ms)
@@ -495,7 +498,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badgeGet]}>
                     <Text style={styles.apiMethodText}>QUERY</Text>
                   </View>
-                  <Text style={styles.apiTitle}>Nhiều Query Parameters</Text>
+                  <Text style={styles.apiTitle}>Lọc dữ liệu (Query Parameters)</Text>
                 </View>
                 <Text style={styles.apiDesc}>
                   Test bảng phân tích Query Parameters trong trang chi tiết
@@ -516,7 +519,7 @@ export const NetworkSimulatorScreen: FC = () => {
                   <View style={[styles.apiMethodBadge, styles.badge2xx]}>
                     <Text style={styles.apiMethodText}>50KB</Text>
                   </View>
-                  <Text style={styles.apiTitle}>Large JSON Payload (~50KB)</Text>
+                  <Text style={styles.apiTitle}>Tải dữ liệu danh sách lớn (~50KB)</Text>
                 </View>
                 <Text style={styles.apiDesc}>
                   Tải 80 mục ảnh để test độ mượt khi parse và render JSON lớn
@@ -559,7 +562,7 @@ export const NetworkSimulatorScreen: FC = () => {
               {loadingAction === 'Blast Concurrent (x5)' ? (
                 <ActivityIndicator color="#FFFFFF" size="small" />
               ) : null}
-              <Text style={styles.batchButtonText}>⚡ Bắn cùng lúc 5 Requests (Concurrent)</Text>
+              <Text style={styles.batchButtonText}>Bắn cùng lúc 5 Requests (Concurrent)</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
