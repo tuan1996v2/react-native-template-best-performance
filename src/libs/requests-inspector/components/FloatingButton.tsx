@@ -69,7 +69,10 @@ export const FloatingButton: FC = () => {
   const gesture = Gesture.Exclusive(panGesture, tapGesture);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
+    transform: [{ translateX: translateX.value }, { translateY: translateY.value }] as [
+      { translateX: number },
+      { translateY: number },
+    ],
   }));
 
   if (!isEnabled) {

@@ -1,87 +1,163 @@
-# 🕵️ React Native Requests Inspector
+<div align="center">
+  <h1>🕵️ react-native-requests-inspector</h1>
+  <p><b>High-performance, standalone In-App Network Inspector for React Native</b></p>
+  <p><i>Inspired by the popular Flutter library <a href="https://github.com/tuan1996v2/requests_inspector">requests_inspector</a> by <b>tuan1996v2</b>.</i></p>
 
-> High-performance, zero-native-dependency In-App Network Inspector for React Native, inspired by [`tuan1996v2/requests_inspector`](https://github.com/tuan1996v2/requests_inspector) (Flutter).
-
-[![React Native](https://img.shields.io/badge/React%20Native-%3E%3D0.70-blue?logo=react)](https://reactnative.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Mode-blue?logo=typescript)](https://www.typescriptlang.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
----
-
-## ✨ Features (Tính Năng Nổi Bật)
-
-- 🚀 **Draggable Floating Action Button**: Kéo thả tự do trên UI thread (Reanimated + GestureHandler), tự động hít vào mép màn hình (Edge Snapping), không chặn cảm ứng của màn hình chính.
-- 🔑 **1-Click Copy Authorization Token**: Quét tự động header `Authorization`, cắt bỏ tiền tố `Bearer ` và copy token thô vào Clipboard.
-- 📋 **RFC-Compliant cURL Generator**: Trích xuất câu lệnh `cURL` hoàn chỉnh (kèm method, headers, escaped quotes, query params, raw/JSON body) để test ngay trên Terminal hoặc Postman.
-- 🛡️ **FIFO Ring-Buffer (Max 50 logs)**: Lưu trữ in-memory nhẹ bằng Zustand, tự động đẩy request cũ nhất ra ngoài khi đầy, ngăn ngừa rò rỉ RAM (OOM leak-proof).
-- ⚡ **0% Overhead on Production**: Khi `enabled={false}`, wrapper trả về trực tiếp `{children}` và các interceptor lập tức pass-through không ghi log.
-- 🔍 **Realtime Search & Filter Chips**: Tìm kiếm tức thì theo URL/Method, lọc nhanh: **Tất cả**, **🔴 Lỗi (>= 400)**, **🟢 Thành công (200 - 299)**.
-- 🎨 **Modern Dark Mode**: Giao diện tối hiện đại (`#121212`), render JSON format thụt lề chuẩn, an toàn với Safe Area trên tai thỏ và đảo động (Dynamic Island).
+  <p>
+    <a href="https://github.com/tuan1996v2/react-native-requests-inspector/stargazers"><img src="https://img.shields.io/github/stars/tuan1996v2/react-native-requests-inspector?style=for-the-badge&color=blue" alt="Stars"></a>
+    <a href="https://github.com/tuan1996v2/react-native-requests-inspector/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License"></a>
+    <a href="https://reactnative.dev"><img src="https://img.shields.io/badge/React%20Native-0.70%2B-61DAFB.svg?style=for-the-badge&logo=react" alt="React Native"></a>
+    <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-Strict-3178C6.svg?style=for-the-badge&logo=typescript" alt="TypeScript"></a>
+  </p>
+</div>
 
 ---
 
-## 📦 Installation (Cài Đặt)
+## 🤖 1-Prompt Integration (Dành cho AI ở dự án mới)
 
-```bash
-yarn add zustand
-# Các dependencies thường có sẵn trong dự án React Native:
-yarn add react-native-reanimated react-native-gesture-handler react-native-safe-area-context axios
+> **Mẹo:** Khi bắt đầu một dự án React Native mới, bạn chỉ cần copy nguyên câu prompt dưới đây và dán vào ô chat cho AI (**Cursor, Antigravity, Claude Code, Copilot, ChatGPT**):
+
+```text
+Tích hợp thư viện react-native-requests-inspector từ git https://github.com/tuan1996v2/react-native-requests-inspector.git vào dự án này:
+1. Cài đặt package qua yarn/npm: yarn add https://github.com/tuan1996v2/react-native-requests-inspector.git
+2. Bọc component gốc trong App.tsx với <RequestsInspector enabled={__DEV__}>...</RequestsInspector>
+3. Cắm attachRequestsInspector(axiosInstance) vào instance Axios chính của dự án (hoặc dùng requestsInspectorFetch thay thế fetch).
 ```
 
 ---
 
-## 🚀 Quick Start (Tích Hợp Nhanh)
+## 💡 Giới Thiệu
 
-### 1. Bọc Root App (`App.tsx`)
+`react-native-requests-inspector` là giải pháp Network Inspector tích hợp trực tiếp trong ứng dụng React Native (tương tự **Chucker trên Android** hay **requests_inspector trên Flutter**). 
+
+Giúp Developer và QA có thể kiểm tra, gỡ lỗi và trích xuất mọi request mạng **ngay trên thiết bị thật và máy ảo** mà không cần mở Charles Proxy, Flipper hay cắm dây cáp rườm rà.
+
+---
+
+## ✨ Tính Năng Nổi Bật (Killer Features)
+
+* 🔑 **1-Click Authorization Token Extraction**:
+  Tự động quét `headers` và `response.headers` để bóc tách token Bearer sạch sẽ, copy vào clipboard chỉ với 1 chạm để test ngay trên Postman hoặc Swagger.
+* 📋 **RFC-Compliant cURL Generator**:
+  Trích xuất câu lệnh `cURL` hoàn chỉnh (kèm method, escaped quotes, query parameters, headers và request body) chuẩn xác 100%.
+* ⏸️ **Pause / Resume Recording**:
+  Cho phép "đóng băng" danh sách request khi ứng dụng có WebSocket hoặc Polling API chạy ngầm liên tục, tránh làm trôi request bạn đang muốn debug.
+* ⏱️ **Cảnh Báo Tốc Độ Phản Hồi (Slow API Detection)**:
+  Tự động đổi màu cảnh báo thời gian phản hồi:
+  - `< 500ms`: 🟢 Xanh ngọc (Nhanh)
+  - `500ms - 1500ms`: 🟡 Vàng cam (Trung bình)
+  - `> 1500ms`: 🔴 Đỏ rực (Cảnh báo API nghẽn mạng)
+* 🧠 **Smart Search & Filter**:
+  Tìm kiếm tức thì theo **URL**, **HTTP Method**, **Status Code** (ví dụ gõ `404`, `500`, `200`) và nội dung lỗi. Hỗ trợ thanh cuộn Filter Chips: `All`, `Errors`, `Success`, `POST`, `GET`, `PUT`, `DELETE`.
+* 📤 **1-Click Export Toàn Bộ Logs**:
+  Xuất toàn bộ snapshot network traffic ra JSON dump để gửi ngay cho đồng đội Backend hoặc QA.
+* 🎯 **Floating Button Kéo Thả & Tự Hít Mép (Edge Snapping)**:
+  Nút tròn nổi bật, kéo thả mượt mà với Reanimated + Gesture Handler, tự động hít vào 2 mép màn hình và tính toán Safe Area để không che lấp Dynamic Island hay Thanh điều hướng.
+* 🛡️ **Zero Native Overhead & Chống Rò Rỉ RAM**:
+  Quản lý bằng Zustand in-memory FIFO ring-buffer (tối đa 50 requests gần nhất), tự động cắt ngắn payload lớn hơn 250KB để chống tràn RAM (OOM).
+
+---
+
+## 📦 Cài Đặt (Installation)
+
+Cài đặt trực tiếp từ GitHub repository:
+
+```bash
+# Sử dụng Yarn (Khuyên dùng)
+yarn add https://github.com/tuan1996v2/react-native-requests-inspector.git
+
+# Hoặc sử dụng NPM
+npm install git+https://github.com/tuan1996v2/react-native-requests-inspector.git
+```
+
+### Peer Dependencies
+Đảm bảo dự án của bạn đã cài đặt các thư viện phổ biến sau:
+
+```bash
+yarn add react-native-reanimated react-native-gesture-handler react-native-safe-area-context react-native-svg zustand
+```
+
+---
+
+## 🚀 Hướng Dẫn Sử Dụng (Quick Start)
+
+### 1. Bọc Component Gốc trong `App.tsx`
+
 ```tsx
 import React from 'react';
-import { RequestsInspector } from 'react-native-requests-inspector'; // hoặc './src/libs/requests-inspector'
+import { RequestsInspector } from 'react-native-requests-inspector';
+import RootNavigator from './src/navigation/RootNavigator';
 
 export default function App() {
   return (
+    // Chỉ bật trên môi trường Development
     <RequestsInspector enabled={__DEV__}>
-      <YourAppRoot />
+      <RootNavigator />
     </RequestsInspector>
   );
 }
 ```
 
-### 2. Cắm vào Axios Client (`apiClient.ts`)
-```tsx
+---
+
+### 2. Tự Động Bắt Request với Axios
+
+Chỉ cần gọi hàm `attachRequestsInspector` truyền vào Axios instance của bạn:
+
+```typescript
 import axios from 'axios';
 import { attachRequestsInspector } from 'react-native-requests-inspector';
 
 export const apiClient = axios.create({
   baseURL: 'https://api.example.com',
+  timeout: 15000,
 });
 
-// 1 dòng duy nhất để tự động bắt tất cả request/response/error
+// Cắm interceptor tự động (có cơ chế chống duplicate khi hot-reload)
 attachRequestsInspector(apiClient);
 ```
 
-### 3. Dùng với Fetch API (Tuỳ chọn)
-```tsx
+---
+
+### 3. Tự Động Bắt Request với Fetch API
+
+Nếu bạn sử dụng `fetch` tiêu chuẩn, chỉ cần dùng wrapper `requestsInspectorFetch`:
+
+```typescript
 import { requestsInspectorFetch } from 'react-native-requests-inspector';
 
-const response = await requestsInspectorFetch('https://api.example.com/data', {
-  method: 'POST',
-  body: JSON.stringify({ name: 'Tuấn' }),
-});
+const fetchUserProfile = async (userId: string) => {
+  const response = await requestsInspectorFetch(`https://api.example.com/users/${userId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer my-token-123',
+    },
+  });
+  return response.json();
+};
 ```
 
 ---
 
-## 🛡️ Risk Analysis & Conflict Prevention (Đánh Giá Rủi Ro)
+## ⚙️ Chi Tiết Kỹ Thuật (Architecture & Performance)
 
-| Vấn đề tiềm ẩn | Giải pháp kỹ thuật đã xử lý |
-|---|---|
-| **Chặn cảm ứng màn hình chính** | `FloatingButton` chỉ chiếm diện tích đúng kích thước của nút (`54x54`), tuyệt đối không dùng container `absoluteFillObject` che toàn màn hình. |
-| **Xung đột Gesture Handler** | Nút kéo thả được bọc bên trong `GestureHandlerRootView` độc lập, không gây lỗi thiếu root view và không can thiệp vào cử chỉ vuốt của danh sách (FlatList/ScrollView). |
-| **Tràn bộ nhớ do response lớn** | Tự động giới hạn kích thước body tối đa 250 KB (`truncateBodyIfNeeded`), tránh OOM khi tải file binary hoặc chuỗi base64 khổng lồ. |
-| **Đăng ký Interceptor lặp lại** | Cờ `__requestsInspectorAttached` ngăn chặn đăng ký trùng lặp nếu `attachRequestsInspector` bị gọi nhiều lần (ví dụ trong Hot Reload). |
-| **Độc lập dự án** | Bộ tính toán Responsive (`s`, `vs`, `ms`, `fs`) được đóng gói nội bộ tại `utils/responsive.ts`, không phụ thuộc vào theme của project chủ. |
+| Tiêu chí | Giải pháp kỹ thuật |
+| :--- | :--- |
+| **State Management** | Zustand store với cấu trúc phẳng, selector hook granular tránh re-render thừa. |
+| **Giới hạn RAM** | Ring buffer FIFO lưu tối đa 50 requests gần nhất, unmount Modal hoàn toàn khi đóng. |
+| **An toàn Payload** | Payload body lớn hơn 250KB tự động được rút gọn `[Payload truncated...]` để tránh đứng máy. |
+| **Safe Area Handling** | Tự động tính toán Insets với fallback cứng: iPhone tai thỏ (44pt), Dynamic Island (54pt), Android StatusBar (24dp), Home Indicator (34pt). |
+| **Icons & Typography** | 100% Vector SVG độc lập, không phụ thuộc font hệ thống, miễn nhiễm với lỗi Missing Glyph `[?]`. |
 
 ---
 
-## 👤 Author
-Developed by **tuan1996v2** (Mobile Developer)
+## 👨‍💻 Tác Giả & Đóng Góp (Author & License)
+
+- Tác giả: **Phạm Văn Tuấn ([tuan1996v2](https://github.com/tuan1996v2))**
+- Thư viện tham chiếu: [requests_inspector (Flutter)](https://github.com/tuan1996v2/requests_inspector)
+- Giấy phép: **MIT License** — Thoải mái sử dụng trong các dự án cá nhân và thương mại.
+
+---
+<div align="center">
+  <b>⭐ Đừng quên bấm Star trên <a href="https://github.com/tuan1996v2/react-native-requests-inspector">GitHub</a> nếu thư viện giúp ích cho công việc của bạn! ⭐</b>
+</div>
