@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useRenderLog from '@/hooks/useRenderLog';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, View, ScrollView } from 'react-native';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
 import NavigationService from '../../navigation/NavigationService';
 import { GlobalLoading } from '../../store/useLoadingStore';
@@ -8,20 +8,13 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18n';
 import { useStyles } from '../../theme/useStyles';
 import { getFCMTokenAndSendToServer } from '@/firebase/fcmService';
-import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import SuperBanner, { type BannerItem } from '@/components/ui/superBanner/SuperBanner';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import { showPermissionRationale, DEFAULT_RATIONALE_CONFIGS } from '@/libs/permissions';
+import { s, vs } from '@/theme/Responsive';
 
 import {
-  IconSearch,
   IconSocial,
   IconModal,
-  IconLanguage,
   IconLoading,
   IconAlert,
   IconNotification,
@@ -29,10 +22,10 @@ import {
   IconTheme,
   IconComment,
   IconNetwork,
+  IconMore,
 } from '@/assets/icon';
 
 import createStyles from './HomeScreen.styles';
-import AppButton from '@/components/ui/appButton/AppButton';
 import { useAlertStore } from '@/components/ui/alert/useAlertStore';
 import { CameraIcon } from '../camera/icons/CameraIcon';
 import { BUILD_VERSION } from '@/env';
@@ -40,49 +33,45 @@ import { useThemeStore } from '@/store/useThemeStore';
 import { ThemeTokens } from '@/theme/Colors';
 
 // ─── TYPES ────────────────────────────────────────────────────
-interface FeatureCardProps {
+interface BentoCardProps {
   title: string;
   subtitle: string;
   icon: React.ElementType;
+  badge?: string;
   color: string;
   onPress: () => void;
-  debounceTime?: number;
 }
 
-// ─── FEATURE CARD COMPONENT ─────────────────────────────────
-const FeatureCard = React.memo(
-  ({ title, subtitle, icon: Icon, color, onPress, debounceTime = 400 }: FeatureCardProps) => {
-    useRenderLog(`FeatureCard[${title}]`);
+// ─── BENTO CARD COMPONENT ────────────────────────────────────
+const BentoCard = React.memo(
+  ({ title, subtitle, icon: Icon, badge, color, onPress }: BentoCardProps) => {
+    useRenderLog(`BentoCard[${title}]`);
     const styles = useStyles(createStyles);
-    const mode = useThemeStore(state => state.mode);
-    const theme = ThemeTokens[mode];
-    const iconBgStyle = useMemo(
-      () => ({
-        backgroundColor: color + '15',
-        borderColor: color + '30',
-      }),
-      [color],
-    );
+    const iconBgStyle = useMemo(() => ({ backgroundColor: color + '15' }), [color]);
+    const badgeBgStyle = useMemo(() => ({ backgroundColor: color + '15' }), [color]);
+    const badgeTextStyle = useMemo(() => ({ color }), [color]);
 
     return (
-      <Animated.View style={[styles.featureCardContainer]}>
-        <AppButton
-          debounceTime={debounceTime}
-          depth={8}
-          bottomColor={color + '40'}
-          color={theme.card}
-          onPress={onPress}>
-          <View style={styles.center}>
-            <View style={[styles.iconContainer, iconBgStyle]}>
-              <Icon fill={color} width={32} height={32} />
-            </View>
-            <Text style={styles.featureTitle}>{title}</Text>
-            <Text style={styles.featureSubtitle} numberOfLines={2}>
-              {subtitle}
-            </Text>
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [styles.bentoCard, pressed && styles.bentoCardPressed]}>
+        <View style={styles.cardTopRow}>
+          <View style={[styles.iconBox, iconBgStyle]}>
+            <Icon fill={color} width={s(20)} height={s(20)} />
           </View>
-        </AppButton>
-      </Animated.View>
+          {Boolean(badge) && (
+            <View style={[styles.badgeBox, badgeBgStyle]}>
+              <Text style={[styles.badgeText, badgeTextStyle]}>{badge}</Text>
+            </View>
+          )}
+        </View>
+        <View>
+          <Text style={styles.cardTitle}>{title}</Text>
+          <Text style={styles.cardSubtitle} numberOfLines={2}>
+            {subtitle}
+          </Text>
+        </View>
+      </Pressable>
     );
   },
 );
@@ -99,54 +88,7 @@ const HomeScreen = () => {
   const setMode = useThemeStore(state => state.setMode);
   const theme = ThemeTokens[mode];
 
-  // 🚀 Animated values for collapsible header
-  const headerTranslateY = useSharedValue(0);
-  const lastScrollY = useSharedValue(0);
-
-  const HEADER_COLLAPSE_HEIGHT = useMemo(() => insets.top + 160, [insets.top]);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: event => {
-      'worklet';
-      const y = event.contentOffset.y;
-      const dy = y - lastScrollY.value;
-
-      if (y > 0) {
-        const next = headerTranslateY.value - dy;
-        headerTranslateY.value = Math.max(-HEADER_COLLAPSE_HEIGHT, Math.min(0, next));
-      } else {
-        headerTranslateY.value = 0;
-      }
-      lastScrollY.value = y;
-    },
-  });
-
-  const headerAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: headerTranslateY.value }],
-  }));
-
-  // ─── BANNER DATA ─────────────────────────────────────────
-  const bannerData: BannerItem[] = useMemo(
-    () => [
-      {
-        id: '1',
-        title: 'Futuristic UI Kit',
-        subtitle: 'Build faster with zero-re-render components',
-        imageUrl:
-          'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&w=800&q=80',
-        backgroundColor: '#6366F1',
-      },
-      {
-        id: '2',
-        title: 'iOS 26 Aesthetic',
-        subtitle: 'Glassmorphism and spring interactions',
-        imageUrl:
-          'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=80',
-        backgroundColor: '#EC4899',
-      },
-    ],
-    [],
-  );
+  const [triggerCrash, setTriggerCrash] = useState(false);
 
   useEffect(() => {
     getFCMTokenAndSendToServer();
@@ -184,10 +126,6 @@ const HomeScreen = () => {
     NavigationService.navigate('NetworkSimulatorScreen');
   }, []);
 
-  const handleNavigateToChatDemo = useCallback(() => {
-    NavigationService.navigate('ChatDemoScreen');
-  }, []);
-
   const handleNavigateToChatSimulator = useCallback(() => {
     NavigationService.navigate('ChatSimulatorScreen');
   }, []);
@@ -207,6 +145,7 @@ const HomeScreen = () => {
         { text: t('common.cancel'), style: 'cancel', onPress: () => {} },
         {
           text: t('home.actions.delete_now'),
+          style: 'destructive',
           onPress: () => showToast(t('home.actions.deleted_success'), 'success'),
         },
       ],
@@ -225,208 +164,240 @@ const HomeScreen = () => {
   const handleToggleTheme = useCallback(() => {
     const newMode = mode === 'light' ? 'dark' : 'light';
     setMode(newMode);
-    showToast(
-      newMode === 'dark' ? 'Switched to Dark Mode 🌙' : 'Switched to Light Mode ☀️',
-      'success',
-    );
+    showToast(newMode === 'dark' ? 'Đã đổi sang Dark Mode' : 'Đã đổi sang Light Mode', 'success');
   }, [mode, setMode, showToast]);
 
   const handleShowToast = useCallback(() => {
     showToast(t('home.actions.welcome_back'), 'success');
   }, [showToast, t]);
 
-  const headerPaddingStyle = useMemo(() => ({ paddingTop: insets.top + 10 }), [insets.top]);
+  const handleTriggerCrash = useCallback(() => {
+    setTriggerCrash(true);
+  }, []);
+
+  const handleTestPermission = useCallback(() => {
+    showPermissionRationale(DEFAULT_RATIONALE_CONFIGS.camera, () => {
+      showToast('Đã được người dùng phê duyệt quyền Camera!', 'success');
+    });
+  }, [showToast]);
+
+  const headerPaddingStyle = useMemo(() => ({ paddingTop: insets.top + vs(8) }), [insets.top]);
+
+  if (triggerCrash) {
+    throw new Error('Test crash kích nổ bởi Error Boundary trong HomeScreen!');
+  }
 
   return (
-    <AppScreen edges={[]} backgroundColor={theme.background} statusBarStyle="light-content">
+    <AppScreen edges={[]} backgroundColor={theme.background} statusBarStyle="dark-content">
       <View style={styles.root}>
-        {/* 🚀 COLLAPSIBLE HEADER (Absolute Overlay) ────────────────── */}
-        <Animated.View style={[styles.headerWrapper, headerAnimatedStyle]}>
-          <View style={[styles.headerContainer, headerPaddingStyle]}>
-            <LinearGradient
-              colors={theme.gradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={StyleSheet.absoluteFill}
-            />
-            <View style={styles.headerContent}>
-              <View>
-                <Text style={styles.greetingText}>{t('home.greeting')}</Text>
-                <Text style={styles.headerTitleText}>{t('home.explore_today')}</Text>
-              </View>
-
-              <View style={styles.searchContainer}>
-                <IconSearch fill="rgba(255,255,255,0.8)" width={20} height={20} />
-                <TextInput
-                  placeholder={t('home.search_placeholder')}
-                  placeholderTextColor="rgba(255,255,255,0.5)"
-                  style={styles.searchInput}
-                />
+        {/* Modern Minimalist Header */}
+        <View style={[styles.headerContainer, headerPaddingStyle]}>
+          <View style={styles.headerLeft}>
+            <View style={styles.headerBrandRow}>
+              <Text style={styles.headerTitle}>Best Performance</Text>
+              <View style={styles.liveBadge}>
+                <View style={styles.liveDot} />
+                <Text style={styles.liveText}>Ready</Text>
               </View>
             </View>
+            <Text style={styles.headerSubtitle}>React Native 0.84+ • New Architecture</Text>
           </View>
-        </Animated.View>
 
-        <Animated.ScrollView
+          <View style={styles.headerActions}>
+            <Pressable
+              onPress={handleChangeLanguage}
+              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
+              <Text style={styles.actionButtonText}>{i18n.language === 'en' ? 'EN' : 'VI'}</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={handleToggleTheme}
+              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
+              <IconTheme width={s(16)} height={s(16)} fill={theme.text} />
+            </Pressable>
+          </View>
+        </View>
+
+        <ScrollView
           style={styles.scrollview}
           showsVerticalScrollIndicator={false}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          contentContainerStyle={[
-            styles.scrollContent,
-            { paddingTop: HEADER_COLLAPSE_HEIGHT - 20 },
-          ]}>
-          <View style={styles.bannerSection}>
-            <SuperBanner data={bannerData} />
+          contentContainerStyle={styles.scrollContent}>
+          {/* Tech Specs & Architecture Bar */}
+          <View style={styles.specsContainer}>
+            <View style={styles.specItem}>
+              <Text style={styles.specValue}>0.84+</Text>
+              <Text style={styles.specLabel}>Fabric</Text>
+            </View>
+            <View style={styles.specDivider} />
+            <View style={styles.specItem}>
+              <Text style={styles.specValue}>Reanimated 4</Text>
+              <Text style={styles.specLabel}>Worklets</Text>
+            </View>
+            <View style={styles.specDivider} />
+            <View style={styles.specItem}>
+              <Text style={styles.specValue}>Zustand 5</Text>
+              <Text style={styles.specLabel}>Granular</Text>
+            </View>
+            <View style={styles.specDivider} />
+            <View style={styles.specItem}>
+              <Text style={styles.specValue}>FlashList 2</Text>
+              <Text style={styles.specLabel}>120 FPS</Text>
+            </View>
           </View>
 
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('home.system_utilities')}</Text>
+          {/* 1. DevTools & Profiling */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('home.categories.devtools')}</Text>
+            </View>
+            <View style={styles.grid}>
+              <BentoCard
+                title={t('home.features.network.title')}
+                subtitle={t('home.features.network.subtitle')}
+                icon={IconNetwork}
+                badge="DevTools"
+                color={theme.mode === 'light' ? '#0EA5E9' : '#38BDF8'}
+                onPress={handleNavigateToNetworkSimulator}
+              />
+              <BentoCard
+                title="Error Boundary"
+                subtitle="Kích nổ crash test render JS"
+                icon={IconAlert}
+                badge="Recovery"
+                color={theme.mode === 'light' ? '#EF4444' : '#F87171'}
+                onPress={handleTriggerCrash}
+              />
+              <BentoCard
+                title="Hộp thoại Xin Quyền"
+                subtitle="Mở Rationale Modal chuẩn UX"
+                icon={IconNotification}
+                badge="Rationale"
+                color={theme.mode === 'light' ? '#10B981' : '#34D399'}
+                onPress={handleTestPermission}
+              />
+              <BentoCard
+                title={t('home.features.swipe.title')}
+                subtitle={t('home.features.swipe.subtitle')}
+                icon={IconMore}
+                badge="Gesture"
+                color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
+                onPress={handleNavigateToSwipeable}
+              />
+            </View>
           </View>
 
-          <View style={styles.grid}>
-            {/* 1. Network Inspector & DevTools (Cực kỳ hữu ích khi debug/test API) */}
-            <FeatureCard
-              title={t('home.features.network.title')}
-              subtitle={t('home.features.network.subtitle')}
-              icon={IconNetwork}
-              color={theme.mode === 'light' ? '#0EA5E9' : '#38BDF8'}
-              onPress={handleNavigateToNetworkSimulator}
-            />
-
-            {/* 2. Realtime Chat & Hội thoại thực tế */}
-            <FeatureCard
-              title={t('home.features.chat_demo.title')}
-              subtitle={t('home.features.chat_demo.subtitle')}
-              icon={IconComment}
-              color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
-              onPress={handleNavigateToChatDemo}
-            />
-
-            {/* 3. Quét mã QR & Barcode (Vision Camera) */}
-            <FeatureCard
-              title={t('home.features.qr.title')}
-              subtitle={t('home.features.qr.subtitle')}
-              icon={CameraIcon}
-              color={theme.mode === 'light' ? '#06B6D4' : '#22D3EE'}
-              onPress={handleNavigateToQrScanScreen}
-            />
-
-            {/* 4. Xác thực OTP Zero Re-render */}
-            <FeatureCard
-              title={t('home.features.otp.title')}
-              subtitle={t('home.features.otp.subtitle')}
-              icon={IconRegister}
-              color={theme.mode === 'light' ? '#4F46E5' : '#818CF8'}
-              onPress={handleNavigateToOtp}
-            />
-
-            {/* 5. Camera & Ghi hình */}
-            <FeatureCard
-              title={t('home.features.camera.title')}
-              subtitle={t('home.features.camera.subtitle')}
-              icon={CameraIcon}
-              color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
-              onPress={handleNavigateToCamera}
-            />
-
-            {/* 6. Bảng tin Social Feed FlashList */}
-            <FeatureCard
-              title={t('home.features.social_feed.title')}
-              subtitle={t('home.features.social_feed.subtitle')}
-              icon={IconSocial}
-              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
-              onPress={handleNavigateToDetail}
-            />
-
-            {/* 7. Thao tác vuốt Native Gesture */}
-            <FeatureCard
-              title={t('home.features.swipe.title')}
-              subtitle={t('home.features.swipe.subtitle')}
-              icon={IconNotification}
-              color={theme.mode === 'light' ? '#10B981' : '#34D399'}
-              onPress={handleNavigateToSwipeable}
-            />
-
-            {/* 8. Kịch bản mô phỏng Chat */}
-            <FeatureCard
-              title={t('home.features.chat_simulator.title')}
-              subtitle={t('home.features.chat_simulator.subtitle')}
-              icon={IconComment}
-              color={theme.mode === 'light' ? '#2563EB' : '#60A5FA'}
-              onPress={handleNavigateToChatSimulator}
-            />
-
-            {/* 9. Biểu mẫu & Form nhập liệu */}
-            <FeatureCard
-              title={t('home.features.register.title')}
-              subtitle={t('home.features.register.subtitle')}
-              icon={IconRegister}
-              color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
-              onPress={goToRegister}
-            />
-
-            {/* 10. Chế độ giao diện Sáng / Tối */}
-            <FeatureCard
-              title={t('home.features.theme.title')}
-              subtitle={
-                mode === 'light' ? t('home.features.theme.light') : t('home.features.theme.dark')
-              }
-              icon={IconTheme}
-              color={theme.primary}
-              onPress={handleToggleTheme}
-            />
-
-            {/* 11. Đa ngôn ngữ i18n */}
-            <FeatureCard
-              title={t('home.features.language.title')}
-              subtitle={i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
-              icon={IconLanguage}
-              color={theme.mode === 'light' ? '#F59E0B' : '#FBBF24'}
-              onPress={handleChangeLanguage}
-            />
-
-            {/* 12. Cửa sổ nổi Modal */}
-            <FeatureCard
-              title={t('home.features.modal.title')}
-              subtitle={t('home.features.modal.subtitle')}
-              icon={IconModal}
-              color={theme.mode === 'light' ? '#D946EF' : '#E879F9'}
-              onPress={showModal}
-            />
-
-            {/* 13. Thông báo tức thì Toast */}
-            <FeatureCard
-              title={t('home.features.notification.title')}
-              subtitle={t('home.features.notification.subtitle')}
-              icon={IconNotification}
-              color={theme.mode === 'light' ? '#3B82F6' : '#60A5FA'}
-              onPress={handleShowToast}
-            />
-
-            {/* 14. Hộp thoại xác nhận Alert */}
-            <FeatureCard
-              title={t('home.features.alert.title')}
-              subtitle={t('home.features.alert.subtitle')}
-              icon={IconAlert}
-              color={theme.mode === 'light' ? '#EF4444' : '#F87171'}
-              onPress={handleShowAlert}
-            />
-
-            {/* 15. Trạng thái chờ Loading */}
-            <FeatureCard
-              title={t('home.features.loading.title')}
-              subtitle={t('home.features.loading.subtitle')}
-              icon={IconLoading}
-              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
-              onPress={handleShowLoading}
-            />
+          {/* 2. High Performance Demos */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('home.categories.performance')}</Text>
+            </View>
+            <View style={styles.grid}>
+              <BentoCard
+                title={t('home.features.social_feed.title')}
+                subtitle={t('home.features.social_feed.subtitle')}
+                icon={IconSocial}
+                badge="120 FPS"
+                color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
+                onPress={handleNavigateToDetail}
+              />
+              <BentoCard
+                title={t('home.features.otp.title')}
+                subtitle={t('home.features.otp.subtitle')}
+                icon={IconRegister}
+                badge="Zero Lag"
+                color={theme.mode === 'light' ? '#4F46E5' : '#818CF8'}
+                onPress={handleNavigateToOtp}
+              />
+              <BentoCard
+                title={t('home.features.chat_simulator.title')}
+                subtitle={t('home.features.chat_simulator.subtitle')}
+                icon={IconComment}
+                badge="Queue"
+                color={theme.mode === 'light' ? '#2563EB' : '#60A5FA'}
+                onPress={handleNavigateToChatSimulator}
+              />
+              <BentoCard
+                title={t('home.features.register.title')}
+                subtitle={t('home.features.register.subtitle')}
+                icon={IconRegister}
+                badge="Keyboard"
+                color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
+                onPress={goToRegister}
+              />
+            </View>
           </View>
 
+          {/* 3. Native & Hardware */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('home.categories.hardware')}</Text>
+            </View>
+            <View style={styles.grid}>
+              <BentoCard
+                title={t('home.features.camera.title')}
+                subtitle={t('home.features.camera.subtitle')}
+                icon={CameraIcon}
+                badge="Vision v4"
+                color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
+                onPress={handleNavigateToCamera}
+              />
+              <BentoCard
+                title={t('home.features.qr.title')}
+                subtitle={t('home.features.qr.subtitle')}
+                icon={CameraIcon}
+                badge="Scanner"
+                color={theme.mode === 'light' ? '#06B6D4' : '#22D3EE'}
+                onPress={handleNavigateToQrScanScreen}
+              />
+            </View>
+          </View>
+
+          {/* 4. UI Kit & Core Feedback */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>{t('home.categories.uikit')}</Text>
+            </View>
+            <View style={styles.grid}>
+              <BentoCard
+                title={t('home.features.modal.title')}
+                subtitle={t('home.features.modal.subtitle')}
+                icon={IconModal}
+                badge="Sheet"
+                color={theme.mode === 'light' ? '#A855F7' : '#C084FC'}
+                onPress={showModal}
+              />
+              <BentoCard
+                title={t('home.features.alert.title')}
+                subtitle={t('home.features.alert.subtitle')}
+                icon={IconAlert}
+                badge="Alert"
+                color={theme.mode === 'light' ? '#F59E0B' : '#FBBF24'}
+                onPress={handleShowAlert}
+              />
+              <BentoCard
+                title={t('home.features.notification.title')}
+                subtitle={t('home.features.notification.subtitle')}
+                icon={IconNotification}
+                badge="Toast"
+                color={theme.mode === 'light' ? '#3B82F6' : '#60A5FA'}
+                onPress={handleShowToast}
+              />
+              <BentoCard
+                title={t('home.features.loading.title')}
+                subtitle={t('home.features.loading.subtitle')}
+                icon={IconLoading}
+                badge="Loading"
+                color={theme.mode === 'light' ? '#10B981' : '#34D399'}
+                onPress={handleShowLoading}
+              />
+            </View>
+          </View>
+
+          {/* Footer Info */}
           <View style={styles.footerInfo}>
             <Text style={styles.footerText}>{t('common.version', { version: BUILD_VERSION })}</Text>
           </View>
-        </Animated.ScrollView>
+        </ScrollView>
       </View>
     </AppScreen>
   );

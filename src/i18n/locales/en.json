@@ -18,6 +18,12 @@
     "search_placeholder": "What are you looking for...",
     "featured_features": "Featured Features",
     "system_utilities": "System Utilities",
+    "categories": {
+      "devtools": "DevTools & Profiling",
+      "performance": "High-Performance Demos",
+      "hardware": "Hardware & Native APIs",
+      "uikit": "UI Kit & Core Components"
+    },
     "banners": {
       "explore_world": "Explore the world",
       "explore_world_sub": "Amazing destinations are waiting for you",

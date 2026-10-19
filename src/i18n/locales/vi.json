@@ -18,6 +18,12 @@
     "search_placeholder": "Bạn đang tìm gì...",
     "featured_features": "Tính năng nổi bật",
     "system_utilities": "Tiện ích hệ thống",
+    "categories": {
+      "devtools": "Công cụ phát triển & Giám sát",
+      "performance": "Demo Tối Ưu Hiệu Năng Cao",
+      "hardware": "Phần Cứng & Thiết Bị",
+      "uikit": "Hệ Thống Giao Diện & Tương Tác"
+    },
     "banners": {
       "explore_world": "Khám phá thế giới",
       "explore_world_sub": "Những điểm đến tuyệt vời đang chờ bạn",
