@@ -25,7 +25,8 @@
     "export-android": "mkdir -p android/output && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output",
     "export-ios": "mkdir -p ios/output && react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/output/main.jsbundle --assets-dest ios/output",
     "export-all": "yarn export-android && yarn export-ios",
-    "port": "adb reverse tcp:9090 tcp:9090"
+    "port": "adb reverse tcp:9090 tcp:9090",
+    "gen:screen": "node scripts/genScreen.js"
   },
   "dependencies": {
     "@callstack/liquid-glass": "^0.7.0",
