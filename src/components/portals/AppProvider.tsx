@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
-import { LogBox, Platform, StatusBar } from 'react-native';
+import { LogBox, Platform, StatusBar, StyleSheet } from 'react-native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/i18n/i18n';
@@ -12,6 +12,9 @@ import ChatToastContainer from '@/components/ui/toast/ChatToastContainer';
 import GlobalLoadingComponent from '@/components/ui/loading/GlobalLoadingComponent';
 import { setupFCM } from '@/firebase/fcmService';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ErrorBoundary from '@/libs/error-boundary';
+import FpsHUD from '@/components/portals/FpsHUD';
+import { PermissionModal, setPermissionModalRef } from '@/libs/permissions';
 
 LogBox.ignoreAllLogs(true);
 LogBox.ignoreLogs(['Warning: ...']); //Hide warnings
@@ -37,16 +40,26 @@ export default function AppProvider(props: Props) {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <KeyboardProvider>
-        <GestureHandlerRootView>
-          <I18nextProvider i18n={i18n}>{props.children}</I18nextProvider>
+        <GestureHandlerRootView style={styles.rootView}>
+          <ErrorBoundary>
+            <I18nextProvider i18n={i18n}>{props.children}</I18nextProvider>
+          </ErrorBoundary>
+          <NavDebugger />
+          <FpsHUD />
+          <ButtonSwitchTheme />
+          <GlobalLoadingComponent />
+          <ToastContainer />
+          <ChatToastContainer />
+          <CustomAlert />
+          <PermissionModal ref={setPermissionModalRef} />
         </GestureHandlerRootView>
-        <NavDebugger />
-        <ButtonSwitchTheme />
-        <GlobalLoadingComponent />
-        <ToastContainer />
-        <ChatToastContainer />
-        <CustomAlert />
       </KeyboardProvider>
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  rootView: {
+    flex: 1,
+  },
+});
