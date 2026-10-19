@@ -1,56 +1,126 @@
-# 🚀 Tuấn's React Native Template
+# 🚀 Tuấn's React Native Best Performance Template
 
-> *"Đời dev không khổ, chỉ là chưa có template xịn thôi!"* — Tuấn, Mobile Developer
+> _"Đời dev đã ngắn, đừng tốn thêm 2 tuần setup project từ đầu rồi lại ngồi gãi đầu tự hỏi: 'Ủa sao máy khách giật lag thế nhờ?'"_  
+> — **Tuấn**, Senior Mobile Dev đam mê 120 FPS ☕
 
-[![React Native](https://img.shields.io/badge/React%20Native-0.84.0-61DAFB?style=for-the-badge&logo=react)](https://reactnative.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Mode-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-[![Zustand](https://img.shields.io/badge/Zustand-5.x-orange?style=for-the-badge)](https://zustand-demo.pmnd.rs)
-[![Node](https://img.shields.io/badge/Node-%3E%3D%2022.11.0-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
-
----
-
-## 👋 Xin chào! Tôi là Tuấn
-
-Một **Mobile Developer** đam mê React Native, thích code sạch, ghét code lặp, và luôn ám ảnh bởi câu hỏi: *"Làm sao để project mới không phải setup lại từ đầu?"*
-
-Template này là **tâm huyết** của tôi — sinh ra từ hàng trăm giờ code, vô số lần "tại sao lại crash", và rất nhiều cốc cà phê ☕. Mục tiêu: **clone về, chạy thẳng, code ngay** — không drama, không config hell.
+<p align="center">
+  <a href="https://reactnative.dev"><img src="https://img.shields.io/badge/React%20Native-0.84.0%20(New%20Arch)-61DAFB?style=for-the-badge&logo=react" alt="React Native 0.84.0" /></a>
+  <a href="https://reactnative.dev"><img src="https://img.shields.io/badge/Architecture-Fabric%20%2B%20Nitro%20Modules-764ABC?style=for-the-badge" alt="Architecture Fabric" /></a>
+  <a href="https://docs.swmansion.com/react-native-reanimated/"><img src="https://img.shields.io/badge/Reanimated-4.x%20Worklets-E91E63?style=for-the-badge" alt="Reanimated 4.x" /></a>
+  <a href="https://zustand-demo.pmnd.rs"><img src="https://img.shields.io/badge/State-Zustand%205.x-orange?style=for-the-badge" alt="Zustand 5" /></a>
+  <a href="https://shopify.github.io/flash-list/"><img src="https://img.shields.io/badge/Lists-FlashList%202.x-00D924?style=for-the-badge" alt="FlashList 2" /></a>
+  <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-Strict%20Mode-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript Strict" /></a>
+</p>
 
 ---
 
-## ✨ Tính năng nổi bật
+## ⚡ Tại sao bạn nên clone template này thay vì tự setup từ đầu?
 
-| Tính năng | Mô tả | Trạng thái |
-|-----------|-------|:----------:|
-| 🎨 **Dark/Light Theme** | Hệ thống theme token hoàn chỉnh với `useStyles` hook, đổi theme mượt như bơ | ✅ |
-| 📱 **Responsive Scaling** | Scale tự động theo iPhone 14 (390x844), hỗ trợ `s()`, `vs()`, `ms()`, `fs()` | ✅ |
-| 🌍 **Đa ngôn ngữ (i18n)** | Tiếng Việt 🇻🇳 + English 🇺🇸, tự detect ngôn ngữ thiết bị | ✅ |
-| 🔥 **Firebase Push Notification** | FCM Modular API v23 + Notifee, foreground/background/killed + token refresh | ✅ |
-| 🧭 **Navigation v8** | React Navigation Static API + Performance Tracker đo ms chuyển màn | ✅ |
-| ⚡ **Zustand State Management** | 3 store sẵn sàng: Loading, Navigation, Theme — gọi được cả ngoài component | ✅ |
-| 🔔 **Toast & Alert System** | Custom alert + toast (success/error/warning) — không phụ thuộc thư viện | ✅ |
-| 💬 **Chat Toast Aggregator** | Xử lý >150 tin/phút: throttle 1v1, gom nhóm per-room, burst detection — giống Zalo | ✅ |
-| 💀 **Skeleton Loading** | Component skeleton đẹp mắt, plug-and-play | ✅ |
-| 🧱 **UI Kit sẵn sàng** | AppButton (3D depth), AppPress (ripple), AppTextInput, AppImage (3-layer progressive) | ✅ |
-| 🖼️ **SVG Icon System** | Tích hợp bộ icon SVG tự quản lý (`react-native-svg`), giải quyết triệt để lỗi font iOS | ✅ |
-| 🎬 **Professional Stories** | Hệ thống Story giống Instagram: progress bar Reanimated, carousel mượt mà, tap-to-next | ✅ |
-| 🖼️ **SuperGallery** | Xem ảnh full-screen zoom+swipe, zero re-render với `useImperativeHandle` | ✅ |
-| 🔍 **Pro QR Scanner** | Quét QR/Barcode siêu tốc, hỗ trợ Flashlight, Gallery Scan, lịch sử quét 20 items | ✅ |
-| 🎠 **SuperBanner** | Auto-play carousel với parallax + scale animation, pagination dots | ✅ |
-| 🚀 **Performance Optimized** | `useAnimatedScrollHandler`, `memo` comparators, pre-computed styles, Reanimated 4 | ✅ |
-| 🔍 **Render Tracking** | `useRenderLog` hook — phát hiện re-render thừa trong dev mode | ✅ |
-| 🏗️ **Multi-Environment Build** | Script tự động switch Dev/Prod (Firebase config, app name, version) | ✅ |
-| 🛠️ **Reactotron Debug** | Tích hợp sẵn Reactotron cho networking, state, async storage | ✅ |
-| 📐 **ESLint + Prettier + Husky** | Lint staged, auto-fix import, sắp xếp import, format khi commit | ✅ |
-| ⌨️ **Keyboard Controller** | Xử lý keyboard trên cả Android + iOS một cách nhất quán | ✅ |
-| 🎬 **Boot Splash** | Splash screen native, ẩn khi navigation ready | ✅ |
-| 💾 **MMKV Storage** | Storage nhanh gấp 30x AsyncStorage | ✅ |
-| 🖐️ **Swipeable Items** | Hệ thống vuốt chạm mượt mà (Left/Right/Full Swipe) — xử lý 100% trên UI thread | ✅ |
-| 📸 **Pro Camera System** | Camera module zero-re-render, focus on tap, background gallery save | ✅ |
-| 🔢 **Premium OTP System** | OTP input 4 phong cách cao cấp, auto-fill SMS, zero-re-render countdown | ✅ |
-| 🕵️ **In-App Network Inspector** | Debugger HTTP/HTTPS nội bộ (`react-native-requests-inspector`): bong bóng nổi draggable, cURL/Token copy 1 chạm, filter & search, zero-dependency | ✅ |
-| 🌐 **Network API Simulator** | Mô phỏng 12 kịch bản API thực tế (Bearer Auth, POST, PUT, DELETE, 404, 500, Timeout, Slow 3s, Heavy 50KB, Concurrent Blast x5) | ✅ |
-| 💬 **Realtime Chat & Simulator** | Phòng chat 1v1 & nhóm thực chiến + Simulator 10 kịch bản test stress test `ChatToastManager` (>150 msg/min) | ✅ |
-| 🤖 **AI Agent Coding Skills** | Bộ kỹ năng `.agents/skills/rn-best-performance-dev` giúp AI coding assistants (Antigravity, Cursor, Claude) sinh code chuẩn template 100% | ✅ |
+Bạn chuẩn bị nhận một dự án React Native mới và sắp sửa:
+
+1. 🥱 Chạy `npx @react-native-community/cli init` rồi dính lỗi build CocoaPods / Gradle kinh điển?
+2. 🤯 Cài thêm Navigation, Reanimated, Theme, i18n, Storage, FCM, Splash... và mất trắng 3-5 ngày chỉ để giải quyết xung đột dependency?
+3. 📉 Cắm vào máy Android cỏ 2-3 triệu rồi sốc nhiệt khi thấy FPS drop từ 60 xuống 18 vì code dính re-render thừa vô tội vạ?
+4. 🕵️ Cần soi HTTP request mà Flipper sập, Charles Proxy thì đòi cài chứng chỉ SSL lằng nhằng?
+5. 💥 App đột ngột crash trắng màn hình khiến khách hàng đánh giá 1 sao mà không biết lỗi ở đâu?
+
+**DỪNG LẠI NGAY! Hãy để template này cứu rỗi thanh xuân của bạn.**
+
+Đây là bộ **Starter Template React Native 0.84+ New Architecture (Fabric & Nitro Modules)** được đúc kết từ nhiều năm chinh chiến thực tế, tối ưu đến từng byte bộ nhớ và từng frame hình, với triết lý: **Clone về là chạy — Code là ra sản phẩm — Máy cỏ vẫn mượt 120 FPS.**
+
+---
+
+## 💎 Bảng tính năng "VIP Pro" — Điểm ăn tiền số 1
+
+| Tính năng "Đắt Xắt Ra Miếng"                 | Tại sao nó giúp bạn cứu rỗi dự án?                                                                                                                                                                                 | Trạng thái |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------: |
+| 🚀 **React Native 0.84+ New Architecture**   | Bật sẵn **Fabric Renderer** & **TurboModules / Nitro Modules**. Tốc độ native JSI trực tiếp, không phụ thuộc Bridge cũ kỹ.                                                                                         |   ✅ VIP   |
+| ⚡ **Zero Re-render Architecture**           | Áp dụng triệt để Reanimated 4 Worklets, `useImperativeHandle`, `memo` comparators. Countdown OTP, Timer quay phim, Draggable HUD chạy 100% trên UI Thread — JS Thread rảnh rỗi tuyệt đối!                          |   ✅ VIP   |
+| 🕵️ **In-App Requests Inspector (Local Lib)** | Debug HTTP/HTTPS trực tiếp ngay trong app! Bong bóng nổi kéo thả hít mép, **Copy cURL 1 chạm**, bóc tách Bearer token, search/filter request, hoàn toàn zero external dependency (`src/libs/requests-inspector/`). |   ✅ VIP   |
+| 📊 **Real-time FPS & Memory HUD**            | Widget đo trực tiếp **UI Thread FPS**, **JS Thread FPS (60/120Hz)** và dung lượng RAM tiêu thụ thời gian thực. Kéo thả tự do trên màn hình, phát hiện giật lag ngay khi dev không cần cắm profiler.                |   ✅ VIP   |
+| 🛡️ **Zero-Dependency Error Boundary**        | Khi có lỗi render JS bất ngờ, thay vì sập app văng ra màn hình chính, app tự động kích hoạt **Crash Recovery Screen** hiển thị chi tiết stack trace, nút Copy Crash Log và Thử lại / Khởi động lại app an toàn.    |   ✅ VIP   |
+| 🔑 **Universal Permission Rationale Modal**  | Modal xin quyền hệ thống (Camera, Micro, Thư viện, Thông báo) giao diện cao cấp, giải thích lý do trước khi kích hoạt native prompt. Tự động hỗ trợ mở App Settings nếu quyền bị từ chối vĩnh viễn.                |   ✅ VIP   |
+| 🛠️ **Scaffolding Screen Generator**          | Lệnh thần thánh `yarn gen:screen <ScreenName>` sinh mã tự động cả màn hình, styles chuẩn Responsive, Dark/Light theme, tự add route navigation và i18n trong **0.5 giây**!                                         |   ✅ VIP   |
+| 🎨 **Theme System 3 Trạng thái**             | Hỗ trợ ☀️ **Sáng (Light)**, 🌙 **Tối (Dark)** và ⚙️ **Hệ thống (Auto)** thông minh theo `Appearance`. Đổi theme mượt mà toàn diện không giật cục.                                                                  |   ✅ VIP   |
+| 💬 **Chat Toast Aggregator (>150 msg/min)**  | Thuật toán gom cụm thông báo chat cực hạn kiểu Zalo: sliding window, per-group tracking, burst detection, mention xuyên throttle — không bao giờ spam tràn ngập màn hình.                                          |   ✅ VIP   |
+| 📱 **Responsive Scaling 100%**               | Bộ hàm `s()`, `vs()`, `ms()`, `fs()` quy chuẩn theo chuẩn iPhone 14, tự động co giãn hoàn hảo trên mọi kích thước màn hình từ iPhone SE đến iPad/Tablet.                                                           |   ✅ VIP   |
+| 🚀 **FlashList 2.x & SuperGallery**          | Danh sách lướt cuộn 120 FPS tải hàng ngàn items không drop frame. Trình xem ảnh full-screen pinch-to-zoom + swipe dismiss không re-render parent.                                                                  |   ✅ VIP   |
+| 🔢 **Premium OTP System**                    | 4 style OTP đẳng cấp (Stripe, Apple, Dashed, Revolt), SMS Auto-fill, Countdown Reanimated chạy 100% trên UI thread.                                                                                                |   ✅ VIP   |
+| 🤖 **Built-in AI Agent Skills**              | Tích hợp sẵn bộ quy chuẩn `.agents/skills/rn-best-performance-dev` giúp Antigravity, Cursor, Claude Code sinh mã chuẩn kiến trúc template 100%.                                                                    |   ✅ VIP   |
+
+---
+
+## 📸 Giao diện thực tế (Screenshots từ Simulator / Real Device)
+
+|                        🏠 Bento Grid Minimalist HomeScreen & Specs                         |                             🕵️ In-App Network Requests Inspector & API Sim                              |
+| :----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: |
+| <img src="docs/screenshots/01_home_screen.png" width="360" alt="Home Screen Bento Grid" /> | <img src="docs/screenshots/02_network_simulator.png" width="360" alt="Network Simulator & Inspector" /> |
+|             _Bento Grid hiện đại, Tech Specs bar, theme switcher 3 trạng thái_             |                  _Giả lập 12 kịch bản API, bong bóng nổi draggable, copy cURL 1 chạm_                   |
+
+|                         🚀 FlashList 120 FPS & Instagram Stories                          |                  🔢 Zero Re-render OTP & High-Perf Countdown                  |
+| :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------: |
+| <img src="docs/screenshots/03_social_feed.png" width="360" alt="FlashList Social Feed" /> | <img src="docs/screenshots/04_otp_screen.png" width="360" alt="OTP Screen" /> |
+|               _Infinite scrolling siêu mượt, story bar Reanimated progress_               |        _4 phong cách OTP cao cấp, countdown chạy 100% trên UI thread_         |
+
+|                         💬 Realtime Chat & High-Stress Tester                         |                              🪟 Native Bottom Sheet Modal Screen                               |
+| :-----------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
+| <img src="docs/screenshots/05_chat_simulator.png" width="360" alt="Chat Simulator" /> | <img src="docs/screenshots/06_modal_bottom_sheet.png" width="360" alt="Native Bottom Sheet" /> |
+|              _Stress test dội bom >150 tin/phút, Zalo-style aggregation_              |                _Modal solid card bo góc, grabber pill, backdrop tap to dismiss_                |
+
+---
+
+## 🛠️ Scaffolding Generator Script — Sinh Code Màn Hình Thần Tốc
+
+Bạn mệt mỏi vì mỗi lần tạo màn hình mới phải: tạo folder, tạo file tsx, tạo file styles, import `useStyles`, copy paste boilerplate, rồi mò vào `AppNavigation.tsx` khai báo route, rồi mò vào `vi.json`/`en.json` thêm key?
+
+Chỉ cần một câu lệnh duy nhất:
+
+```bash
+yarn gen:screen <ScreenName>
+```
+
+### 🎯 Ví dụ thực tế:
+
+```bash
+# Tạo màn hình Profile
+yarn gen:screen Profile
+
+# Hoặc tạo màn hình OrderDetail
+yarn gen:screen OrderDetail
+```
+
+### ⚡ Script sẽ tự động thực hiện 5 việc trong 0.5 giây:
+
+1. 📁 **Tạo Component Màn hình (`src/screens/orderDetail/OrderDetailScreen.tsx`)**:
+
+   - Tự bọc trong `AppScreen` với safe area chuẩn chỉ.
+   - Gắn sẵn hook `useStyles` reactive theo theme tokens.
+   - Gắn `useRenderLog` để soi re-render ngay khi code.
+   - Bọc `React.memo` chuẩn zero re-render.
+   - Tạo sẵn nút bấm mẫu dùng `AppButton` 3D depth và `toast`.
+
+2. 🎨 **Tạo File Styles (`src/screens/orderDetail/OrderDetailScreen.styles.ts`)**:
+
+   - Sử dụng hàm chuẩn responsive: `s()`, `vs()`, `ms()`, `fs()`.
+   - Kết nối trực tiếp với bảng màu `AppTheme`.
+
+3. 🧭 **Tự động đăng ký Route vào Navigation**:
+
+   - Tự động thêm `import OrderDetailScreen` vào `src/navigation/AppNavigation.tsx`.
+   - Tự động chèn route vào `MainStack` với header chuẩn.
+
+4. 🌍 **Tự động thêm i18n Key**:
+
+   - Tự thêm bản dịch vào cả `src/i18n/locales/vi.json` và `src/i18n/locales/en.json`.
+
+5. ✨ **Tự động format chuẩn Prettier**:
+   - Code sinh ra bóng bẩy, thụt lề chuẩn, không cần format lại bằng tay.
+
+Sau khi lệnh chạy xong, bạn chỉ việc gọi ngay:
+
+```tsx
+NavigationService.navigate('OrderDetailScreen');
+```
 
 ---
 
@@ -61,748 +131,300 @@ template/
 ├── .agents/                   # 🤖 Bộ kỹ năng AI Agent tích hợp
 │   └── skills/
 │       └── rn-best-performance-dev/ # Quy chuẩn code, zero re-render, git commit
-├── App.tsx                    # 🏠 Entry point — đơn giản, sạch sẽ
+├── scripts/                   # 🛠️ Bộ công cụ tự động hóa phát triển
+│   └── genScreen.js           #     Scaffolding screen generator (yarn gen:screen)
+├── docs/                      # 📚 Tài liệu & screenshots thực tế
+│   └── screenshots/           #     Ảnh chụp màn hình từ Simulator/Device
+├── App.tsx                    # 🏠 Entry point — sạch sẽ, bao bọc bởi AppProvider
 ├── index.js                   # 📌 Đăng ký app
 ├── build.sh                   # 🏗️ Script build multi-env (dev/prod)
-├── firebase.json              # 🔥 Firebase config (RNFB đọc từ root)
-├── ReactotronConfig.js        # 🛠️ Config debug tool
 │
 ├── src/
 │   ├── api/                   # 🌐 API Layer
-│   │   ├── apiClient.ts       #     Axios client (interceptors, gắn requests-inspector)
+│   │   ├── apiClient.ts       #     Axios client (tự động gắn requests-inspector)
 │   │   └── endpoints.ts       #     Danh sách API endpoints
 │   │
 │   ├── assets/                # 🎨 Tài nguyên tĩnh
-│   │   ├── animations/        #     Lottie hoặc animations
-│   │   ├── bootsplash/        #     Assets cho splash screen
-│   │   ├── fonts/             #     Custom fonts
-│   │   ├── icon/              #     ✨ SVG Icon System (react-native-svg, IconNetwork, ...)
-│   │   ├── images/            #     Hình ảnh
-│   │   └── logo.png           #     Logo app
+│   │   ├── icon/              #     ✨ SVG Icon System (react-native-svg, độc lập, không lỗi font)
+│   │   ├── images/            #     Hình ảnh tĩnh
+│   │   └── logo.png           #     Logo ứng dụng
 │   │
 │   ├── components/            # 🧩 Components tái sử dụng
-│   │   ├── portals/           #     Components "bay" trên mọi màn hình
-│   │   │   ├── AppProvider.tsx         # Provider tổng (SafeArea, i18n, FCM, Inspector, ...)
-│   │   │   ├── GlobalLoadingComponent  # Loading overlay toàn app
-│   │   │   └── alert/                  # Custom Alert + Toast system
-│   │   │       ├── CustomAlert.tsx
-│   │   │       ├── Message.tsx
-│   │   │       ├── ToastContainer.tsx
-│   │   │       └── useAlertStore.ts    # Zustand store cho alert/toast
+│   │   ├── portals/           #     Components toàn cục treo trên root
+│   │   │   ├── AppProvider.tsx         # Provider tổng: SafeArea, ErrorBoundary, FpsHUD, Modal, FCM...
+│   │   │   ├── errorBoundary/          # 🛡️ Local Error Boundary & Crash Recovery Screen
+│   │   │   ├── permission/             # 🔑 Universal Permission Rationale Modal & Hook
+│   │   │   ├── GlobalLoadingComponent  # Loading overlay chặn tương tác toàn app
+│   │   │   └── alert/                  # Custom Alert + Toast system (không phụ thuộc thư viện)
 │   │   │
-│   │   └── ui/                #     UI Kit
+│   │   └── ui/                #     UI Kit hiệu năng cao
+│   │       ├── fpsHud/        #     📊 Draggable Real-time FPS & Memory HUD Widget
+│   │       ├── appScreen/     #     Khung màn hình chuẩn, tự tính safe area insets
 │   │       ├── appButton/     #     Button 3D với depth effect
 │   │       ├── appPress/      #     Pressable với ripple animation
-│   │       ├── appTextInput/  #     Text input tùy chỉnh
 │   │       ├── appImage/      #     Image 3-layer (skeleton → thumbnail → full)
 │   │       ├── skeleton/      #     Skeleton loading placeholder
 │   │       ├── superGallery/  #     🖼️ Full-screen image viewer (zoom + swipe)
 │   │       ├── superBanner/   #     Carousel auto-play với parallax
-│   │       ├── swipeItem/     #     🖐️ Swipeable Item (Gesture + Reanimated)
+│   │       ├── swipeItem/     #     🖐️ Swipeable Item (Gesture + Reanimated 4)
 │   │       └── toast/         #     💬 ChatToastManager + ChatToastContainer
 │   │
-│   ├── env/                   # ⚙️ Cấu hình môi trường
-│   │   ├── index.tsx          #     Export ENV, BASE_URL, IS_DEV, ...
-│   │   ├── config/            #     Firebase configs
-│   │   │   ├── development/   #     GoogleService-Info.plist + google-services.json (DEV)
-│   │   │   └── production/    #     GoogleService-Info.plist + google-services.json (PROD)
-│   │   └── scripts/           #     Scripts auto-switch environment
-│   │
-│   ├── firebase/              # 🔥 Firebase services
-│   │   └── fcmService.ts      #     FCM Modular API — token, permission, notification
-│   │
-│   ├── hooks/                 # 🪝 Custom Hooks
-│   │   └── useRenderLog.ts    #     🔍 Debug: theo dõi re-render count
-│   │
-│   ├── i18n/                  # 🌍 Đa ngôn ngữ
-│   │   ├── i18n.tsx           #     Config i18next + auto-detect language
-│   │   └── locales/
-│   │       ├── vi.json        #     🇻🇳 Tiếng Việt
-│   │       └── en.json        #     🇺🇸 English
-│   │
-│   ├── libs/                  # 📦 Thư viện nội bộ độc lập
-│   │   └── requests-inspector/#     🕵️ In-app HTTP/HTTPS Network Inspector (Floating bubble, cURL copy, token copy)
+│   ├── libs/                  # 📦 Thư viện nội bộ độc lập (Local Libraries)
+│   │   └── requests-inspector/#     🕵️ In-app Network Inspector (Floating bubble, cURL copy, token copy)
 │   │
 │   ├── navigation/            # 🧭 Điều hướng
-│   │   ├── AppNavigation.tsx  #     Stack navigator (Static API v8)
+│   │   ├── AppNavigation.tsx  #     Stack navigator (React Navigation v8 Static API)
 │   │   ├── NavigationService  #     navigate(), push(), replace(), back() — gọi ở mọi nơi
 │   │   └── NavDebugger.tsx    #     Widget debug hiển thị tên màn hình + thời gian chuyển
 │   │
-│   ├── screens/               # 📱 Màn hình
-│   │   ├── home/              #     Trang chủ — banner, feature grid, demo hub
-│   │   │   ├── HomeScreen.tsx
-│   │   │   └── MyModalScreen.tsx
-│   │   ├── detail/            #     DetailScreen, HeavyItem, StoryScreen
-│   │   ├── networkSimulator/  #     🌐 Mô phỏng 12 kịch bản API thực tế
-│   │   ├── chatDemo/          #     💬 Màn hình chat 1v1 & nhóm thực tế
-│   │   ├── chatSimulator/     #     🧪 Giả lập spam tin nhắn (>150 msg/min)
-│   │   ├── camera/            #     📸 Pro Camera Native Module
-│   │   ├── qrScan/            #     🔍 QR/Barcode Scanner
-│   │   ├── otp/               #     🔢 Premium OTP input
-│   │   └── swipeable/         #     🖐️ Swipe-to-action list
+│   ├── screens/               # 📱 Màn hình ứng dụng
+│   │   ├── home/              #     Trang chủ Bento Grid, Tech Specs, Bottom Sheet Modal
+│   │   ├── networkSimulator/  #     🌐 Mô phỏng 12 kịch bản API thực tế + Concurrent Blast
+│   │   ├── chatDemo/          #     💬 Màn hình chat 1v1 & nhóm thực chiến
+│   │   ├── chatSimulator/     #     🧪 Giả lập dội bom tin nhắn (>150 msg/min)
+│   │   ├── camera/            #     📸 Pro Camera Module (Nitro Modules, Tap-to-focus)
+│   │   ├── qrScan/            #     🔍 QR/Barcode Scanner (Flashlight, Gallery scan)
+│   │   ├── otp/               #     🔢 Premium OTP input (4 styles, Zero re-render timer)
+│   │   └── swipeable/         #     🖐️ FlashList 120 FPS + Swipe-to-action
 │   │
-│   ├── store/                 # 🗃️ State Management (Zustand)
+│   ├── store/                 # 🗃️ State Management (Zustand 5)
 │   │   ├── useLoadingStore    #     Global loading state (gọi được ngoài component)
-│   │   ├── useNavigationStore #     Track màn hình hiện tại + thời gian chuyển
-│   │   └── useThemeStore      #     Dark/Light mode toggle
+│   │   ├── useNavigationStore #     Track màn hình hiện tại + thời gian chuyển ms
+│   │   └── useThemeStore      #     Theme state: 'light' | 'dark' | 'auto'
 │   │
 │   ├── theme/                 # 🎨 Design System
-│   │   ├── Colors.ts          #     Theme tokens (light/dark)
+│   │   ├── Colors.ts          #     Theme tokens (light / dark)
 │   │   ├── Responsive.ts      #     Scale functions: s(), vs(), ms(), fs()
 │   │   └── useStyles.ts       #     Hook tạo styles reactive theo theme
 │   │
 │   ├── types/                 # 📝 TypeScript types
 │   └── utils/                 # 🔧 Utilities
-│       ├── formatters.ts
-│       └── validators.ts
-│
-├── android/                   # 🤖 Android native project
-├── ios/                       # 🍎 iOS native project
-└── __tests__/                 # 🧪 Unit tests
 ```
 
 ---
 
 ## 🚀 Bắt đầu nhanh
 
-### Yêu cầu hệ thống
+### Yêu cầu môi trường
 
 - **Node.js** >= 22.11.0
-- **Yarn** (khuyến nghị) hoặc npm
+- **Yarn** (khuyến nghị)
 - **Xcode** (cho iOS) / **Android Studio** (cho Android)
-- Hoàn thành [React Native Environment Setup](https://reactnative.dev/docs/set-up-your-environment)
+- Đã hoàn tất [React Native Environment Setup](https://reactnative.dev/docs/set-up-your-environment)
 
 ### 1️⃣ Clone & Cài đặt
 
 ```bash
-# Clone repo
+# Clone repo về máy
 git clone <repo-url> my-awesome-app
 cd my-awesome-app
 
-# Cài dependencies
+# Cài đặt toàn bộ dependencies
 yarn install
 
-# Cấu hình Node cho Xcode (quan trọng! ⚠️)
+# Cấu hình Node cho Xcode (bước này cực quan trọng trên macOS! ⚠️)
 echo "export NODE_BINARY=$(which node)" > .xcode.env.local
 ```
 
-### 2️⃣ Cài CocoaPods (iOS)
+### 2️⃣ Cài đặt CocoaPods (iOS)
 
 ```bash
 bundle install                    # Cài Ruby bundler lần đầu
-bundle exec pod install           # Cài native dependencies
+bundle exec pod install           # Cài native pods
 ```
 
-### 3️⃣ Chạy app
+### 3️⃣ Chạy ứng dụng
 
 ```bash
 # Khởi động Metro bundler
 yarn start
 
-# --- Mở terminal mới ---
+# --- Mở một tab terminal mới ---
 
-# 🍎 Chạy iOS (tự switch sang env Dev)
+# 🍎 Chạy trên iOS Simulator (tự động chuyển môi trường Dev)
 yarn ios
 
-# 🤖 Chạy Android (tự switch sang env Dev)
+# 🤖 Chạy trên Android Emulator (tự động chuyển môi trường Dev)
 yarn android
 ```
 
-> 💡 **Mẹo**: Lệnh `yarn ios` và `yarn android` đã tự động chạy `build.sh` để switch sang environment **Development** trước khi build. Không cần config gì thêm!
+> 💡 **Bí kíp**: Lệnh `yarn ios` và `yarn android` đã tự động kích hoạt script `build.sh` để switch sang môi trường **Development** (Firebase config, app name, package name). Bạn không cần động tay vào cấu hình native!
+
+---
+
+## 🎯 Chi tiết các "Vũ khí hạng nặng"
+
+### 📊 1. Draggable Real-time FPS & Memory HUD
+
+Nằm tại `src/components/ui/fpsHud/FpsHUD.tsx`, được nhúng sẵn tại root `AppProvider`.
+
+- **Cơ chế đo**:
+  - **UI Thread FPS**: Tính toán trực tiếp bằng Reanimated Worklet đo delta timestamp giữa các frame hình native.
+  - **JS Thread FPS**: Đo tần số dispatch event từ JS event loop.
+  - **RAM Memory**: Đo dung lượng memory heap theo thời gian thực.
+- **Zero Re-render**: Toàn bộ giá trị FPS và text được update trực tiếp qua `AnimatedTextInput` và Reanimated SharedValues. Component cha và các màn hình bên dưới **không hề bị re-render** khi số FPS nhảy liên tục!
+- **Kéo thả tự do**: Dùng `react-native-gesture-handler` cho phép kéo widget đến bất kỳ vị trí nào trên màn hình, chạm để thu nhỏ hoặc mở rộng.
+
+### 🛡️ 2. Zero-Dependency Error Boundary & Crash Recovery Screen
+
+Nằm tại `src/components/portals/errorBoundary/`.
+
+- **Vấn đề thực tế**: Trong React Native, một lỗi JS bất ngờ (ví dụ: `Cannot read properties of undefined`) sẽ làm sập app ngay lập tức (Crash to Home), khách hàng không hiểu chuyện gì xảy ra.
+- **Giải pháp**: Bọc toàn bộ ứng dụng bằng `AppErrorBoundary`. Khi phát sinh exception:
+  - Tự động bắt lỗi ở lifecycle `componentDidCatch`.
+  - Hiển thị màn hình phục hồi **Crash Recovery Screen** cực kỳ chỉn chu.
+  - Cung cấp nút **Copy Crash Log** (kèm full component stack) để gửi cho đội ngũ dev.
+  - Cung cấp nút **Thử lại** hoặc **Khởi động lại ứng dụng** an toàn.
+  - **Hoàn toàn độc lập**, không phụ thuộc vào thư viện bên thứ 3 nào.
+
+### 🔑 3. Universal Permission Rationale Modal & Hook
+
+Nằm tại `src/components/portals/permission/`.
+
+- **UX chuẩn Apple / Google**: Tuyệt đối không gọi thẳng native permission popup mà không báo trước cho người dùng.
+- **Hook `usePermission` & `showPermissionRationaleModal`**:
+
+  ```tsx
+  import { showPermissionRationaleModal } from '@/components/portals/permission/PermissionRationaleModal';
+
+  // Hiện modal giải thích trước khi xin quyền
+  showPermissionRationaleModal({
+    permissionType: 'camera',
+    title: 'Quyền sử dụng Máy ảnh',
+    description:
+      'Ứng dụng cần quyền Camera để bạn có thể quét mã QR thanh toán và chụp ảnh tài liệu.',
+    onConfirm: async () => {
+      // Gọi lệnh request permission native
+    },
+    onCancel: () => {
+      // Người dùng chưa đồng ý
+    },
+  });
+  ```
+
+- **Hỗ trợ Settings Redirection**: Nếu người dùng đã chọn "Don't ask again" (Android) hoặc từ chối vĩnh viễn (iOS), modal tự động hiển thị nút **Mở Cài đặt** (`Linking.openSettings()`).
+
+### 🕵️ 4. In-App Requests Inspector (Local Library)
+
+Nằm tại `src/libs/requests-inspector/` (đã được bóc tách và open-source độc lập):
+
+- **Tự động bắt request**: Đã được gắn vào `apiClient.ts` qua `attachRequestsInspector(apiClient)`.
+- **Bong bóng nổi di động**: Tự động hít vào mép màn hình trái/phải, hiển thị badge số lượng request mới.
+- **1-Tap Actions**:
+  - 📋 **Copy cURL**: Tạo lệnh `curl -X POST ...` chuẩn chỉnh chỉ với 1 cú chạm.
+  - 🔑 **Copy Bearer Token**: Bóc tách token từ header `Authorization`.
+  - 📄 **Copy JSON Payload/Response**: Đã format sẵn thụt lề đẹp đẽ.
+- **Bộ lọc mạnh mẽ**: Tìm kiếm theo URL, lọc theo Method (`GET`, `POST`, `PUT`, `DELETE`...) hoặc Status code (`2xx`, `4xx`, `5xx`).
+
+### 🎨 5. Theme System 3 Trạng thái (Light / Dark / Auto)
+
+Hệ thống theme token được quản lý bởi Zustand qua `src/store/useThemeStore.ts`:
+
+```tsx
+import { useThemeStore } from '@/store/useThemeStore';
+
+const mode = useThemeStore(state => state.mode); // 'light' | 'dark' | 'auto'
+const setMode = useThemeStore(state => state.setMode);
+
+// Chuyển sang Light
+setMode('light');
+
+// Chuyển sang Dark
+setMode('dark');
+
+// Chuyển sang Tự động theo hệ thống máy (Appearance)
+setMode('auto');
+```
+
+Mọi component sử dụng hook `useStyles(createStyles)` sẽ tự động re-render và đổi màu mượt mà khi theme thay đổi.
 
 ---
 
 ## 📋 Các lệnh hữu ích
 
-### 🏃 Chạy & Build
+### 🏃 Chạy & Phát triển
 
-| Lệnh | Mô tả |
-|-------|-------|
-| `yarn start` | Khởi động Metro (reset cache) |
-| `yarn ios` | Build & chạy iOS (Dev) |
-| `yarn android` | Build & chạy Android (Dev) |
-| `yarn ios-live` | Build & chạy iOS (Production) |
-| `yarn android-live` | Build & chạy Android (Production) |
+| Lệnh                     | Mô tả                                                      |
+| ------------------------ | ---------------------------------------------------------- |
+| `yarn start`             | Khởi động Metro bundler (tự reset cache)                   |
+| `yarn ios`               | Build & chạy iOS Simulator (Môi trường Dev)                |
+| `yarn android`           | Build & chạy Android Emulator (Môi trường Dev)             |
+| `yarn ios-live`          | Build & chạy iOS (Môi trường Production)                   |
+| `yarn android-live`      | Build & chạy Android (Môi trường Production)               |
+| `yarn gen:screen <Name>` | 🛠️ **Sinh mã tự động Screen + Styles + Navigation + i18n** |
 
-### 📦 Build Release
+### 📦 Đóng gói & Release
 
-| Lệnh | Mô tả |
-|-------|-------|
-| `yarn android-build-APK` | Build APK release (auto đặt tên theo ngày) |
-| `yarn android-build-AAB` | Build AAB cho Google Play |
-| `yarn open-folder-apk` | Mở folder chứa APK |
-| `yarn open-folder-aab` | Mở folder chứa AAB |
-| `yarn export-all` | Export bundle cho cả Android + iOS |
+| Lệnh                     | Mô tả                                                       |
+| ------------------------ | ----------------------------------------------------------- |
+| `yarn android-build-APK` | Build file APK Release (tự động đặt tên file theo ngày giờ) |
+| `yarn android-build-AAB` | Build file AAB Release để tải lên Google Play Console       |
+| `yarn open-folder-apk`   | Mở thư mục chứa file APK đã build trên máy                  |
+| `yarn open-folder-aab`   | Mở thư mục chứa file AAB đã build trên máy                  |
+| `yarn export-all`        | Export bundle cho cả Android và iOS                         |
 
-### 🧹 Dọn dẹp
+### 🧹 Dọn dẹp & Sửa lỗi Native
 
-| Lệnh | Mô tả |
-|-------|-------|
-| `yarn clean:android` | Clean Gradle build |
-| `yarn clean:ios` | Nuclear clean iOS (Pods, DerivedData, cache — tất cả!) |
+| Lệnh                 | Mô tả                                                                     |
+| -------------------- | ------------------------------------------------------------------------- |
+| `yarn clean:android` | Dọn dẹp Gradle cache và build cache Android                               |
+| `yarn clean:ios`     | Nuclear clean iOS (Xóa sạch Pods, DerivedData, Podfile.lock và build lại) |
 
-### 🔧 Code Quality
+### 🔧 Chất lượng mã nguồn (Code Quality)
 
-| Lệnh | Mô tả |
-|-------|-------|
-| `yarn lint` | Kiểm tra lỗi ESLint |
-| `yarn lint:fix` | Auto-fix lỗi ESLint |
-| `yarn lint:check` | Check lỗi (0 warning cho CI/CD) |
-
-### 🛠️ Tools
-
-| Lệnh | Mô tả |
-|-------|-------|
-| `yarn openXcode` | Mở project trong Xcode |
-| `yarn openAndroidStudio` | Mở project trong Android Studio |
-| `yarn port` | Forward port 9090 cho Reactotron (Android) |
+| Lệnh              | Mô tả                                                        |
+| ----------------- | ------------------------------------------------------------ |
+| `yarn lint`       | Kiểm tra toàn bộ mã nguồn bằng ESLint                        |
+| `yarn lint:fix`   | Tự động sửa các lỗi cú pháp và sắp xếp import                |
+| `yarn lint:check` | Kiểm tra nghiêm ngặt không cho phép warning (dùng cho CI/CD) |
 
 ---
 
-## 🎯 Hướng dẫn sử dụng
-
-### 🎨 Sử dụng Theme System
-
-```tsx
-import { useStyles } from '@/theme/useStyles';
-import { AppTheme } from '@/theme/Colors';
-import { ms, fs } from '@/theme/Responsive';
-
-// Tạo styles reactive theo theme (tự động re-render khi đổi dark/light)
-const createStyles = (theme: AppTheme) => ({
-  container: { backgroundColor: theme.background },
-  title: { color: theme.text, fontSize: fs(18) },
-  card: { padding: ms(16), borderRadius: ms(12) },
-});
-
-const MyScreen = () => {
-  const styles = useStyles(createStyles);
-  // styles tự động cập nhật khi user đổi theme! ✨
-};
-```
-
-### 🔔 Toast & Alert
-
-```tsx
-import { toast } from '@/components/portals/alert/useAlertStore';
-
-// Gọi ở BẤT CỨ ĐÂU — kể cả ngoài component! 🤯
-toast.success('Lưu thành công!');
-toast.error('Có lỗi xảy ra!');
-toast.warning('Kiểm tra lại kết nối mạng');
-```
-
-```tsx
-import { useAlertStore } from '@/components/portals/alert/useAlertStore';
-
-// Custom Alert với nút bấm
-const showAlert = useAlertStore(state => state.showAlert);
-showAlert({
-  title: 'Xác nhận',
-  content: 'Bạn có muốn xóa item này?',
-  buttons: [
-    { text: 'Hủy', style: 'cancel', onPress: () => {} },
-    { text: 'Xóa', onPress: () => deleteItem() },
-  ],
-});
-```
-
-### 💬 Chat Toast Aggregator (Zalo-style, >150 msg/min)
-
-`ChatToastManager` là một singleton xử lý thông báo chat tốc độ cao mà không làm spam UI. Toàn bộ logic chạy trên JS thread, không có React state, không re-render.
-
-#### Kiến trúc 3 tầng ưu tiên
-
-```
-Tin nhắn đến
-     │
-     ▼
-┌─────────────────────────────────────────────────────────┐
-│  PRIORITY 1 — Mention / Admin / System                  │
-│  → Luôn hiển thị ngay, bypass mọi throttle             │
-│  → Duration: 4s, type: warning (màu vàng 🔔)           │
-└─────────────────────────────────────────────────────────┘
-     │ (nếu không phải priority 1)
-     ▼
-┌─────────────────────────────────────────────────────────┐
-│  PRIORITY 2 — Tin nhắn riêng (1v1)                     │
-│                                                         │
-│  Bước A: Cập nhật burst tracker (sliding window 4s)    │
-│  Bước B: Nếu đang trong cooldown → nuốt im lặng        │
-│  Bước C: Nếu ≥3 sender khác nhau trong 4s              │
-│          → Gom: "X người đang nhắn tin cho bạn"        │
-│          → Cooldown 5s, sau đó reset hoàn toàn         │
-│  Bước D: Cùng sender → throttle 1s (chỉ show lần đầu) │
-└─────────────────────────────────────────────────────────┘
-     │ (nếu là group)
-     ▼
-┌─────────────────────────────────────────────────────────┐
-│  PRIORITY 3 — Tin nhắn nhóm (per-group, độc lập)       │
-│                                                         │
-│  Mỗi nhóm có RoomState riêng (sliding window 5s)       │
-│  ≤3 tin trong 5s → hiển thị từng tin bình thường       │
-│  >3 tin trong 5s → gom: "X người · Y tin mới"         │
-│                    → Cooldown 5s, sau đó reset          │
-│  4 nhóm spam cùng lúc → 4 aggregation hoàn toàn độc lập│
-└─────────────────────────────────────────────────────────┘
-```
-
-#### Bảng thông số
-
-| Hằng số | Giá trị | Ý nghĩa |
-|---------|---------|---------|
-| `PRIVATE_THROTTLE_MS` | 1s | Cùng sender: mute sau lần show đầu tiên |
-| `PRIVATE_BURST_WINDOW_MS` | 4s | Cửa sổ phát hiện nhiều sender cùng nhắn |
-| `PRIVATE_BURST_THRESHOLD` | 3 người | Ngưỡng kích hoạt gom 1v1 |
-| `PRIVATE_BURST_COOLDOWN_MS` | 5s | Cooldown sau khi hiện toast gom 1v1 |
-| `GROUP_WINDOW_MS` | 5s | Sliding window per-group |
-| `GROUP_AGGREGATE_THRESHOLD` | 3 tin | Ngưỡng kích hoạt gom nhóm |
-| `GROUP_COOLDOWN_MS` | 5s | Cooldown sau khi hiện toast gom nhóm |
-| `NORMAL_TOAST_DURATION` | 2.5s | Thời gian hiển thị toast thường |
-| `AGGREGATE_TOAST_DURATION` | 4s | Thời gian hiển thị toast gom |
-| `MENTION_TOAST_DURATION` | 4s | Thời gian hiển thị mention/admin |
-
-#### Ví dụ thực tế
-
-```
-Timeline (mỗi dấu = 500ms):
-
-[Nhóm Alpha spam 20 tin/10s]
-t=0.0s  An: "Deadline sắp tới rồi!"      → SHOW  (tin 1, window=1)
-t=0.5s  Bình: "Ai review PR không?"      → SHOW  (tin 2, window=2)
-t=1.0s  Cường: "Deploy staging đi!"      → SHOW  (tin 3, window=3)
-t=1.5s  Đức: "Xong chưa ae?"             → AGGREGATE
-        → "[Nhóm Alpha] 4 người · 4 tin nhắn mới" (4s)
-t=2.0s  Em: "Sếp đang hỏi 😅"           → SWALLOW (cooldown 5s)
-t=6.5s  (cooldown hết) An: "Update đi!" → SHOW lại bình thường
-
-[3 người nhắn 1v1 cùng lúc]
-t=0.0s  An: "Ê rảnh không?"              → SHOW
-t=0.2s  Bình: "Check tin nhắn gấp!"      → SHOW
-t=0.4s  Cường: "Gửi file cho tôi nhé"    → BURST
-        → "💬 3 người đang nhắn tin cho bạn" (4s)
-t=0.6s  Đức: "Tối nay ăn gì?"            → SWALLOW (cooldown 5s)
-t=5.4s  (cooldown hết) reset hoàn toàn
-
-[Mention xuyên qua spam — luôn thắng]
-t=1.5s  (đang trong cooldown nhóm)
-        An: "@bạn check PR gấp nhé!"     → SHOW NGAY (bypass tất cả)
-```
-
-#### Sử dụng
-
-```tsx
-import { chatToastManager } from '@/components/ui/toast/ChatToastManager';
-
-// Tin nhắn 1v1
-chatToastManager.onNewMessage({
-  id: 'msg_001',
-  senderId: 'user_123',
-  senderName: 'Nguyễn Văn A',
-  text: 'Ê rảnh không?',
-  isGroup: false,
-});
-
-// Tin nhắn nhóm — dùng groupId (stable) để track per-room
-chatToastManager.onNewMessage({
-  id: 'msg_002',
-  senderId: 'user_456',
-  senderName: 'Trần Thị B',
-  text: 'Deadline sắp tới rồi!',
-  isGroup: true,
-  groupId: 'group_alpha',   // key ổn định để track state
-  groupName: 'Dự án Alpha', // tên hiển thị trên toast
-});
-
-// Mention — bypass tất cả throttle, luôn hiển thị
-chatToastManager.onNewMessage({
-  id: 'msg_003',
-  senderId: 'user_789',
-  senderName: 'Lê Hoàng C',
-  text: '@bạn review code đi!',
-  isGroup: true,
-  groupId: 'group_alpha',
-  groupName: 'Dự án Alpha',
-  isMentioned: true,
-});
-
-// Reset toàn bộ state (gọi khi unmount màn hình chat)
-chatToastManager.reset();
-```
-
-> 🎯 **Kiến trúc**: Singleton thuần JS, pub/sub với `Set<listener>`. Không có React state, không re-render. `ChatToastContainer` subscribe vào manager và gọi `ref.animate()` trực tiếp trên Reanimated shared values — **zero bridge overhead**. Có thể test thủ công qua màn hình `ChatSimulatorScreen` với 10 kịch bản sẵn có.
-
-### ⏳ Global Loading
-
-```tsx
-import { GlobalLoading } from '@/store/useLoadingStore';
-
-// Hiện loading overlay — chặn mọi thao tác
-GlobalLoading.show('Đang xử lý...');
-
-// Ẩn loading
-GlobalLoading.hide();
-```
-
-### 🧭 Navigation (gọi ở mọi nơi)
-
-```tsx
-import NavigationService from '@/navigation/NavigationService';
-
-// Điều hướng type-safe
-NavigationService.navigate('DetailScreen', { productId: 123 });
-NavigationService.push('DetailScreen', { productId: 456 });
-NavigationService.replace('HomeScreen');
-NavigationService.back();
-```
-
-### 🌍 Đa ngôn ngữ
-
-```tsx
-import { useTranslation } from 'react-i18next';
-
-const MyComponent = () => {
-  const { t } = useTranslation();
-  return <Text>{t('home.welcome', { name: 'Tuấn' })}</Text>;
-};
-```
-
-### 🖼️ SuperGallery (Zero Re-render Image Viewer)
-
-```tsx
-import SuperGallery, { type SuperGalleryRef } from '@/components/ui/superGallery/SuperGallery';
-
-const MyScreen = () => {
-  const galleryRef = useRef<SuperGalleryRef>(null);
-
-  // Mở gallery — parent KHÔNG re-render! 🚀
-  const openGallery = () => {
-    galleryRef.current?.open(['url1.jpg', 'url2.jpg', 'url3.jpg'], 0);
-  };
-
-  return (
-    <>
-      <TouchableOpacity onPress={openGallery}>
-        <Image source={{ uri: 'url1.jpg' }} />
-      </TouchableOpacity>
-      <SuperGallery ref={galleryRef} />
-    </>
-  );
-};
-```
-
-> 🎯 **Kiến trúc**: `useImperativeHandle` + `forwardRef` — gallery quản lý state nội bộ, parent chỉ gọi `open(images, index)` / `close()` qua ref. **Zero re-render ở parent!**
-
-### 🎠 SuperBanner (Auto-play Carousel)
-
-```tsx
-import SuperBanner, { type BannerItem } from '@/components/ui/superBanner/SuperBanner';
-
-const banners: BannerItem[] = [
-  { id: '1', imageUrl: 'https://example.com/banner1.jpg' },
-  { id: '2', imageUrl: 'https://example.com/banner2.jpg' },
-];
-
-<SuperBanner data={banners} height={180} />
-```
-
-> 🎯 Auto-play + parallax scrolling + scale-on-tap + pagination dots — tất cả chạy trên UI thread via Reanimated 4.
-
-### 🔍 Render Tracking (Debug Mode)
-
-```tsx
-import useRenderLog from '@/hooks/useRenderLog';
-
-const MyComponent = () => {
-  useRenderLog('MyComponent');
-  // Console: 🔄 [RENDER] MyComponent — lần thứ 1
-  // Console: 🔄 [RENDER] MyComponent — lần thứ 2  ← re-render thừa!
-};
-```
-
-> ⚠️ **Chỉ dùng khi debug** — xóa trước khi release! Filter `[RENDER]` trong Logcat/Console để track.
-
-### 🖐️ SwipeableItemWrapper (Swipe-to-Action)
-
-```tsx
-import { SwipeableItemWrapper, ESwipeType } from '@/components/swipeItem';
-
-<SwipeableItemWrapper
-  id={item.id}
-  animationType={ESwipeType.LEFT_RIGHT}
-  leftSwipeView={<MyLeftAction />}
-  rightSwipeView={<MyRightAction />}
-  onLeftFullSwipe={(id) => handleDelete(id)}
-  leftSwipeViewContainerStyle={{ borderRadius: 12 }}
->
-  <MyListItem item={item} />
-</SwipeableItemWrapper>
-```
-
-> 🎯 **Kiến trúc**: Sử dụng `react-native-gesture-handler` v2 + `Reanimated` v4. Mọi tính toán vị trí, vận tốc và animation đều chạy trên UI thread, đảm bảo list vuốt mượt mà 60fps kể cả trên thiết bị Android cũ.
-
-### 📸 Pro Camera System (Tối ưu tuyệt đối với Zero Re-render)
-
-Hệ thống Camera được đập đi xây lại với triết lý **hiệu năng là số 1**, mang đến trải nghiệm quay chụp mượt mà ngang ngửa ứng dụng gốc (Native App).
-
-```tsx
-// Các tính năng "sát thủ" của Camera Module:
-// 1. Zero-re-render: Đồng hồ bấm giờ (Timer), Nút chụp (Capture Button) đều được điều khiển bởi Reanimated SharedValues. JS Thread rảnh rỗi 100% trong lúc quay phim!
-// 2. Pro Tap-to-focus: Chạm vào màn hình để lấy nét, kèm hiệu ứng SVG animated cực ngầu (scale-in & fade-out).
-// 3. Background Media Processing: Lưu file ảnh/video nặng vào Gallery trong nền mà không làm khựng UI.
-// 4. Bulletproof Stability: Bọc try-catch tinh tế ở native layer, fix sạch sẽ các lỗi chí mạng.
-```
-
-> 🎯 **Giải phẫu kiến trúc & Bug fixes**:
-> - **Vision Camera v5 (Nitro Modules)**: Thay vì dùng state của React để track xem đang quay hay không (gây re-render toàn màn hình), template sử dụng `isRecordingRef` kết hợp với `isRecordingSV` (SharedValue).
-> - **Khắc phục lỗi `NativeState` null**: Vision Camera v5 sử dụng Nitro Modules, rất dễ bị crash `HybridCameraSessionSpec` nếu truy cập khi unmount. Hệ thống quản lý lifecycle an toàn bằng cách tự động dọn dẹp (dispose) và ngắt kết nối CameraView khi component mất focus.
-> - **Fix lỗi MIME type kinh điển trên Android**: Tự động phát hiện và sửa chữa các file video bị thiếu đuôi mở rộng (`.mp4`) do Vision Camera sinh ra, tránh được màn hình đỏ khi lưu qua `CameraRoll` vào MediaStore của Android.
-
-### 🔍 Pro QR & Barcode Scanner (Hiệu năng cao & Đa năng)
-
-Hệ thống quét mã được thiết kế theo mô hình **Hook-based Architecture**, tách biệt hoàn toàn logic xử lý native và UI layer, giúp code sạch và cực kỳ dễ bảo trì.
-
-```tsx
-// Các điểm nổi bật của Scanner Module:
-// 1. Hook-based Logic (useQrScanner): Đóng gói toàn bộ logic quyền camera, trạng thái quét, bật/tắt flash và quét từ thư viện ảnh vào một hook duy nhất.
-// 2. Real-time Feedback: Tự động dừng quét ngay khi nhận diện được mã (Auto-stop) để tránh quét lặp, kèm theo âm thanh/rung (nếu cấu hình thêm).
-// 3. Gallery Scanning: Hỗ trợ chọn ảnh từ thư viện để giải mã QR/Barcode — tính năng cực kỳ hữu ích khi người dùng nhận được ảnh mã qua tin nhắn.
-// 4. Scan History (Zustand-like persistence): Lưu trữ lịch sử 20 lần quét gần nhất, cho phép xem lại và xóa lịch sử dễ dàng.
-```
-
-> 🎯 **Kiến trúc & Tối ưu**:
-> - **Responsive Viewfinder**: Khung quét (Overlay) được tính toán tỉ lệ vàng bằng `Responsive.ts`, tự động căn giữa và co giãn theo mọi kích thước màn hình mà không bị méo.
-> - **I18n Ready**: Toàn bộ thông báo lỗi, yêu cầu quyền và hướng dẫn sử dụng đều được đa ngôn ngữ hóa (Tiếng Việt & Tiếng Anh).
-> - **Flashlight Control**: Điều khiển đèn flash native mượt mà, tự động dọn dẹp trạng thái khi thoát màn hình để tiết kiệm pin.
-
-### 🔢 Premium OTP & High-Performance Countdown (Zero Re-render)
-
-Hệ thống OTP được thiết kế chuẩn "Premium UX" với sự kết hợp của `input-otp-native` và logic đếm ngược siêu hiệu năng.
-
-```tsx
-// Các đặc điểm "đắt giá" của OTP Module:
-// 1. 4 Phong cách cao cấp: Stripe (liền mạch), Apple (iOS style), Dashed (gạch chân), Revolt (hiện đại).
-// 2. Zero Re-render Countdown: Bộ đếm ngược gửi lại mã chạy 100% trên UI Thread. JS Thread không hề bị đánh thức mỗi giây, giúp pin bền và app mượt.
-// 3. SMS Auto-fill: Tự động bắt mã OTP từ tin nhắn trên cả iOS (textContentType) và Android (autoComplete/SMS Retriever).
-// 4. Thread-safe Persistence: Đếm ngược chính xác ngay cả khi app ở background hoặc bị kill nhờ logic so sánh Timestamp native.
-```
-
-> 🎯 **Tại sao lại đỉnh?**:
-> - **Hiệu năng tuyệt đối**: Hầu hết các bộ đếm ngược trên thị trường đều dùng `setInterval` gây re-render component mỗi giây. Ở đây, chúng tôi dùng `AnimatedTextInput` của Reanimated để cập nhật text trực tiếp trên UI thread. **Zero re-render!**
-> - **Trải nghiệm mượt mà**: Con trỏ chuột (FakeCaret) được giả lập bằng animation Reanimated, nhấp nháy êm ái và không bao giờ bị lag kể cả khi máy đang xử lý tác vụ nặng.
-> - **An toàn & Chính xác**: Logic đếm ngược dựa trên thời gian hệ thống, đảm bảo không bị sai lệch dù người dùng có thoát app ra ngoài.
-
-### 🕵️ In-App Network Inspector (react-native-requests-inspector)
-
-Không cần cài đặt Charles Proxy, Wireshark hay cấu hình Flipper rối rắm — template tích hợp sẵn bộ **Network Inspector** chuyên nghiệp hoạt động trực tiếp trong app (cả máy ảo và máy thật release/debug test).
-
-Thư viện được đóng gói độc lập tại `src/libs/requests-inspector/` và open-source trên GitHub ([tuan1996v2/react-native-requests-inspector](https://github.com/tuan1996v2/react-native-requests-inspector)).
-
-```tsx
-import { attachRequestsInspector, requestsInspectorFetch, RequestsInspectorModal } from '@/libs/requests-inspector';
-import apiClient from '@/api/apiClient';
-
-// 1. Tự động hook toàn bộ Axios request/response
-attachRequestsInspector(apiClient);
-
-// 2. Tự động hook Fetch API nếu dùng native fetch
-const res = await requestsInspectorFetch('https://api.example.com/users', { method: 'GET' });
-
-// 3. Tích hợp Modal & Floating Bubble tại AppProvider (Root)
-<RequestsInspectorModal
-  visible={isInspectorVisible}
-  onClose={() => setInspectorVisible(false)}
-  floatingButton={true} // Bong bóng nổi kéo thả
-/>
-```
-
-> 🎯 **Tính năng "vũ khí bí mật"**:
-> - 🎈 **Floating Bubble Edge-Snapping**: Nút tròn nổi di động, tự động hít vào mép trái/phải màn hình khi thả tay, kèm badge đếm số request mới và hiệu ứng pulse viền mượt mà.
-> - ⚡ **1-Tap Quick Actions**:
->   - 📋 **Copy cURL**: Bấm 1 phát ra ngay lệnh cURL chuẩn chỉnh (headers, body, method, url) để paste thẳng vào Terminal hoặc Postman debug.
->   - 🔑 **Copy Bearer Token**: Tự động bóc tách token từ header `Authorization: Bearer <token>` mà không cần bôi đen thủ công.
->   - 📄 **Copy JSON Response**: Format JSON đẹp đẽ, sẵn sàng gửi cho Backend dev đối soát.
-> - 🔍 **Smart Search & Filters**: Tìm kiếm URL tức thì; lọc nhanh theo Method (`ALL`, `GET`, `POST`, `PUT`, `PATCH`, `DELETE`) hoặc Status (`2xx`, `4xx`, `5xx`).
-> - ⏸️ **Pause / Resume Capture**: Tạm dừng ghi log khi cần soi kỹ một request mà không bị các polling request khác làm trôi danh sách.
-> - 🛡️ **Zero External Dependency & Bulletproof Insets**: Sử dụng icon vector SVG thuần khiết, tính toán safe area tự động cho iPhone Dynamic Island / Tai thỏ và thanh điều hướng Android 3 nút / cử chỉ.
-
-### 🌐 Network API Simulator (Mô phỏng 12 kịch bản mạng thực chiến)
-
-Màn hình `NetworkSimulatorScreen` được xây dựng để kiểm thử toàn diện khả năng xử lý network của ứng dụng cũng như trải nghiệm sức mạnh của Network Inspector.
-
-```tsx
-// 12 kịch bản API đa dạng sẵn có trong màn hình test:
-// 1. Authenticated GET: Kiểm tra gửi header Authorization Bearer token.
-// 2. POST Entity: Gửi payload JSON tạo mới bản ghi.
-// 3. PUT Resource: Cập nhật toàn diện dữ liệu.
-// 4. PATCH Resource: Cập nhật một phần thuộc tính.
-// 5. DELETE Resource: Thao tác xóa bản ghi với status 200/204.
-// 6. 404 Not Found: Xử lý lỗi Not Found phía client.
-// 7. 500 Server Error: Giả lập lỗi sập máy chủ phía backend.
-// 8. Request Timeout: Kiểm tra cơ chế tự động abort khi mạng quá hạn.
-// 9. Slow Network (3000ms delay): Kiểm thử loading state & đo đạc latency.
-// 10. Query Parameters: Gửi query string phức tạp (?page=1&limit=20&filter=active).
-// 11. Heavy Payload (50KB JSON): Thử thách khả năng render & copy dữ liệu lớn.
-// 12. Native Fetch API: Kiểm tra wrapper requestsInspectorFetch độc lập với Axios.
-// + 🔥 CONCURRENT BLAST (x5): Kích hoạt đồng thời 5 request cùng lúc để stress-test UI.
-```
-
-> 🎯 **Điểm sáng**:
-> - **Giao diện chuẩn Adaptive**: Tương thích hoàn hảo cả Light Theme và Dark Theme, thẻ badge phương thức HTTP phân màu trực quan (`GET` xanh lá, `POST` xanh dương, `PUT` cam, `DELETE` đỏ, `PATCH` tím).
-> - **Chi tiết tức thì**: Bấm vào bất kỳ kịch bản nào, phản hồi hiển thị ngay dưới dạng card chi tiết (Status code, Duration ms, Payload preview) hoặc mở ngay Inspector để xem full log.
-
-### 💬 Realtime Chat & Simulator System
-
-Bên cạnh `ChatToastManager` xử lý gom cụm thông báo siêu tốc (>150 tin/phút), template cung cấp hai màn hình thực chiến hoàn chỉnh:
-
-1. **`ChatDemoScreen`**:
-   - Giao diện trò chuyện thời gian thực hiện đại (1v1 & nhóm), bong bóng chat phân chia người gửi/người nhận.
-   - Hỗ trợ gửi tin nhắn nhanh, trạng thái đã gửi/đã nhận, hiển thị avatar người dùng và chuyển đổi phòng chat mượt mà.
-
-2. **`ChatSimulatorScreen`**:
-   - Môi trường giả lập 10 kịch bản dội bom tin nhắn cực hạn:
-     - *Spam 1v1 dồn dập (10 tin/2s)* → Kiểm tra throttle 1s.
-     - *Nhiều người nhắn cùng lúc* → Kích hoạt burst detection ("3 người đang nhắn tin cho bạn").
-     - *Spam tin nhắn nhóm* → Kích hoạt gom cụm theo phòng ("Nhóm X · Y người · Z tin mới").
-     - *Mention (@bạn) xuyên spam* → Bypass toàn bộ cơ chế throttle, luôn hiển thị ngay lập tức.
-
-### 🤖 AI Agent Coding Skills (.agents/skills)
-
-Bạn dùng **Google Antigravity**, **Cursor**, hay **Claude Code** để code cùng? Template này đã chuẩn bị sẵn bộ skill chuyên nghiệp tại `.agents/skills/rn-best-performance-dev/SKILL.md` để bất kỳ AI nào khi đọc dự án đều tự động tuân thủ 100% triết lý kỹ thuật:
-
-```
-.agents/skills/rn-best-performance-dev/
-└── SKILL.md     # Bộ quy chuẩn vàng cho AI Coding Assistant
-```
-
-> 🎯 **Các quy chuẩn AI bắt buộc phải tuân theo**:
-> 1. **Zero Re-render Rule**: Tuyệt đối không dùng `useState` cho animation, scroll tracking hay countdown. Bắt buộc dùng Reanimated SharedValues, `useImperativeHandle` hoặc `memo` comparator.
-> 2. **100% Responsive Scaling**: Cấm tuyệt đối việc hardcode số pixel tĩnh như `margin: 16`. Mọi kích thước đều phải qua `s()`, `vs()`, `ms()`, `fs()` từ `src/theme/Responsive.ts`.
-> 3. **Theme Token Consistency**: Không inline style, không dùng mã hex `#FFFFFF` trực tiếp trong component. Mọi component đều phải dùng `useStyles(createStyles)` với `AppTheme`.
-> 4. **SVG Icon Vector System**: Sử dụng các icon trong `src/assets/icon/`. Cấm dùng icon font rời (dễ vỡ giao diện trên iOS) hoặc emoji ký tự (bị lỗi dấu `?` trên Android).
-> 5. **Quy chuẩn Git Commit**:
->    - **Tiêu đề**: Bắt buộc Tiếng Anh theo chuẩn Conventional Commits (`feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`).
->    - **Nội dung chi tiết**: Bắt buộc Tiếng Việt có dấu, gạch đầu dòng rõ ràng, mô tả chính xác thay đổi kỹ thuật và nghiệp vụ thực tế.
-
----
-
-## 🏗️ Multi-Environment Build
-
-Template hỗ trợ tự động switch giữa **Development** và **Production**:
-
-```
-src/env/
-├── config/
-│   ├── development/          # 🟢 Firebase config cho Dev
-│   │   ├── GoogleService-Info.plist
-│   │   └── google-services.json
-│   └── production/           # 🔴 Firebase config cho Prod
-│       ├── GoogleService-Info.plist
-│       └── google-services.json
-└── scripts/
-    └── enviroment.js         # Script switch ENV variables
-```
-
-Khi chạy `yarn ios` hoặc `yarn android`, script `build.sh` sẽ tự động:
-1. Copy đúng Firebase config (Dev/Prod)
-2. Cập nhật version name + version code
-3. Đổi tên app hiển thị
-4. Set biến môi trường tương ứng
-
-> ⚠️ **Quan trọng**: File `firebase.json` phải nằm ở **root project** (không phải trong `src/`). RNFB chỉ đọc config từ root!
-
----
-
-## 🚀 Performance Philosophy
-
-Template này được tối ưu cho **Android cấu hình yếu**, đảm bảo 60fps mượt mà:
-
-| Kỹ thuật | Giải thích |
-|----------|------------|
-| `useAnimatedScrollHandler` | Scroll handler chạy 100% UI thread — zero JS bridge |
-| `memo` + `arePropsEqual` | Custom comparator cho list items — chỉ re-render khi `id` thay đổi |
-| Pre-computed constants | Gradient colors, styles tính sẵn ở module level — không tạo object mới mỗi render |
-| `useImperativeHandle` | Gallery/overlay mở qua ref — parent không re-render |
-| `AnimatedTextInput` | Cập nhật Countdown trực tiếp trên UI thread — zero JS bridge re-render |
-| `Reanimated 4` | Tất cả animation chạy trên UI thread, JS thread không bị nghẽn |
-| `useMemo` / `useCallback` | Memoize inline objects và callbacks — tránh tạo reference mới |
-| `useRenderLog` | Hook debug phát hiện re-render thừa trong development |
-
----
-
-## 🛡️ Code Quality
-
-Template đã tích hợp sẵn bộ công cụ **code quality** đầy đủ:
-
-- **ESLint** (flat config) — `unused-imports`, `simple-import-sort`, `react-hooks`, `react-native`
-- **Prettier** — format code thống nhất
-- **Husky + lint-staged** — auto lint & format trước mỗi commit
-- **TypeScript Strict Mode** — `noImplicitAny`, `strict: true`
-
-> 🎯 Commit xấu? **Không tồn tại.** Husky sẽ chặn trước khi bạn kịp push! 💪
-
----
-
-## 🧰 Tech Stack
-
-| Công nghệ | Version | Vai trò |
-|-----------|---------|---------|
-| **React Native** | 0.84.0 | Framework cốt lõi |
-| **React** | 19.2.3 | UI Library |
-| **TypeScript** | 5.8+ | Type safety & DX |
-| **Zustand** | 5.x | State management (nhẹ, nhanh, gọi ngoài component) |
-| **React Navigation** | 8.x (alpha) | Điều hướng ứng dụng (Static API mới nhất) |
-| **FlashList (@shopify)** | 2.2.x | Render list dữ liệu khổng lồ với hiệu năng 60fps |
-| **Reanimated** | 4.2.2 | Animations mượt mà chạy trên UI thread |
-| **Gesture Handler** | 2.30.x | Xử lý các thao tác vuốt chạm phức tạp |
-| **Vision Camera** | 5.0.x | Pro Camera Module (Nitro Modules, Frame Processors) |
-| **React Native Video** | 7.0.x (beta) | Trình phát video chuyên nghiệp |
-| **Camera Roll** | 7.10.x | Truy xuất và lưu trữ Media (Native Gallery) |
-| **MMKV** | 4.1.x | Storage siêu tốc (nhanh gấp 30x AsyncStorage) |
-| **Axios** | 1.13.x | HTTP client chuẩn mực |
-| **React Hook Form** | 7.71.x | Quản lý form tối ưu, chống re-render thừa |
-| **Firebase Messaging** | 23.8.x | Push notifications (Modular API mới nhất) |
-| **Notifee** | 9.1.x | Quản lý Local Notifications |
-| **Keyboard Controller** | 1.20.x | Trải nghiệm bàn phím mượt mà, đồng nhất iOS/Android |
-| **Reactotron** | 5.1.x | Debugger chuyên dụng cho React Native |
-| **i18next & Localize** | 25.8.x | Quản lý đa ngôn ngữ thông minh |
-| **BootSplash** | 7.1.x | Màn hình khởi động Native (chống chớp trắng) |
-| **React Native SVG** | 15.15.x | Hiển thị vector icons sắc nét mọi độ phân giải |
-| **Liquid Glass** | 0.7.x | Hiệu ứng Glassmorphism (Kính mờ) tuyệt đẹp |
-| **Reanimated Carousel** | 4.0.x | Slider/Banner auto-play mượt mà 60fps |
-| **Gesture Image Viewer** | 2.1.x | Zoom và pan hình ảnh chuẩn Instagram |
-| **Nitro Modules** | 0.35.x | Nền tảng JSI Modules siêu tốc thế hệ mới |
-| **Input OTP Native** | 1.0.x | Hệ thống nhập OTP cao cấp & hiệu năng cao |
-| **QR Scanner** | 3.1.x | Quét mã vạch & QR siêu tốc (@pushpendersingh) |
-| **Blur & Linear Gradient** | - | UI effects: Làm mờ nền và đổ màu gradient |
-| **Native Menu** | 2.0.x | Context Menu chuẩn Native UI iOS/Android |
-| **Requests Inspector** | 1.0.x | Thư viện in-app HTTP/HTTPS network debugger & packet analyzer (`react-native-requests-inspector`) |
-| **AI Agent Skills** | Built-in | Bộ skill `.agents/skills` tối ưu hóa sinh code cho AI agents (Antigravity/Cursor/Claude) |
+## 🧰 Tech Stack chi tiết
+
+| Công nghệ                | Phiên bản   | Vai trò & Giá trị                                                                                  |
+| ------------------------ | ----------- | -------------------------------------------------------------------------------------------------- |
+| **React Native**         | 0.84.0      | Framework di động thế hệ mới, bật sẵn New Architecture                                             |
+| **React**                | 19.2.3      | Thư viện UI nền tảng                                                                               |
+| **TypeScript**           | 5.8+        | Strict mode 100%, bảo đảm an toàn kiểu dữ liệu                                                     |
+| **Reanimated**           | 4.2.2       | Thư viện diễn hoạt hiệu năng cao chạy trên UI Thread                                               |
+| **FlashList (@shopify)** | 2.2.x       | Danh sách tái sử dụng cell cực nhanh, đạt chuẩn 120 FPS                                            |
+| **Zustand**              | 5.x         | Quản trị state nhẹ, nhanh, gọi trực tiếp được cả bên ngoài React tree                              |
+| **React Navigation**     | 8.x (alpha) | Điều hướng toàn diện với Static API mới nhất                                                       |
+| **Gesture Handler**      | 2.30.x      | Bắt cử chỉ vuốt, kéo, zoom mượt mà ở tầng native                                                   |
+| **Vision Camera**        | 5.0.x       | Pro Camera Module với Nitro Modules JSI siêu tốc                                                   |
+| **MMKV**                 | 4.1.x       | Lưu trữ key-value siêu tốc, nhanh gấp 30 lần AsyncStorage                                          |
+| **Firebase Messaging**   | 23.8.x      | Push notifications đa nền tảng với Modular API v23                                                 |
+| **Notifee**              | 9.1.x       | Thông báo nội bộ (Local notifications)                                                             |
+| **Keyboard Controller**  | 1.20.x      | Đồng bộ bàn phím native giữa iOS và Android                                                        |
+| **React Native SVG**     | 15.15.x     | Hệ thống vector icon nội bộ, loại bỏ hoàn toàn lỗi font vỡ icon                                    |
+| **Requests Inspector**   | Local       | Thư viện in-app HTTP/HTTPS network debugger (`src/libs/requests-inspector/`)                       |
+| **Error Boundary**       | Local       | Hệ thống bắt crash JS và màn hình phục hồi cứu hộ (`src/components/portals/errorBoundary/`)        |
+| **FPS HUD**              | Local       | Widget đo FPS UI/JS Thread và RAM thời gian thực (`src/components/ui/fpsHud/`)                     |
+| **Permission Modal**     | Local       | Modal xin quyền hệ thống thân thiện kèm điều hướng Settings (`src/components/portals/permission/`) |
+| **AI Agent Skills**      | Built-in    | Bộ quy chuẩn `.agents/skills/rn-best-performance-dev` hỗ trợ AI assistant                          |
 
 ---
 
 ## 💝 Lời nhắn từ tác giả
 
-Tôi là **Tuấn** — một Mobile Developer yêu React Native. Template này không chỉ là code, nó là **kinh nghiệm đúc kết** từ những dự án thực tế, những đêm debug đến 2h sáng, và niềm tin rằng code nên **vui vẻ chứ không phải cực hình** 😄
+Tôi là **Tuấn** — một Mobile Developer đam mê mã nguồn mở và luôn tôn sùng tiêu chuẩn **hiệu năng cao**. Template này không chỉ là tập hợp code mẫu, mà là tinh hoa đúc kết từ hàng chục dự án lớn nhỏ, những đêm thức trắng săn tìm từng frame hình bị drop, và mong muốn giúp cộng đồng dev Việt Nam có một nền móng vững chắc nhất khi bước vào kỷ nguyên **React Native New Architecture**.
 
-Nếu template này giúp bạn tiết kiệm dù chỉ 1 ngày setup, thì tôi đã thành công rồi! 🎉
+Nếu template này giúp bạn tiết kiệm dù chỉ vài ngày setup hay cứu được một dự án thoát khỏi cảnh lag giật, thì đó là niềm hạnh phúc lớn nhất của tôi! 🎉
 
-> *"Code ít, làm nhiều. Setup một lần, dùng mãi mãi."*
->
+> _"Code ít, làm nhiều. Setup chuẩn một lần, dùng thong dong cả đời."_  
 > — **Tuấn** 🚀
 
 ---
 
 ## 📄 License
 
-Made with ❤️ and ☕ by **Tuấn**
-
----
+Phát hành dưới giấy phép mã nguồn mở **MIT License**.  
+Made with ❤️ and ☕ by **Tuấn** ([@tuan1996v2](https://github.com/tuan1996v2)).
 
 <div align="center">
 
-**⭐ Nếu thấy hữu ích, đừng ngại star repo nhé! ⭐**
-
-*Mỗi ngôi sao là một lần tôi mỉm cười* 😊
+**⭐ Nếu thấy hữu ích, đừng ngần ngại tặng 1 Star cho repo nhé! ⭐**  
+_Mỗi ngôi sao của bạn là động lực để tôi tiếp tục bảo trì và cập nhật các tính năng đỉnh cao!_ 😊
 
 </div>
