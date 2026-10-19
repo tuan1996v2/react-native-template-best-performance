@@ -17,6 +17,7 @@ import QrScanScreen from '@/screens/qrScan/screen/QrScanScreen';
 import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
 import ChatSimulatorScreen from '@/screens/chatSimulator/ChatSimulatorScreen';
 import ChatDemoScreen from '@/screens/chatDemo/ChatDemoScreen';
+import NetworkSimulatorScreen from '@/screens/networkSimulator/NetworkSimulatorScreen';
 import { useThemeStore } from '../store/useThemeStore';
 import { ThemeTokens } from '../theme/Colors';
 
@@ -87,6 +88,10 @@ const MainStack = {
   ChatDemoScreen: {
     screen: ChatDemoScreen,
     options: { title: 'Mô phỏng Tin Nhắn', headerShown: false },
+  },
+  NetworkSimulatorScreen: {
+    screen: NetworkSimulatorScreen,
+    options: { title: 'Network Simulator', headerShown: false },
   },
 };
 export const RootStack = createNativeStackNavigator({

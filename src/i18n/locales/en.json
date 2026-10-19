@@ -35,52 +35,66 @@
       "using_flashlist": "Using FlashList for high efficiency",
       "try_now": "Try now",
       "discover": "Discover",
-      "social_feed": {
-        "title": "Social Feed",
-        "subtitle": "Social network demo"
+      "network": {
+        "title": "Network Inspector",
+        "subtitle": "API mock & network request log"
       },
-      "modal": {
-        "title": "Modal",
-        "subtitle": "Floating screen"
-      },
-      "language": {
-        "title": "Language"
-      },
-      "loading": {
-        "title": "Loading",
-        "subtitle": "Test loading store"
-      },
-      "camera": {
-        "title": "Camera",
-        "subtitle": "Test camera"
+      "chat_demo": {
+        "title": "Realtime Messaging",
+        "subtitle": "1-on-1, group chat & optimized render"
       },
       "qr": {
-        "title": "QR",
-        "subtitle": "Test QR"
+        "title": "QR & Barcode Scanner",
+        "subtitle": "Vision Camera high-speed scan"
       },
-      "photo": {
-        "title": "Photo",
-        "subtitle": "Test photo"
+      "otp": {
+        "title": "OTP Verification",
+        "subtitle": "SMS Auto-fill & Zero Re-render"
       },
-      "video": {
-        "title": "Video",
-        "subtitle": "Test video"
+      "camera": {
+        "title": "Camera & Video Recorder",
+        "subtitle": "High quality photo & video capture"
       },
-      "alert": {
-        "title": "Alert",
-        "subtitle": "Confirmation dialog"
-      },
-      "notification": {
-        "title": "Notification",
-        "subtitle": "Test toast/notif"
-      },
-      "register": {
-        "title": "Register",
-        "subtitle": "Registration screen"
+      "social_feed": {
+        "title": "Social Feed",
+        "subtitle": "Smooth 120 FPS with FlashList"
       },
       "swipe": {
-        "title": "Swipeable",
-        "subtitle": "Swipe to delete (Native)"
+        "title": "Swipe Actions",
+        "subtitle": "Smooth native swipe-to-delete"
+      },
+      "chat_simulator": {
+        "title": "Chat Flow Simulator",
+        "subtitle": "Automated message testing tool"
+      },
+      "register": {
+        "title": "Forms & Inputs",
+        "subtitle": "Optimized multi-field input forms"
+      },
+      "theme": {
+        "title": "Theme Mode",
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+      },
+      "modal": {
+        "title": "Floating Modal",
+        "subtitle": "Glassmorphism & spring animations"
+      },
+      "language": {
+        "title": "Multilingual (i18n)",
+        "subtitle": "English / Tiếng Việt"
+      },
+      "loading": {
+        "title": "Loading Indicator",
+        "subtitle": "Global loading state management"
+      },
+      "alert": {
+        "title": "Confirmation Dialog",
+        "subtitle": "Customizable global alert store"
+      },
+      "notification": {
+        "title": "Toast Notifications",
+        "subtitle": "Dynamic animated toast messages"
       }
     },
     "actions": {

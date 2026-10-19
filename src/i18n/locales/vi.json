@@ -35,52 +35,66 @@
       "using_flashlist": "Sử dụng FlashList cho hiệu quả cao nhất",
       "try_now": "Thử ngay",
       "discover": "Khám phá",
-      "social_feed": {
-        "title": "Social Feed",
-        "subtitle": "Demo mạng xã hội"
+      "network": {
+        "title": "Network Inspector",
+        "subtitle": "Giả lập API & soi request log"
       },
-      "modal": {
-        "title": "Modal",
-        "subtitle": "Màn hình nổi"
-      },
-      "language": {
-        "title": "Ngôn ngữ"
-      },
-      "loading": {
-        "title": "Loading",
-        "subtitle": "Kiểm tra loading store"
-      },
-      "camera": {
-        "title": "Camera",
-        "subtitle": "Kiểm tra camera"
+      "chat_demo": {
+        "title": "Hội Thoại & Tin Nhắn",
+        "subtitle": "Chat 1-1, nhóm & tối ưu render"
       },
       "qr": {
-        "title": "QR",
-        "subtitle": "Kiểm tra QR"
+        "title": "Quét Mã QR & Barcode",
+        "subtitle": "Camera Vision quét siêu tốc"
       },
-      "photo": {
-        "title": "Photo",
-        "subtitle": "Kiểm tra photo"
+      "otp": {
+        "title": "Xác Thực OTP",
+        "subtitle": "SMS Auto-fill & Zero Re-render"
       },
-      "video": {
-        "title": "Video",
-        "subtitle": "Kiểm tra video"
+      "camera": {
+        "title": "Camera & Ghi Hình",
+        "subtitle": "Chụp ảnh, quay video chất lượng cao"
       },
-      "alert": {
-        "title": "Alert",
-        "subtitle": "Hộp thoại xác nhận"
-      },
-      "notification": {
-        "title": "Thông báo",
-        "subtitle": "Kiểm tra toast/notif"
-      },
-      "register": {
-        "title": "Đăng ký",
-        "subtitle": "Màn hình đăng ký"
+      "social_feed": {
+        "title": "Bảng Tin Xã Hội",
+        "subtitle": "FlashList 120 FPS mượt mà"
       },
       "swipe": {
-        "title": "Swipeable",
-        "subtitle": "Vuốt để xoá (Native)"
+        "title": "Thao Tác Vuốt (Swipe)",
+        "subtitle": "Gesture vuốt xoá native mượt mà"
+      },
+      "chat_simulator": {
+        "title": "Kịch Bản Chat",
+        "subtitle": "Tự động gửi nhận tin nhắn test"
+      },
+      "register": {
+        "title": "Biểu Mẫu & Nhập Liệu",
+        "subtitle": "Input tối ưu, đa trường nhập liệu"
+      },
+      "theme": {
+        "title": "Giao Diện Sáng / Tối",
+        "light": "Chế độ Sáng",
+        "dark": "Chế độ Tối"
+      },
+      "modal": {
+        "title": "Cửa Sổ Nổi (Modal)",
+        "subtitle": "Kính mờ & hoạt ảnh mượt"
+      },
+      "language": {
+        "title": "Đa Ngôn Ngữ (i18n)",
+        "subtitle": "Tiếng Việt / English"
+      },
+      "loading": {
+        "title": "Trạng Thái Chờ",
+        "subtitle": "Global loading toàn cục"
+      },
+      "alert": {
+        "title": "Hộp Thoại Xác Nhận",
+        "subtitle": "Alert store tuỳ biến giao diện"
+      },
+      "notification": {
+        "title": "Thông Báo Tức Thì",
+        "subtitle": "Toast message động, tự đóng"
       }
     },
     "actions": {

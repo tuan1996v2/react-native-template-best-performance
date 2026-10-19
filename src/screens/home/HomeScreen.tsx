@@ -27,6 +27,8 @@ import {
   IconNotification,
   IconRegister,
   IconTheme,
+  IconComment,
+  IconNetwork,
 } from '@/assets/icon';
 
 import createStyles from './HomeScreen.styles';
@@ -178,6 +180,18 @@ const HomeScreen = () => {
     NavigationService.navigate('OtpDemoScreen');
   }, []);
 
+  const handleNavigateToNetworkSimulator = useCallback(() => {
+    NavigationService.navigate('NetworkSimulatorScreen');
+  }, []);
+
+  const handleNavigateToChatDemo = useCallback(() => {
+    NavigationService.navigate('ChatDemoScreen');
+  }, []);
+
+  const handleNavigateToChatSimulator = useCallback(() => {
+    NavigationService.navigate('ChatSimulatorScreen');
+  }, []);
+
   const handleShowLoading = useCallback(() => {
     GlobalLoading.show(t('home.actions.saving_data'));
     setTimeout(() => {
@@ -271,55 +285,25 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.grid}>
+            {/* 1. Network Inspector & DevTools (Cực kỳ hữu ích khi debug/test API) */}
             <FeatureCard
-              title="Theme Mode"
-              subtitle={mode === 'light' ? 'Light Mode' : 'Dark Mode'}
-              icon={IconTheme}
-              color={theme.primary}
-              onPress={handleToggleTheme}
+              title={t('home.features.network.title')}
+              subtitle={t('home.features.network.subtitle')}
+              icon={IconNetwork}
+              color={theme.mode === 'light' ? '#0EA5E9' : '#38BDF8'}
+              onPress={handleNavigateToNetworkSimulator}
             />
+
+            {/* 2. Realtime Chat & Hội thoại thực tế */}
             <FeatureCard
-              title={t('home.features.social_feed.title')}
-              subtitle={t('home.features.social_feed.subtitle')}
-              icon={IconSocial}
+              title={t('home.features.chat_demo.title')}
+              subtitle={t('home.features.chat_demo.subtitle')}
+              icon={IconComment}
               color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
-              onPress={handleNavigateToDetail}
+              onPress={handleNavigateToChatDemo}
             />
-            <FeatureCard
-              title={t('home.features.modal.title')}
-              subtitle={t('home.features.modal.subtitle')}
-              icon={IconModal}
-              color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
-              onPress={showModal}
-            />
-            <FeatureCard
-              title={t('home.features.language.title')}
-              subtitle={i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
-              icon={IconLanguage}
-              color={theme.mode === 'light' ? '#F59E0B' : '#FBBF24'}
-              onPress={handleChangeLanguage}
-            />
-            <FeatureCard
-              title={t('home.features.swipe.title')}
-              subtitle={t('home.features.swipe.subtitle')}
-              icon={IconNotification}
-              color={theme.mode === 'light' ? '#10B981' : '#34D399'}
-              onPress={handleNavigateToSwipeable}
-            />
-            <FeatureCard
-              title={t('home.features.loading.title')}
-              subtitle={t('home.features.loading.subtitle')}
-              icon={IconLoading}
-              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
-              onPress={handleShowLoading}
-            />
-            <FeatureCard
-              title={t('home.features.camera.title')}
-              subtitle={t('home.features.camera.subtitle')}
-              icon={CameraIcon}
-              color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
-              onPress={handleNavigateToCamera}
-            />
+
+            {/* 3. Quét mã QR & Barcode (Vision Camera) */}
             <FeatureCard
               title={t('home.features.qr.title')}
               subtitle={t('home.features.qr.subtitle')}
@@ -327,20 +311,91 @@ const HomeScreen = () => {
               color={theme.mode === 'light' ? '#06B6D4' : '#22D3EE'}
               onPress={handleNavigateToQrScanScreen}
             />
+
+            {/* 4. Xác thực OTP Zero Re-render */}
             <FeatureCard
-              title="OTP Input"
-              subtitle="Zero Re-render & SMS Auto-fill"
+              title={t('home.features.otp.title')}
+              subtitle={t('home.features.otp.subtitle')}
               icon={IconRegister}
               color={theme.mode === 'light' ? '#4F46E5' : '#818CF8'}
               onPress={handleNavigateToOtp}
             />
+
+            {/* 5. Camera & Ghi hình */}
             <FeatureCard
-              title={t('home.features.alert.title')}
-              subtitle={t('home.features.alert.subtitle')}
-              icon={IconAlert}
-              color={theme.mode === 'light' ? '#EF4444' : '#F87171'}
-              onPress={handleShowAlert}
+              title={t('home.features.camera.title')}
+              subtitle={t('home.features.camera.subtitle')}
+              icon={CameraIcon}
+              color={theme.mode === 'light' ? '#F43F5E' : '#FB7185'}
+              onPress={handleNavigateToCamera}
             />
+
+            {/* 6. Bảng tin Social Feed FlashList */}
+            <FeatureCard
+              title={t('home.features.social_feed.title')}
+              subtitle={t('home.features.social_feed.subtitle')}
+              icon={IconSocial}
+              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
+              onPress={handleNavigateToDetail}
+            />
+
+            {/* 7. Thao tác vuốt Native Gesture */}
+            <FeatureCard
+              title={t('home.features.swipe.title')}
+              subtitle={t('home.features.swipe.subtitle')}
+              icon={IconNotification}
+              color={theme.mode === 'light' ? '#10B981' : '#34D399'}
+              onPress={handleNavigateToSwipeable}
+            />
+
+            {/* 8. Kịch bản mô phỏng Chat */}
+            <FeatureCard
+              title={t('home.features.chat_simulator.title')}
+              subtitle={t('home.features.chat_simulator.subtitle')}
+              icon={IconComment}
+              color={theme.mode === 'light' ? '#2563EB' : '#60A5FA'}
+              onPress={handleNavigateToChatSimulator}
+            />
+
+            {/* 9. Biểu mẫu & Form nhập liệu */}
+            <FeatureCard
+              title={t('home.features.register.title')}
+              subtitle={t('home.features.register.subtitle')}
+              icon={IconRegister}
+              color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
+              onPress={goToRegister}
+            />
+
+            {/* 10. Chế độ giao diện Sáng / Tối */}
+            <FeatureCard
+              title={t('home.features.theme.title')}
+              subtitle={
+                mode === 'light' ? t('home.features.theme.light') : t('home.features.theme.dark')
+              }
+              icon={IconTheme}
+              color={theme.primary}
+              onPress={handleToggleTheme}
+            />
+
+            {/* 11. Đa ngôn ngữ i18n */}
+            <FeatureCard
+              title={t('home.features.language.title')}
+              subtitle={i18n.language === 'en' ? 'English' : 'Tiếng Việt'}
+              icon={IconLanguage}
+              color={theme.mode === 'light' ? '#F59E0B' : '#FBBF24'}
+              onPress={handleChangeLanguage}
+            />
+
+            {/* 12. Cửa sổ nổi Modal */}
+            <FeatureCard
+              title={t('home.features.modal.title')}
+              subtitle={t('home.features.modal.subtitle')}
+              icon={IconModal}
+              color={theme.mode === 'light' ? '#D946EF' : '#E879F9'}
+              onPress={showModal}
+            />
+
+            {/* 13. Thông báo tức thì Toast */}
             <FeatureCard
               title={t('home.features.notification.title')}
               subtitle={t('home.features.notification.subtitle')}
@@ -348,27 +403,23 @@ const HomeScreen = () => {
               color={theme.mode === 'light' ? '#3B82F6' : '#60A5FA'}
               onPress={handleShowToast}
             />
+
+            {/* 14. Hộp thoại xác nhận Alert */}
             <FeatureCard
-              title={t('home.features.register.title')}
-              subtitle={t('home.features.register.subtitle')}
-              icon={IconRegister}
-              color={theme.mode === 'light' ? '#6366F1' : '#818CF8'}
-              onPress={goToRegister}
+              title={t('home.features.alert.title')}
+              subtitle={t('home.features.alert.subtitle')}
+              icon={IconAlert}
+              color={theme.mode === 'light' ? '#EF4444' : '#F87171'}
+              onPress={handleShowAlert}
             />
 
+            {/* 15. Trạng thái chờ Loading */}
             <FeatureCard
-              title="💬 Mô phỏng Tin Nhắn"
-              subtitle="Chat thực tế: group + 1vs1"
-              icon={IconSocial}
-              color="#6366F1"
-              onPress={() => NavigationService.navigate('ChatDemoScreen')}
-            />
-            <FeatureCard
-              title="💬 Mô phỏng Tin Nhắn thủ công"
-              subtitle="Chat thực tế: group + 1vs1"
-              icon={IconSocial}
-              color="#6366F1"
-              onPress={() => NavigationService.navigate('ChatSimulatorScreen')}
+              title={t('home.features.loading.title')}
+              subtitle={t('home.features.loading.subtitle')}
+              icon={IconLoading}
+              color={theme.mode === 'light' ? '#8B5CF6' : '#A78BFA'}
+              onPress={handleShowLoading}
             />
           </View>
 
