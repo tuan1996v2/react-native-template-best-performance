@@ -1,4 +1,4 @@
-﻿import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { s, vs, ms, fs } from '@/theme/Responsive';
 import type { AppTheme } from '@/theme/Colors';
 
@@ -128,16 +128,17 @@ const createStyles = (theme: AppTheme) =>
       backgroundColor: theme.mode === 'light' ? '#EEF2FF' : '#1E1B4B',
     },
     avatarContainer: {
-      width: ms(50),
-      height: ms(50),
-      borderRadius: ms(25),
+      width: ms(48),
+      height: ms(48),
+      borderRadius: ms(24),
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: s(14),
     },
-    avatarEmoji: {
-      fontSize: fs(24),
-      fontFamily: 'System',
+    avatarInitials: {
+      fontSize: fs(16),
+      fontWeight: '700',
+      color: '#FFFFFF',
     },
     onlineIndicator: {
       position: 'absolute',

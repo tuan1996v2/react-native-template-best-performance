@@ -30,7 +30,7 @@ const formatTime = (ts: number | undefined) => {
 interface RoomItemProps {
   id: string;
   name: string;
-  emoji: string;
+  emoji?: string;
   color: string;
   isGroup: boolean;
   isOnline?: boolean;
@@ -40,8 +40,16 @@ interface RoomItemProps {
   badgeColor: string;
 }
 
+const getInitials = (str: string) => {
+  const clean = str.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+  const words = clean.split(/\s+/);
+  if (!words[0]) return 'CH';
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+};
+
 const RoomItem = React.memo(
-  ({ name, emoji, color, isGroup, isOnline, meta, onPress, theme, badgeColor }: RoomItemProps) => {
+  ({ name, color, isGroup, isOnline, meta, onPress, theme, badgeColor }: RoomItemProps) => {
     const unread = meta?.unread ?? 0;
     const isActive = meta?.isActive ?? false;
     const lastMsg = meta?.lastMessage ?? (isGroup ? 'Chưa có tin nhắn' : 'Nhấn để xem');
@@ -58,11 +66,11 @@ const RoomItem = React.memo(
           pressed && { opacity: 0.85 },
         ]}>
         {/* Avatar */}
-        <View style={[styles.avatar, { backgroundColor: color + '22' }]}>
-          <Text style={styles.avatarEmoji}>{emoji}</Text>
+        <View style={[styles.avatar, { backgroundColor: color }]}>
+          <Text style={styles.avatarInitials}>{getInitials(name)}</Text>
           {!isGroup && isOnline && <View style={[styles.onlineDot, { borderColor: theme.card }]} />}
           {isGroup && (
-            <View style={[styles.groupBadge, { backgroundColor: color }]}>
+            <View style={styles.groupBadge}>
               <Text style={styles.groupBadgeText}>G</Text>
             </View>
           )}
@@ -477,7 +485,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: s(12),
   },
-  avatarEmoji: { fontSize: fs(26) },
+  avatarInitials: {
+    fontSize: fs(16),
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
   onlineDot: {
     position: 'absolute',
     bottom: 1,

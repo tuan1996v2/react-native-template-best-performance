@@ -17,13 +17,13 @@ export const ButtonSwitchTheme = () => {
 
     if (themePreference === 'light') {
       nextPref = 'dark';
-      message = 'Chế độ Tối 🌙';
+      message = 'Chế độ Tối';
     } else if (themePreference === 'dark') {
       nextPref = 'system';
-      message = 'Chế độ Tự động theo Hệ thống ⚙️';
+      message = 'Chế độ Tự động theo Hệ thống';
     } else {
       nextPref = 'light';
-      message = 'Chế độ Sáng ☀️';
+      message = 'Chế độ Sáng';
     }
 
     setThemePreference(nextPref);

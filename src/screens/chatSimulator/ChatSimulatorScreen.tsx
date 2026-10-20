@@ -15,40 +15,40 @@ const PRIVATE_CONTACTS = [
   {
     id: 'p1',
     name: 'Nguyễn Văn A',
-    emoji: '👨',
+    initials: 'NA',
     color: '#6366F1',
     lastMsg: 'Oke, tí gặp nhau nhé!',
   },
   {
     id: 'p2',
     name: 'Trần Thị B',
-    emoji: '👩',
+    initials: 'TB',
     color: '#EC4899',
     lastMsg: 'Gửi file cho chị xem nha',
   },
   {
     id: 'p3',
     name: 'Lê Hoàng C',
-    emoji: '🧑',
+    initials: 'LC',
     color: '#F59E0B',
     lastMsg: 'Anh rảnh không? Call tí',
   },
   {
     id: 'p4',
     name: 'Phạm Minh D',
-    emoji: '👨‍💻',
+    initials: 'PD',
     color: '#10B981',
     lastMsg: 'Bug fix xong chưa bro?',
   },
-  { id: 'p5', name: 'Vũ Quốc E', emoji: '🧔', color: '#EF4444', lastMsg: 'Mai họp 9h sáng nha' },
-  { id: 'p6', name: 'Hoàng Anh F', emoji: '👩‍🦰', color: '#8B5CF6', lastMsg: 'Cảm ơn bạn nhiều!' },
+  { id: 'p5', name: 'Vũ Quốc E', initials: 'VE', color: '#EF4444', lastMsg: 'Mai họp 9h sáng nha' },
+  { id: 'p6', name: 'Hoàng Anh F', initials: 'HF', color: '#8B5CF6', lastMsg: 'Cảm ơn bạn nhiều!' },
 ];
 
 const GROUP_ROOMS = [
   {
     id: 'g1',
     name: 'Dự án Alpha',
-    emoji: '🚀',
+    initials: 'DA',
     color: '#3B82F6',
     members: ['p1', 'p2', 'p3', 'p4', 'p5'],
     lastMsg: 'Deadline ngày mai rồi!',
@@ -56,7 +56,7 @@ const GROUP_ROOMS = [
   {
     id: 'g2',
     name: 'Gia Đình Vui Vẻ',
-    emoji: '🏠',
+    initials: 'GD',
     color: '#10B981',
     members: ['p1', 'p2', 'p6'],
     lastMsg: 'Cuối tuần về quê nhé',
@@ -64,7 +64,7 @@ const GROUP_ROOMS = [
   {
     id: 'g3',
     name: 'Team Backend',
-    emoji: '⚙️',
+    initials: 'TB',
     color: '#F59E0B',
     members: ['p3', 'p4', 'p5'],
     lastMsg: 'Deploy staging OK chưa?',
@@ -72,7 +72,7 @@ const GROUP_ROOMS = [
   {
     id: 'g4',
     name: 'Lớp 12A1 Reunion',
-    emoji: '🎓',
+    initials: '12A',
     color: '#EC4899',
     members: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'],
     lastMsg: 'Hẹn gặp nhau cuối tháng!',
@@ -92,23 +92,23 @@ const PRIVATE_MSGS = [
 const GROUP_MSGS = [
   'Ae ơi, update tiến độ đi!',
   'Mọi người review PR giúp mình.',
-  'Deadline sắp tới rồi nha 🔥',
+  'Deadline sắp tới rồi nha!',
   'Ai online không? Help!',
   'Deploy lên staging thử đi.',
   'Meeting 15 phút nữa nhé.',
   'Bug hotfix xong rồi, test lại giúp.',
-  'Xong chưa ae, sếp đang hỏi 😅',
+  'Xong chưa ae, sếp đang hỏi!',
 ];
 const MENTION_MSGS = [
   '@bạn, xem lại cái API này giúp!',
   '@bạn check PR gấp nhé!',
-  '@bạn sếp gọi bạn kìa �',
+  '@bạn sếp gọi bạn kìa!',
   '@bạn review code đi bạn ơi!',
 ];
 const ADMIN_MSGS = [
-  '📢 Bảo trì hệ thống tối nay 22h.',
-  '⚠️ Cập nhật policy mới.',
-  '🔔 Nộp báo cáo trước 17h.',
+  '[Admin] Bảo trì hệ thống tối nay 22h.',
+  '[Admin] Cập nhật policy mới.',
+  '[Admin] Nộp báo cáo trước 17h.',
 ];
 
 const rand = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -129,12 +129,12 @@ const LOG_COLORS = {
   system: '#64748B',
 };
 
-const LOG_ICONS = {
-  private: '💬',
-  group: '👥',
-  mention: '🔔',
-  admin: '📢',
-  system: '⚙️',
+const LOG_TAGS = {
+  private: '1v1',
+  group: 'GROUP',
+  mention: '@TAG',
+  admin: 'ADM',
+  system: 'SYS',
 };
 
 // ─── MANUAL TEST SCENARIOS ─────────────────────────────────────────────────
@@ -144,7 +144,7 @@ interface Scenario {
   label: string;
   sublabel: string;
   color: string;
-  emoji: string;
+  tag: string;
   run: (addLog: (e: LogEntry) => void) => void;
 }
 
@@ -218,7 +218,7 @@ const buildScenarios = (
       label: '1 tin 1v1',
       sublabel: 'Tin nhắn đơn lẻ',
       color: '#6366F1',
-      emoji: '💬',
+      tag: '1v1',
       run: () => firePrivate(PRIVATE_CONTACTS[0]),
     },
     // ── S2: Same sender spam → throttle ────────────────────────────────────
@@ -227,7 +227,7 @@ const buildScenarios = (
       label: 'Spam 1 người',
       sublabel: 'Throttle 3s cùng sender',
       color: '#8B5CF6',
-      emoji: '🔇',
+      tag: 'SPAM',
       run: () => {
         const c = PRIVATE_CONTACTS[1];
         [0, 400, 800, 1200, 1600].forEach(d => schedule(() => firePrivate(c), d));
@@ -239,7 +239,7 @@ const buildScenarios = (
       label: '3+ người 1v1',
       sublabel: 'Gom "X người nhắn tin"',
       color: '#EC4899',
-      emoji: '👥',
+      tag: 'BURST',
       run: () => {
         [0, 200, 400, 600, 800].forEach((d, i) =>
           schedule(() => firePrivate(PRIVATE_CONTACTS[i % PRIVATE_CONTACTS.length]), d),
@@ -252,7 +252,7 @@ const buildScenarios = (
       label: '1 tin nhóm',
       sublabel: 'Tin nhắn nhóm đơn lẻ',
       color: '#3B82F6',
-      emoji: '🚀',
+      tag: 'GROUP',
       run: () => fireGroup(GROUP_ROOMS[0], PRIVATE_CONTACTS[0]),
     },
     // ── S5: Group spam → aggregate ─────────────────────────────────────────
@@ -261,7 +261,7 @@ const buildScenarios = (
       label: 'Spam nhóm',
       sublabel: 'Gom "X người · Y tin"',
       color: '#0EA5E9',
-      emoji: '💥',
+      tag: 'BURST',
       run: () => {
         const g = GROUP_ROOMS[0];
         const members = PRIVATE_CONTACTS.filter(c => g.members.includes(c.id));
@@ -276,7 +276,7 @@ const buildScenarios = (
       label: '2 nhóm cùng lúc',
       sublabel: 'Mỗi nhóm độc lập',
       color: '#10B981',
-      emoji: '⚡',
+      tag: 'MULTI',
       run: () => {
         const g1 = GROUP_ROOMS[0];
         const g2 = GROUP_ROOMS[2];
@@ -294,7 +294,7 @@ const buildScenarios = (
       label: 'Mention @bạn',
       sublabel: 'Bypass mọi throttle',
       color: '#F59E0B',
-      emoji: '🔔',
+      tag: '@TAG',
       run: () => {
         const g = GROUP_ROOMS[0];
         const sender = PRIVATE_CONTACTS[0];
@@ -307,7 +307,7 @@ const buildScenarios = (
       label: 'Admin thông báo',
       sublabel: 'Bypass mọi throttle',
       color: '#EF4444',
-      emoji: '📢',
+      tag: 'ADMIN',
       run: () => {
         const g = GROUP_ROOMS[0];
         const sender = PRIVATE_CONTACTS[0];
@@ -317,10 +317,10 @@ const buildScenarios = (
     // ── S9: Full chaos — everything at once ────────────────────────────────
     {
       id: 's9',
-      label: 'Full Chaos 🔥',
+      label: 'Full Chaos',
       sublabel: '>150 msg/min tất cả loại',
       color: '#DC2626',
-      emoji: '🌪️',
+      tag: 'CHAOS',
       run: () => {
         // Wave 1: 3 private chats
         [0, 300, 600].forEach((d, i) => {
@@ -448,8 +448,8 @@ const ChatSimulatorScreen = () => {
       const isActive = false;
       return (
         <Pressable style={[styles.chatRoomItem, isActive && styles.chatRoomItemActive]}>
-          <View style={[styles.avatarContainer, { backgroundColor: item.color + '20' }]}>
-            <Text style={styles.avatarEmoji}>{item.emoji}</Text>
+          <View style={[styles.avatarContainer, { backgroundColor: item.color }]}>
+            <Text style={styles.avatarInitials}>{item.initials}</Text>
             {!isGroup && <View style={styles.onlineIndicator} />}
           </View>
           <View style={styles.chatRoomInfo}>
@@ -523,9 +523,9 @@ const ChatSimulatorScreen = () => {
           <View style={[styles.headerContainer, headerPaddingStyle]}>
             <View style={styles.headerRow}>
               <View>
-                <Text style={styles.headerTitle}>🧪 Toast Simulator</Text>
+                <Text style={styles.headerTitle}>Toast Simulator</Text>
                 <Text style={styles.headerSubtitle}>
-                  {isSimulating ? '🔴 Đang chạy...' : 'Test thủ công hoặc chạy tự động'}
+                  {isSimulating ? 'Đang chạy mô phỏng...' : 'Test thủ công hoặc chạy tự động'}
                 </Text>
               </View>
               <Pressable onPress={() => NavigationService.back()} hitSlop={12}>
@@ -550,7 +550,7 @@ const ChatSimulatorScreen = () => {
                 ]}
                 onPress={handleStop}
                 disabled={!isSimulating}>
-                <Text style={styles.controlButtonText}>⏹ Dừng</Text>
+                <Text style={styles.controlButtonText}>■ Dừng</Text>
                 <Text style={styles.controlButtonSubtext}>Stop all</Text>
               </Pressable>
               <Pressable
@@ -609,7 +609,9 @@ const ChatSimulatorScreen = () => {
                   pressed && { opacity: 0.7 },
                 ]}
                 onPress={() => sc.run(addLog)}>
-                <Text style={localStyles.scenarioBtnEmoji}>{sc.emoji}</Text>
+                <View style={[localStyles.scenarioBadge, { backgroundColor: sc.color }]}>
+                  <Text style={localStyles.scenarioBadgeText}>{sc.tag}</Text>
+                </View>
                 <Text style={[localStyles.scenarioBtnLabel, { color: sc.color }]}>{sc.label}</Text>
                 <Text style={[localStyles.scenarioBtnSub, { color: theme.textMuted }]}>
                   {sc.sublabel}
@@ -638,7 +640,15 @@ const ChatSimulatorScreen = () => {
               ) : (
                 logs.map(entry => (
                   <View key={entry.id} style={localStyles.logEntry}>
-                    <Text style={[localStyles.logIcon]}>{LOG_ICONS[entry.type]}</Text>
+                    <View
+                      style={[
+                        localStyles.logTag,
+                        { backgroundColor: LOG_COLORS[entry.type] + '25' },
+                      ]}>
+                      <Text style={[localStyles.logTagText, { color: LOG_COLORS[entry.type] }]}>
+                        {LOG_TAGS[entry.type]}
+                      </Text>
+                    </View>
                     <View style={localStyles.logEntryContent}>
                       <Text style={[localStyles.logTime, { color: theme.textMuted }]}>
                         {entry.time}
@@ -692,16 +702,27 @@ const localStyles = StyleSheet.create({
   },
   scenarioBtn: {
     width: s(110),
-    paddingVertical: vs(10),
-    paddingHorizontal: s(10),
+    paddingVertical: vs(8),
+    paddingHorizontal: s(8),
     borderRadius: ms(12),
     borderWidth: 1,
     alignItems: 'center',
-    gap: vs(3),
+    gap: vs(2),
   },
-  scenarioBtnEmoji: { fontSize: fs(22) },
+  scenarioBadge: {
+    paddingHorizontal: s(8),
+    paddingVertical: vs(2),
+    borderRadius: ms(6),
+    marginBottom: vs(2),
+  },
+  scenarioBadgeText: {
+    fontSize: fs(10),
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
+  },
   scenarioBtnLabel: { fontSize: fs(12), fontWeight: '700', textAlign: 'center' },
-  scenarioBtnSub: { fontSize: fs(10), textAlign: 'center', lineHeight: fs(14) },
+  scenarioBtnSub: { fontSize: fs(10), textAlign: 'center', lineHeight: fs(13) },
 
   body: {
     flex: 1,
@@ -727,9 +748,19 @@ const localStyles = StyleSheet.create({
     paddingHorizontal: s(8),
     paddingVertical: vs(4),
     alignItems: 'flex-start',
-    gap: s(4),
+    gap: s(5),
   },
-  logIcon: { fontSize: fs(12), marginTop: vs(1) },
+  logTag: {
+    paddingHorizontal: s(4),
+    paddingVertical: vs(1),
+    borderRadius: ms(4),
+    marginTop: vs(1),
+  },
+  logTagText: {
+    fontSize: fs(8),
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
   logEntryContent: { flex: 1 },
   logTime: { fontSize: fs(9) },
   logText: { fontSize: fs(11), fontWeight: '500', lineHeight: fs(15) },

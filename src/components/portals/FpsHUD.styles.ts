@@ -6,7 +6,7 @@ export const createStyles = (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       position: 'absolute',
-      top: vs(60),
+      bottom: vs(110),
       left: s(16),
       zIndex: 99998,
     },
