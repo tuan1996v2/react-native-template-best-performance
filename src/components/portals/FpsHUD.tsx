@@ -1,19 +1,26 @@
-import React from 'react';
-import { TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, View, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedProps,
   useAnimatedStyle,
   useFrameCallback,
+  runOnJS,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useStyles } from '@/theme/useStyles';
 import { createStyles } from './FpsHUD.styles';
+import { useNavigationStore } from '@/store/useNavigationStore';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 export const FpsHUD: React.FC = () => {
   const styles = useStyles(createStyles);
+  const currentScreen = useNavigationStore(state => state.currentScreen);
+  const transitionTime = useNavigationStore(state => state.transitionTime);
+
+  // State to toggle compact vs full details on tap
+  const [isCompact, setIsCompact] = useState(false);
 
   // Position shared values for dragging
   const translateX = useSharedValue(0);
@@ -27,6 +34,10 @@ export const FpsHUD: React.FC = () => {
   const fpsString = useSharedValue('60 FPS');
   const fpsColor = useSharedValue('#10B981'); // Green
 
+  const toggleCompact = () => {
+    setIsCompact(prev => !prev);
+  };
+
   // Pan gesture for dragging the widget on screen
   const panGesture = Gesture.Pan()
     .onStart(() => {
@@ -39,6 +50,15 @@ export const FpsHUD: React.FC = () => {
       translateX.value = startX.value + event.translationX;
       translateY.value = startY.value + event.translationY;
     });
+
+  // Tap gesture to toggle between full stats and minimal FPS-only
+  const tapGesture = Gesture.Tap().onEnd(() => {
+    'worklet';
+    runOnJS(toggleCompact)();
+  });
+
+  // Combine tap and pan simultaneously without conflict
+  const composedGesture = Gesture.Exclusive(panGesture, tapGesture);
 
   // Reanimated 4 Frame Callback: Calculates FPS without waking up JS thread
   useFrameCallback(frameInfo => {
@@ -90,10 +110,12 @@ export const FpsHUD: React.FC = () => {
     return null;
   }
 
+  const cleanScreenName = currentScreen ? String(currentScreen).replace('Screen', '') : 'Init';
+
   return (
     <Animated.View style={[styles.container, animatedContainerStyle]}>
       <GestureHandlerRootView>
-        <GestureDetector gesture={panGesture}>
+        <GestureDetector gesture={composedGesture}>
           <Animated.View style={styles.pill}>
             <Animated.View style={[styles.dot, animatedDotStyle]} />
             <AnimatedTextInput
@@ -102,6 +124,26 @@ export const FpsHUD: React.FC = () => {
               style={styles.fpsInput}
               animatedProps={animatedTextProps}
             />
+
+            {!isCompact && (
+              <>
+                <View style={styles.divider} />
+                <Text style={styles.screenName} numberOfLines={1} ellipsizeMode="tail">
+                  {cleanScreenName}
+                </Text>
+                {transitionTime > 0 && (
+                  <View style={styles.speedBadge}>
+                    <Text
+                      style={[
+                        styles.speedText,
+                        transitionTime > 500 ? styles.colorSlow : styles.colorFast,
+                      ]}>
+                      {transitionTime}ms
+                    </Text>
+                  </View>
+                )}
+              </>
+            )}
           </Animated.View>
         </GestureDetector>
       </GestureHandlerRootView>
