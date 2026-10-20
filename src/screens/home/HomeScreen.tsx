@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 import useRenderLog from '@/hooks/useRenderLog';
 import { Pressable, Text, View, ScrollView } from 'react-native';
 import AppScreen from '@/components/ui/appScreen/AppScreen';
+import AppPress from '@/components/ui/appPress/AppPress';
 import NavigationService from '../../navigation/NavigationService';
 import { GlobalLoading } from '../../store/useLoadingStore';
 import { useTranslation } from 'react-i18next';
@@ -85,7 +86,8 @@ const HomeScreen = () => {
   const showAlert = useAlertStore(state => state.showAlert);
 
   const mode = useThemeStore(state => state.mode);
-  const setMode = useThemeStore(state => state.setMode);
+  const themePreference = useThemeStore(state => state.themePreference);
+  const setThemePreference = useThemeStore(state => state.setThemePreference);
   const theme = ThemeTokens[mode];
 
   const scrollRef = useRef<ScrollView>(null);
@@ -164,10 +166,23 @@ const HomeScreen = () => {
   }, [showToast, t]);
 
   const handleToggleTheme = useCallback(() => {
-    const newMode = mode === 'light' ? 'dark' : 'light';
-    setMode(newMode);
-    showToast(newMode === 'dark' ? 'Đã đổi sang Dark Mode' : 'Đã đổi sang Light Mode', 'success');
-  }, [mode, setMode, showToast]);
+    let nextPref: 'light' | 'dark' | 'system';
+    let message: string;
+
+    if (themePreference === 'light') {
+      nextPref = 'dark';
+      message = 'Đã chuyển sang Dark Mode';
+    } else if (themePreference === 'dark') {
+      nextPref = 'system';
+      message = 'Đã chuyển sang Auto (Theo hệ thống)';
+    } else {
+      nextPref = 'light';
+      message = 'Đã chuyển sang Light Mode';
+    }
+
+    setThemePreference(nextPref);
+    showToast(message, 'success');
+  }, [themePreference, setThemePreference, showToast]);
 
   const handleShowToast = useCallback(() => {
     showToast(t('home.actions.welcome_back'), 'success');
@@ -206,17 +221,26 @@ const HomeScreen = () => {
           </View>
 
           <View style={styles.headerActions}>
-            <Pressable
+            <AppPress
               onPress={handleChangeLanguage}
-              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
+              style={styles.actionButton}
+              rippleColor={theme.primary + '33'}>
               <Text style={styles.actionButtonText}>{i18n.language === 'en' ? 'EN' : 'VI'}</Text>
-            </Pressable>
+            </AppPress>
 
-            <Pressable
+            <AppPress
               onPress={handleToggleTheme}
-              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}>
-              <IconTheme width={s(16)} height={s(16)} fill={theme.text} />
-            </Pressable>
+              style={styles.themeActionButton}
+              rippleColor={theme.primary + '33'}>
+              <IconTheme width={s(15)} height={s(15)} fill={theme.text} />
+              <Text style={styles.themeBadgeText}>
+                {themePreference === 'system'
+                  ? 'AUTO'
+                  : themePreference === 'dark'
+                  ? 'DARK'
+                  : 'LIGHT'}
+              </Text>
+            </AppPress>
           </View>
         </View>
 
