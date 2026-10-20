@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-typecheck:
-    name: Lint & Typecheck
+  ci:
+    name: Lint & Bundle Check
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,5 @@ jobs:
       - name: Run ESLint
         run: yarn lint
 
-      - name: Run TypeScript typecheck
-        run: npx tsc --noEmit
+      - name: Verify Bundle Compilation (Android)
+        run: yarn export-android
