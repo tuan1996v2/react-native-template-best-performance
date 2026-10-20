@@ -30,23 +30,24 @@ Bạn chuẩn bị nhận một dự án React Native mới và sắp sửa:
 
 ---
 
-## 💎 Bảng tính năng "VIP Pro" — Điểm ăn tiền số 1
+## 💎 Bảng tính năng nổi bật — Điểm sáng kiến trúc
 
-| Tính năng "Đắt Xắt Ra Miếng"                 | Tại sao nó giúp bạn cứu rỗi dự án?                                                                                                                                                                                                                                                                                             | Trạng thái |
+| Tính năng nổi bật                            | Giá trị mang lại cho dự án                                                                                                                                                                                                                                                                                                     | Trạng thái |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------: |
-| 🕵️ **In-App Requests Inspector (Local Lib)** | **Vũ khí bí mật số 1!** Soi full traffic HTTP/HTTPS trực tiếp ngay trong app (REST API, request/response payload, latency ms, status 2xx/4xx/5xx). Bong bóng nổi kéo thả hít mép, **Copy cURL 1 chạm**, bóc tách Bearer token, search & filter siêu tốc — hoàn toàn zero external dependency (`src/libs/requests-inspector/`). |   ✅ VIP   |
-| 🚀 **React Native 0.84+ New Architecture**   | Bật sẵn **Fabric Renderer** & **TurboModules / Nitro Modules**. Tốc độ native JSI trực tiếp, không phụ thuộc Bridge cũ kỹ.                                                                                                                                                                                                     |   ✅ VIP   |
-| ⚡ **Zero Re-render Architecture**           | Áp dụng triệt để Reanimated 4 Worklets, `useImperativeHandle`, `memo` comparators. Countdown OTP, Timer quay phim, Draggable HUD chạy 100% trên UI Thread — JS Thread rảnh rỗi tuyệt đối!                                                                                                                                      |   ✅ VIP   |
-| 📊 **Real-time FPS & Memory HUD**            | Widget đo trực tiếp **UI Thread FPS**, **JS Thread FPS (60/120Hz)** và dung lượng RAM tiêu thụ thời gian thực. Kéo thả tự do trên màn hình, phát hiện giật lag ngay khi dev không cần cắm profiler.                                                                                                                            |   ✅ VIP   |
-| 🛡️ **Zero-Dependency Error Boundary**        | Khi có lỗi render JS bất ngờ, thay vì sập app văng ra màn hình chính, app tự động kích hoạt **Crash Recovery Screen** hiển thị chi tiết stack trace, nút Copy Crash Log và Thử lại / Khởi động lại app an toàn.                                                                                                                |   ✅ VIP   |
-| 🔑 **Universal Permission Rationale Modal**  | Modal xin quyền hệ thống (Camera, Micro, Thư viện, Thông báo) giao diện cao cấp, giải thích lý do trước khi kích hoạt native prompt. Tự động hỗ trợ mở App Settings nếu quyền bị từ chối vĩnh viễn.                                                                                                                            |   ✅ VIP   |
-| 🛠️ **Scaffolding Screen Generator**          | Lệnh thần thánh `yarn gen:screen <ScreenName>` sinh mã tự động cả màn hình, styles chuẩn Responsive, Dark/Light theme, tự add route navigation và i18n trong **0.5 giây**!                                                                                                                                                     |   ✅ VIP   |
-| 🎨 **Theme System 3 Trạng thái**             | Hỗ trợ ☀️ **Sáng (Light)**, 🌙 **Tối (Dark)** và ⚙️ **Hệ thống (Auto)** thông minh theo `Appearance`. Đổi theme mượt mà toàn diện không giật cục.                                                                                                                                                                              |   ✅ VIP   |
-| 💬 **Chat Toast Aggregator (>150 msg/min)**  | Thuật toán gom cụm thông báo chat cực hạn kiểu Zalo: sliding window, per-group tracking, burst detection, mention xuyên throttle — không bao giờ spam tràn ngập màn hình.                                                                                                                                                      |   ✅ VIP   |
-| 📱 **Responsive Scaling 100%**               | Bộ hàm `s()`, `vs()`, `ms()`, `fs()` quy chuẩn theo chuẩn iPhone 14, tự động co giãn hoàn hảo trên mọi kích thước màn hình từ iPhone SE đến iPad/Tablet.                                                                                                                                                                       |   ✅ VIP   |
-| 🚀 **FlashList 2.x & SuperGallery**          | Danh sách lướt cuộn 120 FPS tải hàng ngàn items không drop frame. Trình xem ảnh full-screen pinch-to-zoom + swipe dismiss không re-render parent.                                                                                                                                                                              |   ✅ VIP   |
-| 🔢 **Premium OTP System**                    | 4 style OTP đẳng cấp (Stripe, Apple, Dashed, Revolt), SMS Auto-fill, Countdown Reanimated chạy 100% trên UI thread.                                                                                                                                                                                                            |   ✅ VIP   |
-| 🤖 **Built-in AI Agent Skills**              | Tích hợp sẵn bộ quy chuẩn `.agents/skills/rn-best-performance-dev` giúp Antigravity, Cursor, Claude Code sinh mã chuẩn kiến trúc template 100%.                                                                                                                                                                                |   ✅ VIP   |
+| 🕵️ **In-App Requests Inspector (Local Lib)** | **Vũ khí bí mật số 1!** Soi full traffic HTTP/HTTPS trực tiếp ngay trong app (REST API, request/response payload, latency ms, status 2xx/4xx/5xx). Bong bóng nổi kéo thả hít mép, **Copy cURL 1 chạm**, bóc tách Bearer token, search & filter siêu tốc — hoàn toàn zero external dependency (`src/libs/requests-inspector/`). |     ✅     |
+| 🚀 **React Native 0.84+ New Architecture**   | Bật sẵn **Fabric Renderer** & **TurboModules / Nitro Modules**. Tốc độ native JSI trực tiếp, không phụ thuộc Bridge cũ kỹ.                                                                                                                                                                                                     |     ✅     |
+| ⚡ **Zero Re-render Architecture**           | Áp dụng triệt để Reanimated 4 Worklets, `useImperativeHandle`, `memo` comparators. Countdown OTP, Timer quay phim, Draggable HUD chạy 100% trên UI Thread — JS Thread rảnh rỗi tuyệt đối!                                                                                                                                      |     ✅     |
+| 📊 **Real-time DevHUD (FPS & Nav Speed)**    | Widget nổi hợp nhất đo **UI Thread FPS (60/120Hz)** và **thời gian chuyển trang (ms)**. Kéo thả tự do, tap mở rộng xem full screen name và **Copy 1 chạm**, zero re-render JS!                                                                                                                                                 |     ✅     |
+| 🧩 **Interactive Component Gallery**         | Màn hình tra cứu & test trực tiếp toàn bộ UI/UX components trong repo (3D Buttons, Ripple Touch, Modals, DevTools...). Phân loại trực quan, demo live tương tác tức thì!                                                                                                                                                       |     ✅     |
+| 🛡️ **Zero-Dependency Error Boundary**        | Khi có lỗi render JS bất ngờ, thay vì sập app văng ra màn hình chính, app tự động kích hoạt **Crash Recovery Screen** hiển thị chi tiết stack trace, nút Copy Crash Log và Thử lại / Khởi động lại app an toàn.                                                                                                                |     ✅     |
+| 🔑 **Universal Permission Rationale Modal**  | Modal xin quyền hệ thống (Camera, Micro, Thư viện, Thông báo) giao diện cao cấp, giải thích lý do trước khi kích hoạt native prompt. Tự động hỗ trợ mở App Settings nếu quyền bị từ chối vĩnh viễn.                                                                                                                            |     ✅     |
+| 🛠️ **Scaffolding Screen Generator**          | Lệnh thần thánh `yarn gen:screen <ScreenName>` sinh mã tự động cả màn hình, styles chuẩn Responsive, Dark/Light theme, tự add route navigation và i18n trong **0.5 giây**!                                                                                                                                                     |     ✅     |
+| 🎨 **Theme System 3 Trạng thái**             | Hỗ trợ ☀️ **Sáng (Light)**, 🌙 **Tối (Dark)** và ⚙️ **Hệ thống (Auto)** thông minh theo `Appearance`. Đổi theme mượt mà toàn diện không giật cục với floating switch capsule.                                                                                                                                                  |     ✅     |
+| 💬 **Chat Toast Aggregator (>150 msg/min)**  | Thuật toán gom cụm thông báo chat cực hạn kiểu Zalo: sliding window, per-group tracking, burst detection, mention xuyên throttle — không bao giờ spam tràn ngập màn hình.                                                                                                                                                      |     ✅     |
+| 📱 **Responsive Scaling 100%**               | Bộ hàm `s()`, `vs()`, `ms()`, `fs()` quy chuẩn theo chuẩn iPhone 14, tự động co giãn hoàn hảo trên mọi kích thước màn hình từ iPhone SE đến iPad/Tablet.                                                                                                                                                                       |     ✅     |
+| 🚀 **FlashList 2.x & SuperGallery**          | Danh sách lướt cuộn 120 FPS tải hàng ngàn items không drop frame. Trình xem ảnh full-screen pinch-to-zoom + swipe dismiss không re-render parent.                                                                                                                                                                              |     ✅     |
+| 🔢 **Premium OTP System**                    | 4 style OTP đẳng cấp (Stripe, Apple, Dashed, Revolt), SMS Auto-fill, Countdown Reanimated chạy 100% trên UI thread.                                                                                                                                                                                                            |     ✅     |
+| 🤖 **Built-in AI Agent Skills**              | Tích hợp sẵn bộ quy chuẩn `.agents/skills/rn-best-performance-dev` giúp Antigravity, Cursor, Claude Code sinh mã chuẩn kiến trúc template 100%.                                                                                                                                                                                |     ✅     |
 
 ---
 
@@ -157,16 +158,15 @@ template/
 │   ├── components/            # 🧩 Components tái sử dụng
 │   │   ├── portals/           #     Components toàn cục treo trên root
 │   │   │   ├── AppProvider.tsx         # Provider tổng: SafeArea, ErrorBoundary, FpsHUD, Modal, FCM...
-│   │   │   ├── errorBoundary/          # 🛡️ Local Error Boundary & Crash Recovery Screen
-│   │   │   ├── permission/             # 🔑 Universal Permission Rationale Modal & Hook
+│   │   │   ├── FpsHUD.tsx              # 📊 Draggable DevHUD đo FPS UI Thread + Nav Speed + Copy Screen
+│   │   │   ├── ButtonSwitchTheme.tsx   # 🎨 Floating pill chuyển 3 chế độ Theme
 │   │   │   ├── GlobalLoadingComponent  # Loading overlay chặn tương tác toàn app
 │   │   │   └── alert/                  # Custom Alert + Toast system (không phụ thuộc thư viện)
 │   │   │
 │   │   └── ui/                #     UI Kit hiệu năng cao
-│   │       ├── fpsHud/        #     📊 Draggable Real-time FPS & Memory HUD Widget
 │   │       ├── appScreen/     #     Khung màn hình chuẩn, tự tính safe area insets
-│   │       ├── appButton/     #     Button 3D với depth effect
-│   │       ├── appPress/      #     Pressable với ripple animation
+│   │       ├── appButton/     #     Button 3D với depth effect và spring physics
+│   │       ├── appPress/      #     Pressable với ripple animation tối ưu cao
 │   │       ├── appImage/      #     Image 3-layer (skeleton → thumbnail → full)
 │   │       ├── skeleton/      #     Skeleton loading placeholder
 │   │       ├── superGallery/  #     🖼️ Full-screen image viewer (zoom + swipe)
@@ -175,15 +175,17 @@ template/
 │   │       └── toast/         #     💬 ChatToastManager + ChatToastContainer
 │   │
 │   ├── libs/                  # 📦 Thư viện nội bộ độc lập (Local Libraries)
-│   │   └── requests-inspector/#     🕵️ In-app Network Inspector (Floating bubble, cURL copy, token copy)
+│   │   ├── requests-inspector/#     🕵️ In-app Network Inspector (Floating bubble, cURL copy, token copy)
+│   │   ├── error-boundary/    #     🛡️ Local Error Boundary & Crash Recovery Screen
+│   │   └── permissions/       #     🔑 Universal Permission Rationale Modal & Hook
 │   │
 │   ├── navigation/            # 🧭 Điều hướng
 │   │   ├── AppNavigation.tsx  #     Stack navigator (React Navigation v8 Static API)
-│   │   ├── NavigationService  #     navigate(), push(), replace(), back() — gọi ở mọi nơi
-│   │   └── NavDebugger.tsx    #     Widget debug hiển thị tên màn hình + thời gian chuyển
+│   │   └── NavigationService  #     navigate(), push(), replace(), back() — gọi ở mọi nơi
 │   │
 │   ├── screens/               # 📱 Màn hình ứng dụng
 │   │   ├── home/              #     Trang chủ Bento Grid, Tech Specs, Bottom Sheet Modal
+│   │   ├── componentGallery/  #     🧩 Thư viện tra cứu & demo toàn bộ UI components
 │   │   ├── networkSimulator/  #     🌐 Mô phỏng 12 kịch bản API thực tế + Concurrent Blast
 │   │   ├── chatDemo/          #     💬 Màn hình chat 1v1 & nhóm thực chiến
 │   │   ├── chatSimulator/     #     🧪 Giả lập dội bom tin nhắn (>150 msg/min)

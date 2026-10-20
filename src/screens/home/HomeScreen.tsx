@@ -134,6 +134,10 @@ const HomeScreen = () => {
     NavigationService.navigate('ChatSimulatorScreen');
   }, []);
 
+  const handleNavigateToGallery = useCallback(() => {
+    NavigationService.navigate('ComponentGalleryScreen');
+  }, []);
+
   const handleShowLoading = useCallback(() => {
     GlobalLoading.show(t('home.actions.saving_data'));
     setTimeout(() => {
@@ -416,6 +420,14 @@ const HomeScreen = () => {
                 badge="Loading"
                 color={theme.mode === 'light' ? '#10B981' : '#34D399'}
                 onPress={handleShowLoading}
+              />
+              <BentoCard
+                title={t('home.features.gallery.title')}
+                subtitle={t('home.features.gallery.subtitle')}
+                icon={IconMore}
+                badge="All UI"
+                color={theme.mode === 'light' ? '#EC4899' : '#F472B6'}
+                onPress={handleNavigateToGallery}
               />
             </View>
           </View>

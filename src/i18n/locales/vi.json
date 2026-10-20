@@ -101,6 +101,10 @@
       "notification": {
         "title": "Thông Báo Tức Thì",
         "subtitle": "Toast message động, tự đóng"
+      },
+      "gallery": {
+        "title": "Thư Viện Component",
+        "subtitle": "Xem và test toàn bộ UI Kit"
       }
     },
     "actions": {

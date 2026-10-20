@@ -101,6 +101,10 @@
       "notification": {
         "title": "Toast Notifications",
         "subtitle": "Dynamic animated toast messages"
+      },
+      "gallery": {
+        "title": "Component Gallery",
+        "subtitle": "Explore and test all UI Kit elements"
       }
     },
     "actions": {

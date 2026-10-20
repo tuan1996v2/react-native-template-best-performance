@@ -62,7 +62,7 @@ const CustomAlert = memo(() => {
                 <Pressable
                   key={i}
                   onPress={() => {
-                    btn.onPress();
+                    btn.onPress?.();
                     hideAlert();
                   }}
                   style={({ pressed }) => [

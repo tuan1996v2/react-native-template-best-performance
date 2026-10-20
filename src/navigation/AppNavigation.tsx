@@ -18,6 +18,7 @@ import OtpDemoScreen from '@/screens/otp/OtpDemoScreen';
 import ChatSimulatorScreen from '@/screens/chatSimulator/ChatSimulatorScreen';
 import ChatDemoScreen from '@/screens/chatDemo/ChatDemoScreen';
 import NetworkSimulatorScreen from '@/screens/networkSimulator/NetworkSimulatorScreen';
+import ComponentGalleryScreen from '@/screens/componentGallery/ComponentGalleryScreen';
 import { useThemeStore } from '../store/useThemeStore';
 import { ThemeTokens } from '../theme/Colors';
 
@@ -92,6 +93,10 @@ const MainStack = {
   NetworkSimulatorScreen: {
     screen: NetworkSimulatorScreen,
     options: { title: 'Network Simulator', headerShown: false },
+  },
+  ComponentGalleryScreen: {
+    screen: ComponentGalleryScreen,
+    options: { title: 'Thư Viện Component', headerShown: false },
   },
 };
 export const RootStack = createNativeStackNavigator({
