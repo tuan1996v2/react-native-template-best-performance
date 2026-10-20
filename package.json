@@ -1,6 +1,25 @@
 {
   "name": "template",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Production-ready React Native 0.84+ template powered by New Architecture (Fabric & Nitro), Reanimated 4, FlashList 2 and In-App Network Inspector.",
+  "author": "Tuấn Nguyễn <tuan1996v2>",
+  "license": "MIT",
+  "homepage": "https://github.com/tuan1996v2/react-native-template-best-performance#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuan1996v2/react-native-template-best-performance.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-template",
+    "new-architecture",
+    "fabric",
+    "nitro-modules",
+    "reanimated-4",
+    "flashlist",
+    "zustand",
+    "performance"
+  ],
   "private": true,
   "scripts": {
     "switch-dev": "./build.sh dev && node src/env/scripts/enviroment.js dev",

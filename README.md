@@ -10,6 +10,8 @@
   <a href="https://zustand-demo.pmnd.rs"><img src="https://img.shields.io/badge/State-Zustand%205.x-orange?style=for-the-badge" alt="Zustand 5" /></a>
   <a href="https://shopify.github.io/flash-list/"><img src="https://img.shields.io/badge/Lists-FlashList%202.x-00D924?style=for-the-badge" alt="FlashList 2" /></a>
   <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-Strict%20Mode-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript Strict" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT" /></a>
+  <a href="https://github.com/tuan1996v2/react-native-template-best-performance/actions"><img src="https://img.shields.io/badge/CI-Passing-brightgreen?style=for-the-badge&logo=githubactions" alt="CI Status" /></a>
 </p>
 
 ---
@@ -48,6 +50,22 @@ Bạn chuẩn bị nhận một dự án React Native mới và sắp sửa:
 | 🚀 **FlashList 2.x & SuperGallery**          | Danh sách lướt cuộn 120 FPS tải hàng ngàn items không drop frame. Trình xem ảnh full-screen pinch-to-zoom + swipe dismiss không re-render parent.                                                                                                                                                                              |     ✅     |
 | 🔢 **Premium OTP System**                    | 4 style OTP đẳng cấp (Stripe, Apple, Dashed, Revolt), SMS Auto-fill, Countdown Reanimated chạy 100% trên UI thread.                                                                                                                                                                                                            |     ✅     |
 | 🤖 **Built-in AI Agent Skills**              | Tích hợp sẵn bộ quy chuẩn `.agents/skills/rn-best-performance-dev` giúp Antigravity, Cursor, Claude Code sinh mã chuẩn kiến trúc template 100%.                                                                                                                                                                                |     ✅     |
+
+---
+
+## 📊 Đối Chiếu Kiến Trúc Thực Tế (Architecture & Tooling Comparison)
+
+Bảng đối chiếu dựa trên các giải pháp kỹ thuật cụ thể đã tích hợp sẵn trong repo:
+
+| Tiêu chí kỹ thuật      | Setup mặc định thông thường (`react-native init`)                  | Template này (`react-native-template-best-performance`)                     | Lợi ích thực tế                                                              |
+| :--------------------- | :----------------------------------------------------------------- | :-------------------------------------------------------------------------- | :--------------------------------------------------------------------------- |
+| **Kiến trúc Native**   | Cấu hình mặc định, thường tắt Fabric do xung đột Pods              | **Fabric Renderer & TurboModules / Nitro Modules bật sẵn**                  | Truy cập JSI trực tiếp, loại bỏ độ trễ serialization của Bridge cũ           |
+| **Soi HTTP Traffic**   | Phụ thuộc Flipper (dễ crash/bị deprecate) hoặc Charles Proxy       | **In-App Requests Inspector tích hợp sẵn** (`src/libs/requests-inspector/`) | Soi payload, copy cURL 1 chạm, bóc Bearer token trực tiếp trên màn hình app  |
+| **Giám sát FPS & Lag** | Cắm dây qua Metro Profiler / Xcode Instruments                     | **Draggable DevHUD tích hợp sẵn** (`src/components/portals/FpsHUD.tsx`)     | Đo UI Thread FPS thời gian thực qua `useFrameCallback` + đo ms chuyển trang  |
+| **Hiển thị Danh Sách** | `FlatList` mặc định (dễ drop frame khi danh sách dài)              | **`@shopify/flash-list` 2.x**                                               | Tái sử dụng View cell hiệu quả, duy trì 60-120 FPS khi cuộn danh sách lớn    |
+| **Animation & Timer**  | `Animated` core hoặc `useState` đếm ngược                          | **Reanimated 4.x Worklets & AnimatedTextInput**                             | Đếm ngược OTP, timer ghi hình cập nhật 100% trên UI Thread, zero re-render   |
+| **Xử lý Crash JS**     | Văng trắng màn hình hoặc popup RedBox dev                          | **Error Boundary & Crash Recovery Screen** (`src/libs/error-boundary/`)     | Bắt lỗi render, hiển thị stack trace kèm nút Copy Log và Thử lại an toàn     |
+| **Tạo Màn Hình Mới**   | Tạo file thủ công, tự import `useStyles`, tự khai báo route & i18n | **Scaffolding CLI** (`yarn gen:screen <Name>`)                              | Tự sinh toàn bộ file, styles responsive, route navigation và i18n trong 0.5s |
 
 ---
 
